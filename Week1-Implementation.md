@@ -3,6 +3,7 @@
 ## 📋 **Table of Contents**
 
 ### **Top-Level Navigation**
+
 1. [Week Overview](#-week-overview)
 2. [Module 1: Tree Fundamentals](#-module-1-tree-fundamentals)
 3. [Module 2: Tree Structure & Implementation](#-module-2-tree-structure--implementation)
@@ -13,30 +14,35 @@
 ### **Module-Level Navigation**
 
 #### **Module 1: Tree Fundamentals**
+
 - [What Are Trees?](#what-are-trees)
 - [Tree Terminology](#tree-terminology)
 - [Why Trees Matter](#why-trees-matter)
 - [Module 1 Summary](#module-1-summary)
 
 #### **Module 2: Tree Structure & Implementation**
+
 - [Tree Node Structure](#tree-node-structure)
 - [Tree Operations](#basic-tree-operations)
 - [Tree Construction](#tree-construction-examples)
 - [Module 2 Summary](#module-2-summary)
 
 #### **Module 3: Tree Traversal Methods**
+
 - [Preorder Traversal](#preorder-traversal)
 - [Inorder Traversal](#inorder-traversal)
 - [Postorder Traversal](#postorder-traversal)
 - [Module 3 Summary](#module-3-summary)
 
 #### **Module 4: Advanced Traversals**
+
 - [Level-Order Traversal](#level-order-traversal)
 - [Iterative Implementations](#iterative-implementations)
 - [Traversal Applications](#traversal-applications)
 - [Module 4 Summary](#module-4-summary)
 
 #### **Module 5: Assessment & Next Steps**
+
 - [Self-Assessment Checklist](#self-assessment-checklist)
 - [Key Takeaways](#week-1-summary--key-takeaways)
 - [Next Week Preview](#next-week-preview)
@@ -48,6 +54,7 @@
 This week introduces the fundamental concepts of tree data structures and master all traversal methods. Trees are hierarchical data structures that form the foundation for many advanced algorithms and data structures.
 
 **Learning Outcomes:**
+
 - Understand tree terminology and structure
 - Implement basic tree node structure in C++
 - Master all four tree traversal methods
@@ -435,12 +442,14 @@ void demonstrateAllTraversals(TreeNode* root) {
 ### Module 1 Summary
 
 **Tree Fundamentals Mastered:**
+
 - Tree terminology and hierarchical structure
 - Real-world applications of tree data structures
 - Tree properties: height, depth, leaves, internal nodes
 - Understanding parent-child relationships
 
 **Skills Developed:**
+
 - Visual representation of tree structures
 - Identifying tree components and properties
 - Understanding when to use trees vs linear data structures
@@ -2144,28 +2153,31 @@ void iterativePreorder(TreeNode* root) {
 ## 📚 **Quick Reference Guide**
 
 ### **Tree Traversal Summary**
-| Traversal Type | Order | Use Case |
-|---------------|--------|----------|
-| Preorder | Root → Left → Right | Tree copying, prefix expressions |
-| Inorder | Left → Root → Right | Sorted output (BST) |
-| Postorder | Left → Right → Root | Tree deletion, postfix expressions |
-| Level-order | Level by level | Tree printing, shortest path |
+
+| Traversal Type | Order               | Use Case                           |
+| -------------- | ------------------- | ---------------------------------- |
+| Preorder       | Root → Left → Right | Tree copying, prefix expressions   |
+| Inorder        | Left → Root → Right | Sorted output (BST)                |
+| Postorder      | Left → Right → Root | Tree deletion, postfix expressions |
+| Level-order    | Level by level      | Tree printing, shortest path       |
 
 ### **Complexity Analysis**
+
 - **Time Complexity**: O(n) for all traversals
 - **Space Complexity**: O(h) recursive, O(w) iterative (h=height, w=width)
 - **Best Case Height**: O(log n) for balanced trees
 - **Worst Case Height**: O(n) for skewed trees
 
 ### **Next Week Preview: Advanced Tree Problems**
+
 Week 2 will cover advanced binary tree algorithms including:
+
 - Complex tree construction from multiple traversals
 - Path-finding algorithms with backtracking
 - Tree validation using sophisticated techniques
 - Coordinate-based tree view algorithms
 
-[↑ Back to Top](#-table-of-contents)
-5. **Memory leaks** from not properly managing dynamic allocation
+[↑ Back to Top](#-table-of-contents) 5. **Memory leaks** from not properly managing dynamic allocation
 
 ---
 

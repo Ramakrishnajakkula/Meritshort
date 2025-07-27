@@ -3,6 +3,7 @@
 ## 📋 **Table of Contents**
 
 ### **Top-Level Navigation**
+
 1. [Week Overview](#-week-overview)
 2. [Module 1: Mixed Tree Problems](#-module-1-mixed-tree-problems-day-1-2)
 3. [Module 2: Advanced Problem Patterns](#-module-2-advanced-problem-patterns-day-3-4)
@@ -12,22 +13,26 @@
 ### **Module-Level Navigation**
 
 #### **Module 1: Mixed Tree Problems**
+
 - [Binary Tree Integration Problems](#binary-tree-integration-problems)
 - [Heap and Trie Problems](#heap-and-trie-problems)
 - [Module 1 Summary](#module-1-summary)
 
 #### **Module 2: Advanced Problem Patterns**
+
 - [Tree Dynamic Programming](#tree-dynamic-programming)
 - [LCA and Serialization](#lca-and-serialization)
 - [Module 2 Summary](#module-2-summary)
 
 #### **Module 3: Comprehensive Projects**
+
 - [Project 1: File System Simulator](#project-1-file-system-simulator)
 - [Project 2: Expression Evaluator](#project-2-expression-evaluator)
 - [Project 3: Auto-complete System](#project-3-auto-complete-system)
 - [Module 3 Summary](#module-3-summary)
 
 #### **Module 4: Assessment & Next Steps**
+
 - [Self-Assessment Checklist](#self-assessment-checklist)
 - [Interview Readiness](#interview-readiness)
 - [Advanced Topics](#advanced-topics-for-future-learning)
@@ -40,6 +45,7 @@
 Week 7 is the culmination of your 7-week trees journey. You'll integrate all previous knowledge to solve complex problems and build real-world projects that demonstrate mastery of tree concepts.
 
 **Learning Outcomes:**
+
 - Master complex tree problem-solving patterns
 - Build production-ready tree-based systems
 - Integrate multiple tree concepts seamlessly
@@ -349,6 +355,7 @@ private:
 ### Module 1 Summary
 
 **Key Concepts Mastered:**
+
 - Tree Dynamic Programming patterns
 - BST validation techniques
 - Path sum variations and optimizations
@@ -356,6 +363,7 @@ private:
 - Trie-based string search algorithms
 
 **Skills Developed:**
+
 - Integrating multiple tree concepts in one solution
 - Optimizing tree algorithms using mathematical insights
 - Applying different tree structures to appropriate problems
@@ -563,12 +571,14 @@ public:
 ### Module 2 Summary
 
 **Advanced Patterns Mastered:**
+
 - Tree Dynamic Programming with global state management
 - Lowest Common Ancestor algorithms for binary trees and BSTs
 - Tree serialization and deserialization techniques
 - Space-optimized tree traversal (Morris traversal)
 
 **Problem-Solving Skills:**
+
 - Identifying optimal substructure in trees
 - Managing global variables in recursive solutions
 - Converting between tree representations efficiently
@@ -584,12 +594,14 @@ public:
 **Objective:** Build a complete file system using tree structures to demonstrate real-world tree applications.
 
 **Technologies Used:**
+
 - Directory tree structure
 - Path navigation algorithms
 - File and directory operations
 - Error handling and validation
 
 **Learning Outcomes:**
+
 - Implement hierarchical data structures
 - Handle complex path operations
 - Build user-friendly command interfaces
@@ -824,12 +836,14 @@ void testFileSystem() {
 **Objective:** Create a mathematical expression parser and evaluator using tree structures.
 
 **Technologies Used:**
+
 - Expression tree construction
 - Infix to postfix conversion
 - Tree-based evaluation
 - Operator precedence handling
 
 **Learning Outcomes:**
+
 - Implement parser algorithms
 - Build and traverse expression trees
 - Handle mathematical operations systematically
@@ -1042,12 +1056,14 @@ void testExpressionEvaluator() {
 **Objective:** Develop an intelligent auto-complete system using trie data structures.
 
 **Technologies Used:**
+
 - Trie-based string storage
 - Prefix matching algorithms
 - Frequency-based ranking
 - Real-time suggestion generation
 
 **Learning Outcomes:**
+
 - Implement efficient string processing
 - Build ranking and suggestion systems
 - Optimize for real-time performance
@@ -1269,43 +1285,43 @@ void testAutoCompleteSystem() {
 int main() {
     cout << "=== Week 7: Comprehensive Tree Projects ===" << endl;
     cout << string(60, '=') << endl;
-    
+
     cout << "\n🔧 MODULE 1: Mixed Tree Problems" << endl;
     cout << string(40, '-') << endl;
     // Test individual problems
     cout << "\n1. Testing Maximum Path Sum:" << endl;
     testMaxPathSum();
-    
+
     cout << "\n🧠 MODULE 2: Advanced Problem Patterns" << endl;
     cout << string(40, '-') << endl;
     cout << "Advanced patterns demonstrated in previous problems" << endl;
-    
+
     cout << "\n🏗️ MODULE 3: Comprehensive Projects" << endl;
     cout << string(40, '-') << endl;
-    
+
     // Test comprehensive projects
     cout << "\n1. File System Simulator:" << endl;
     testFileSystem();
-    
+
     cout << "\n" << string(60, '-') << endl;
-    
+
     cout << "\n2. Expression Evaluator:" << endl;
     testExpressionEvaluator();
-    
+
     cout << "\n" << string(60, '-') << endl;
-    
+
     cout << "\n3. Auto-Complete System:" << endl;
     testAutoCompleteSystem();
-    
+
     cout << "\n📊 MODULE 4: Assessment Complete" << endl;
     cout << string(40, '-') << endl;
     cout << "Week 7 Implementation Complete!" << endl;
     cout << "You have successfully integrated all tree concepts!" << endl;
-    
+
     cout << "\n" << string(60, '=') << endl;
     cout << "🎉 Congratulations on mastering trees! 🎉" << endl;
     cout << "Next: Advanced topics and real-world applications" << endl;
-    
+
     return 0;
 }
 ```
@@ -1313,17 +1329,20 @@ int main() {
 ### Module 3 Summary
 
 **Projects Completed:**
+
 1. **File System Simulator** - Hierarchical data management
 2. **Expression Evaluator** - Mathematical computation trees
 3. **Auto-complete System** - Intelligent string processing
 
 **Real-World Skills Acquired:**
+
 - System design with tree structures
 - User interface development
 - Performance optimization techniques
 - Error handling and edge case management
 
 **Industry Applications:**
+
 - Operating system development
 - Compiler and interpreter design
 - Search engine technology
@@ -1389,21 +1408,25 @@ int main() {
 **Next-Level Tree Concepts:**
 
 1. **Concurrent Trees**: Lock-free data structures
+
    - Skip lists and concurrent B-trees
    - Memory ordering and synchronization
    - Performance in multi-threaded environments
 
 2. **Distributed Trees**: Scalable tree structures
+
    - Consistent hashing trees
    - Distributed B-trees
    - CAP theorem implications
 
 3. **Persistent Trees**: Functional data structures
+
    - Copy-on-write techniques
    - Version control systems
    - Immutable tree implementations
 
 4. **Specialized Trees**: Domain-specific optimizations
+
    - Suffix trees for string algorithms
    - Heavy-light decomposition
    - Link-cut trees
@@ -1414,6 +1437,7 @@ int main() {
    - External memory algorithms
 
 **Learning Resources:**
+
 - Advanced algorithms courses
 - Research papers on tree structures
 - Open-source database implementations
@@ -1428,13 +1452,15 @@ int main() {
 You have successfully completed a comprehensive 7-week journey through tree data structures. Your achievements include:
 
 #### **Technical Mastery Achieved:**
+
 - ✅ **Deep theoretical understanding** of all major tree types
-- ✅ **Practical implementation skills** for real-world projects  
+- ✅ **Practical implementation skills** for real-world projects
 - ✅ **Problem-solving patterns** for technical interviews
 - ✅ **System design knowledge** for building scalable applications
 - ✅ **Performance optimization** techniques for production code
 
 #### **Skills Portfolio:**
+
 1. **Data Structure Expertise**: Binary trees, BSTs, AVL trees, heaps, tries, segment trees
 2. **Algorithm Proficiency**: Tree traversals, balancing, heapify operations, string processing
 3. **Problem-Solving Ability**: Dynamic programming on trees, LCA, serialization
@@ -1442,12 +1468,14 @@ You have successfully completed a comprehensive 7-week journey through tree data
 5. **Interview Readiness**: 20+ LeetCode problems solved with optimal solutions
 
 #### **Career Impact:**
+
 - **Software Engineering**: Ready for tree-related technical interviews
 - **System Design**: Can architect tree-based solutions for large systems
 - **Algorithm Development**: Capable of optimizing tree algorithms for performance
 - **Research Foundation**: Prepared for advanced computer science topics
 
 #### **What's Next?**
+
 - Apply your knowledge to real projects
 - Contribute to open-source tree implementations
 - Explore advanced topics like concurrent and distributed trees
@@ -1462,21 +1490,24 @@ You have successfully completed a comprehensive 7-week journey through tree data
 ## 📚 **Quick Reference Guide**
 
 ### **Tree Type Selection Matrix**
-| Problem Type | Recommended Tree | Time Complexity |
-|-------------|------------------|-----------------|
-| Hierarchical Data | Binary Tree | O(n) traversal |
-| Sorted Access | BST/AVL | O(log n) operations |
-| Priority Processing | Heap | O(log n) insert/extract |
-| String Prefix | Trie | O(m) where m = string length |
-| Range Queries | Segment Tree | O(log n) query/update |
+
+| Problem Type        | Recommended Tree | Time Complexity              |
+| ------------------- | ---------------- | ---------------------------- |
+| Hierarchical Data   | Binary Tree      | O(n) traversal               |
+| Sorted Access       | BST/AVL          | O(log n) operations          |
+| Priority Processing | Heap             | O(log n) insert/extract      |
+| String Prefix       | Trie             | O(m) where m = string length |
+| Range Queries       | Segment Tree     | O(log n) query/update        |
 
 ### **Common Algorithm Patterns**
+
 1. **Tree DP**: `solve(node) = combine(solve(left), solve(right), node.val)`
 2. **Tree Traversal**: Preorder, Inorder, Postorder variations
 3. **Tree Construction**: From traversals, from arrays, from strings
 4. **Tree Modification**: Insertion, deletion, balancing operations
 
 ### **Implementation Checklist**
+
 - [ ] Handle null/empty cases
 - [ ] Implement proper error checking
 - [ ] Consider iterative vs recursive approaches

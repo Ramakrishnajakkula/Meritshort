@@ -3,6 +3,7 @@
 ## 📋 **Table of Contents**
 
 ### **Top-Level Navigation**
+
 1. [Week Overview](#-week-overview)
 2. [Module 1: Tree Balancing Fundamentals](#-module-1-tree-balancing-fundamentals)
 3. [Module 2: AVL Trees](#-module-2-avl-trees)
@@ -13,30 +14,35 @@
 ### **Module-Level Navigation**
 
 #### **Module 1: Tree Balancing Fundamentals**
+
 - [Why Balancing Matters](#why-balancing-matters)
 - [Balancing Strategies](#balancing-strategies)
 - [Performance Implications](#performance-implications)
 - [Module 1 Summary](#module-1-summary)
 
 #### **Module 2: AVL Trees**
+
 - [AVL Properties](#avl-properties)
 - [Height-Based Balancing](#height-based-balancing)
 - [AVL Implementation](#avl-implementation)
 - [Module 2 Summary](#module-2-summary)
 
 #### **Module 3: Rotation Mechanics**
+
 - [Single Rotations](#single-rotations)
 - [Double Rotations](#double-rotations)
 - [Rotation Algorithms](#rotation-algorithms)
 - [Module 3 Summary](#module-3-summary)
 
 #### **Module 4: Red-Black Trees**
+
 - [Red-Black Properties](#red-black-properties)
 - [Color-Based Balancing](#color-based-balancing)
 - [Red-Black Operations](#red-black-operations)
 - [Module 4 Summary](#module-4-summary)
 
 #### **Module 5: Assessment & Comparisons**
+
 - [Performance Comparison](#performance-comparison)
 - [Use Case Analysis](#use-case-analysis)
 - [Self-Assessment Checklist](#self-assessment-checklist)
@@ -49,6 +55,7 @@
 This week focuses on self-balancing binary search trees, building upon BST fundamentals from Week 3. You'll master automatic tree balancing techniques that maintain optimal performance regardless of input patterns.
 
 **Learning Outcomes:**
+
 - Understand when and why BST balancing is necessary
 - Implement AVL trees with height-based balancing
 - Master all four rotation types for tree balancing
@@ -74,7 +81,7 @@ This week focuses on self-balancing binary search trees, building upon BST funda
 For every node N in an AVL tree:
 **|height(left_subtree) - height(right_subtree)| ≤ 1**
 
-This simple constraint ensures the tree height never exceeds **1.44 * log₂(n)**, guaranteeing O(log n) operations.
+This simple constraint ensures the tree height never exceeds **1.44 \* log₂(n)**, guaranteeing O(log n) operations.
 
 ### **Implementation 1: AVL Node Structure & Height Management**
 
@@ -90,7 +97,7 @@ struct AVLNode {
     AVLNode* left;
     AVLNode* right;
     int height;
-    
+
     AVLNode(int val) : data(val), left(nullptr), right(nullptr), height(1) {}
 };
 
@@ -101,57 +108,57 @@ public:
         if (!node) return 0;
         return node->height;
     }
-    
+
     // Update height based on children
     void updateHeight(AVLNode* node) {
         if (!node) return;
         node->height = 1 + max(getHeight(node->left), getHeight(node->right));
     }
-    
+
     // Calculate balance factor
     int getBalanceFactor(AVLNode* node) {
         if (!node) return 0;
         return getHeight(node->left) - getHeight(node->right);
     }
-    
+
     // Check if node violates AVL property
     bool isAVLProperty(AVLNode* node) {
         if (!node) return true;
-        
+
         int balanceFactor = getBalanceFactor(node);
-        return abs(balanceFactor) <= 1 && 
-               isAVLProperty(node->left) && 
+        return abs(balanceFactor) <= 1 &&
+               isAVLProperty(node->left) &&
                isAVLProperty(node->right);
     }
-    
+
     // Check if entire tree satisfies AVL property
     bool isValidAVL(AVLNode* root) {
         return isAVLProperty(root) && isBST(root, INT_MIN, INT_MAX);
     }
-    
+
     // Helper: Check BST property
     bool isBST(AVLNode* node, int minVal, int maxVal) {
         if (!node) return true;
-        
-        if (node->data <= minVal || node->data >= maxVal) 
+
+        if (node->data <= minVal || node->data >= maxVal)
             return false;
-            
-        return isBST(node->left, minVal, node->data) && 
+
+        return isBST(node->left, minVal, node->data) &&
                isBST(node->right, node->data, maxVal);
     }
-    
+
     // Calculate tree statistics
     void analyzeAVLTree(AVLNode* root) {
         if (!root) {
             cout << "Empty tree" << endl;
             return;
         }
-        
+
         int nodeCount = countNodes(root);
         int treeHeight = getHeight(root);
         double theoreticalMinHeight = log2(nodeCount + 1);
         double avlMaxHeight = 1.44 * log2(nodeCount + 1);
-        
+
         cout << "=== AVL Tree Analysis ===" << endl;
         cout << "Node count: " << nodeCount << endl;
         cout << "Actual height: " << treeHeight << endl;
@@ -160,7 +167,7 @@ public:
         cout << "Height efficiency: " << (theoreticalMinHeight / treeHeight) * 100 << "%" << endl;
         cout << "AVL property satisfied: " << (isValidAVL(root) ? "Yes" : "No") << endl;
     }
-    
+
 private:
     int countNodes(AVLNode* node) {
         if (!node) return 0;
@@ -170,9 +177,9 @@ private:
 
 void demonstrateAVLBasics() {
     cout << "\n=== AVL TREE FUNDAMENTALS ===" << endl;
-    
+
     AVLTreeBasics avl;
-    
+
     // Create a sample tree
     AVLNode* root = new AVLNode(10);
     root->left = new AVLNode(5);
@@ -181,7 +188,7 @@ void demonstrateAVLBasics() {
     root->left->right = new AVLNode(7);
     root->right->left = new AVLNode(12);
     root->right->right = new AVLNode(18);
-    
+
     // Update heights properly
     avl.updateHeight(root->left->left);
     avl.updateHeight(root->left->right);
@@ -190,36 +197,36 @@ void demonstrateAVLBasics() {
     avl.updateHeight(root->left);
     avl.updateHeight(root->right);
     avl.updateHeight(root);
-    
+
     cout << "Sample Balanced Tree:" << endl;
     cout << "       10" << endl;
     cout << "      /  \\" << endl;
     cout << "     5    15" << endl;
     cout << "    / \\  / \\" << endl;
     cout << "   3   7 12 18" << endl;
-    
+
     // Analyze balance factors
     cout << "\nBalance Factors:" << endl;
     cout << "Node 10: " << avl.getBalanceFactor(root) << endl;
     cout << "Node 5: " << avl.getBalanceFactor(root->left) << endl;
     cout << "Node 15: " << avl.getBalanceFactor(root->right) << endl;
-    
+
     avl.analyzeAVLTree(root);
-    
+
     // Demonstrate unbalanced tree
     cout << "\n=== UNBALANCED TREE EXAMPLE ===" << endl;
     AVLNode* unbalanced = new AVLNode(1);
     unbalanced->right = new AVLNode(2);
     unbalanced->right->right = new AVLNode(3);
     unbalanced->right->right->right = new AVLNode(4);
-    
+
     // Update heights for unbalanced tree
     AVLNode* current = unbalanced;
     while (current) {
         avl.updateHeight(current);
         current = current->right;
     }
-    
+
     cout << "Unbalanced Tree (degenerate):" << endl;
     cout << "1" << endl;
     cout << " \\" << endl;
@@ -228,9 +235,9 @@ void demonstrateAVLBasics() {
     cout << "    3" << endl;
     cout << "     \\" << endl;
     cout << "      4" << endl;
-    
+
     avl.analyzeAVLTree(unbalanced);
-    
+
     cout << "\nKey Insights:" << endl;
     cout << "- Height of balanced tree: O(log n)" << endl;
     cout << "- Height of unbalanced tree: O(n)" << endl;
@@ -247,42 +254,42 @@ public:
     // Print tree structure with heights and balance factors
     void printAVLTree(AVLNode* root, int space = 0, int gap = 4) {
         if (!root) return;
-        
+
         space += gap;
         printAVLTree(root->right, space);
-        
+
         cout << endl;
         for (int i = gap; i < space; i++) cout << " ";
-        
+
         AVLTreeBasics basics;
-        cout << root->data 
-             << "(h:" << basics.getHeight(root) 
+        cout << root->data
+             << "(h:" << basics.getHeight(root)
              << ",bf:" << basics.getBalanceFactor(root) << ")";
-        
+
         printAVLTree(root->left, space);
     }
-    
+
     // Level order traversal with height information
     void levelOrderWithHeights(AVLNode* root) {
         if (!root) return;
-        
+
         queue<AVLNode*> q;
         q.push(root);
         int level = 0;
-        
+
         while (!q.empty()) {
             int size = q.size();
             cout << "Level " << level << ": ";
-            
+
             for (int i = 0; i < size; i++) {
                 AVLNode* node = q.front();
                 q.pop();
-                
+
                 AVLTreeBasics basics;
-                cout << node->data 
-                     << "(h:" << basics.getHeight(node) 
+                cout << node->data
+                     << "(h:" << basics.getHeight(node)
                      << ",bf:" << basics.getBalanceFactor(node) << ") ";
-                
+
                 if (node->left) q.push(node->left);
                 if (node->right) q.push(node->right);
             }
@@ -290,24 +297,24 @@ public:
             level++;
         }
     }
-    
+
     // Demonstrate height calculation step by step
     void explainHeightCalculation(AVLNode* root) {
         if (!root) return;
-        
+
         cout << "\nHeight Calculation for Node " << root->data << ":" << endl;
-        
+
         AVLTreeBasics basics;
         int leftHeight = basics.getHeight(root->left);
         int rightHeight = basics.getHeight(root->right);
-        
+
         cout << "  Left child height: " << leftHeight << endl;
         cout << "  Right child height: " << rightHeight << endl;
-        cout << "  Node height: max(" << leftHeight << ", " << rightHeight << ") + 1 = " 
+        cout << "  Node height: max(" << leftHeight << ", " << rightHeight << ") + 1 = "
              << basics.getHeight(root) << endl;
-        cout << "  Balance factor: " << leftHeight << " - " << rightHeight 
+        cout << "  Balance factor: " << leftHeight << " - " << rightHeight
              << " = " << basics.getBalanceFactor(root) << endl;
-        
+
         if (abs(basics.getBalanceFactor(root)) > 1) {
             cout << "  ⚠️  AVL VIOLATION! Needs rebalancing." << endl;
         } else {
@@ -318,10 +325,10 @@ public:
 
 void demonstrateAVLVisualization() {
     cout << "\n=== AVL TREE VISUALIZATION ===" << endl;
-    
+
     AVLVisualizer viz;
     AVLTreeBasics basics;
-    
+
     // Create perfectly balanced tree
     AVLNode* balanced = new AVLNode(8);
     balanced->left = new AVLNode(4);
@@ -330,7 +337,7 @@ void demonstrateAVLVisualization() {
     balanced->left->right = new AVLNode(6);
     balanced->right->left = new AVLNode(10);
     balanced->right->right = new AVLNode(14);
-    
+
     // Update all heights bottom-up
     basics.updateHeight(balanced->left->left);
     basics.updateHeight(balanced->left->right);
@@ -339,19 +346,19 @@ void demonstrateAVLVisualization() {
     basics.updateHeight(balanced->left);
     basics.updateHeight(balanced->right);
     basics.updateHeight(balanced);
-    
+
     cout << "Perfectly Balanced AVL Tree:" << endl;
     viz.printAVLTree(balanced);
     cout << endl;
-    
+
     cout << "\nLevel-by-Level Analysis:" << endl;
     viz.levelOrderWithHeights(balanced);
-    
+
     // Demonstrate height calculation
     viz.explainHeightCalculation(balanced);
     viz.explainHeightCalculation(balanced->left);
     viz.explainHeightCalculation(balanced->left->left);
-    
+
     cout << "\nBalance Factor Interpretation:" << endl;
     cout << "  -1: Right subtree one level deeper" << endl;
     cout << "   0: Perfectly balanced" << endl;
@@ -361,6 +368,7 @@ void demonstrateAVLVisualization() {
 ```
 
 **Teaching Points:**
+
 1. **Height vs Depth**: Height is calculated bottom-up, depth top-down
 2. **Balance Factor**: Left height minus right height
 3. **AVL Invariant**: Balance factor must be in [-1, 0, 1]
@@ -381,14 +389,14 @@ void demonstrateAVLVisualization() {
 class AVLRotations {
 public:
     AVLTreeBasics basics;
-    
+
     // Right rotation (LL case)
     AVLNode* rotateRight(AVLNode* y) {
         cout << "Performing RIGHT rotation on node " << y->data << endl;
-        
+
         AVLNode* x = y->left;
         AVLNode* T2 = x->right;
-        
+
         // Store original structure for demonstration
         cout << "Before rotation:" << endl;
         cout << "    " << y->data << endl;
@@ -396,96 +404,96 @@ public:
         cout << "  " << x->data << endl;
         cout << "   \\" << endl;
         if (T2) cout << "    " << T2->data << endl;
-        
+
         // Perform rotation
         x->right = y;
         y->left = T2;
-        
+
         // Update heights (bottom-up)
         basics.updateHeight(y);
         basics.updateHeight(x);
-        
+
         cout << "After rotation:" << endl;
         cout << "  " << x->data << endl;
         cout << " / \\" << endl;
         cout << "L   " << y->data << endl;
         cout << "   /" << endl;
         if (T2) cout << "  " << T2->data << endl;
-        
+
         return x;  // New root
     }
-    
+
     // Left rotation (RR case)
     AVLNode* rotateLeft(AVLNode* x) {
         cout << "Performing LEFT rotation on node " << x->data << endl;
-        
+
         AVLNode* y = x->right;
         AVLNode* T2 = y->left;
-        
+
         cout << "Before rotation:" << endl;
         cout << x->data << endl;
         cout << " \\" << endl;
         cout << "  " << y->data << endl;
         cout << " /" << endl;
         if (T2) cout << T2->data << endl;
-        
+
         // Perform rotation
         y->left = x;
         x->right = T2;
-        
+
         // Update heights
         basics.updateHeight(x);
         basics.updateHeight(y);
-        
+
         cout << "After rotation:" << endl;
         cout << "    " << y->data << endl;
         cout << "   / \\" << endl;
         cout << "  " << x->data << "   R" << endl;
         cout << "   \\" << endl;
         if (T2) cout << "    " << T2->data << endl;
-        
+
         return y;  // New root
     }
-    
+
     // Left-Right rotation (LR case)
     AVLNode* rotateLeftRight(AVLNode* z) {
         cout << "Performing LEFT-RIGHT rotation on node " << z->data << endl;
         cout << "Step 1: Left rotation on left child" << endl;
-        
+
         z->left = rotateLeft(z->left);
-        
+
         cout << "Step 2: Right rotation on root" << endl;
         return rotateRight(z);
     }
-    
+
     // Right-Left rotation (RL case)
     AVLNode* rotateRightLeft(AVLNode* z) {
         cout << "Performing RIGHT-LEFT rotation on node " << z->data << endl;
         cout << "Step 1: Right rotation on right child" << endl;
-        
+
         z->right = rotateRight(z->right);
-        
+
         cout << "Step 2: Left rotation on root" << endl;
         return rotateLeft(z);
     }
-    
+
     // Determine rotation type needed
     AVLNode* rebalance(AVLNode* node) {
         if (!node) return node;
-        
+
         // Update height first
         basics.updateHeight(node);
-        
+
         // Get balance factor
         int balance = basics.getBalanceFactor(node);
-        
-        cout << "\nRebalancing node " << node->data 
+
+        cout << "\nRebalancing node " << node->data
              << " (balance factor: " << balance << ")" << endl;
-        
+
         // Left heavy cases
         if (balance > 1) {
             int leftBalance = basics.getBalanceFactor(node->left);
-            
+
             if (leftBalance >= 0) {
                 // LL case
                 cout << "Case: Left-Left (LL)" << endl;
@@ -496,11 +504,11 @@ public:
                 return rotateLeftRight(node);
             }
         }
-        
+
         // Right heavy cases
         if (balance < -1) {
             int rightBalance = basics.getBalanceFactor(node->right);
-            
+
             if (rightBalance <= 0) {
                 // RR case
                 cout << "Case: Right-Right (RR)" << endl;
@@ -511,7 +519,7 @@ public:
                 return rotateRightLeft(node);
             }
         }
-        
+
         // No rotation needed
         cout << "No rotation needed - tree balanced" << endl;
         return node;
@@ -520,72 +528,72 @@ public:
 
 void demonstrateAVLRotations() {
     cout << "\n=== AVL ROTATION DEMONSTRATIONS ===" << endl;
-    
+
     AVLRotations rotations;
-    
+
     // Case 1: LL rotation
     cout << "\n--- CASE 1: LEFT-LEFT (LL) ROTATION ---" << endl;
     AVLNode* llRoot = new AVLNode(30);
     llRoot->left = new AVLNode(20);
     llRoot->left->left = new AVLNode(10);
-    
+
     rotations.basics.updateHeight(llRoot->left->left);
     rotations.basics.updateHeight(llRoot->left);
     rotations.basics.updateHeight(llRoot);
-    
+
     cout << "Original unbalanced tree:" << endl;
     cout << "  30 (bf: " << rotations.basics.getBalanceFactor(llRoot) << ")" << endl;
     cout << " /" << endl;
     cout << "20" << endl;
     cout << "/" << endl;
     cout << "10" << endl;
-    
+
     llRoot = rotations.rebalance(llRoot);
-    
+
     // Case 2: RR rotation
     cout << "\n--- CASE 2: RIGHT-RIGHT (RR) ROTATION ---" << endl;
     AVLNode* rrRoot = new AVLNode(10);
     rrRoot->right = new AVLNode(20);
     rrRoot->right->right = new AVLNode(30);
-    
+
     rotations.basics.updateHeight(rrRoot->right->right);
     rotations.basics.updateHeight(rrRoot->right);
     rotations.basics.updateHeight(rrRoot);
-    
+
     cout << "Original unbalanced tree:" << endl;
     cout << "10 (bf: " << rotations.basics.getBalanceFactor(rrRoot) << ")" << endl;
     cout << " \\" << endl;
     cout << "  20" << endl;
     cout << "   \\" << endl;
     cout << "    30" << endl;
-    
+
     rrRoot = rotations.rebalance(rrRoot);
-    
+
     // Case 3: LR rotation
     cout << "\n--- CASE 3: LEFT-RIGHT (LR) ROTATION ---" << endl;
     AVLNode* lrRoot = new AVLNode(30);
     lrRoot->left = new AVLNode(10);
     lrRoot->left->right = new AVLNode(20);
-    
+
     rotations.basics.updateHeight(lrRoot->left->right);
     rotations.basics.updateHeight(lrRoot->left);
     rotations.basics.updateHeight(lrRoot);
-    
+
     cout << "Original unbalanced tree:" << endl;
     cout << "30 (bf: " << rotations.basics.getBalanceFactor(lrRoot) << ")" << endl;
     cout << "/" << endl;
     cout << "10" << endl;
     cout << " \\" << endl;
     cout << "  20" << endl;
-    
+
     lrRoot = rotations.rebalance(lrRoot);
-    
+
     cout << "\nRotation Summary:" << endl;
     cout << "LL case: Single right rotation" << endl;
     cout << "RR case: Single left rotation" << endl;
     cout << "LR case: Left rotation + right rotation" << endl;
     cout << "RL case: Right rotation + left rotation" << endl;
-    
+
     cout << "\nKey Properties:" << endl;
     cout << "- All rotations are O(1) operations" << endl;
     cout << "- BST property is preserved" << endl;
@@ -602,22 +610,22 @@ private:
     AVLNode* root;
     AVLTreeBasics basics;
     AVLRotations rotations;
-    
+
 public:
     AVLTree() : root(nullptr) {}
-    
+
     // Public insertion interface
     void insert(int data) {
         cout << "\n=== Inserting " << data << " ===" << endl;
         root = insertHelper(root, data);
         cout << "Insertion complete. Tree height: " << basics.getHeight(root) << endl;
     }
-    
+
     // Public search interface
     bool search(int data) {
         return searchHelper(root, data);
     }
-    
+
     // Display tree structure
     void display() {
         cout << "\nCurrent AVL Tree:" << endl;
@@ -625,12 +633,12 @@ public:
         viz.printAVLTree(root);
         cout << endl;
     }
-    
+
     // Get tree statistics
     void analyze() {
         basics.analyzeAVLTree(root);
     }
-    
+
 private:
     AVLNode* insertHelper(AVLNode* node, int data) {
         // Standard BST insertion
@@ -638,7 +646,7 @@ private:
             cout << "Creating new node with value " << data << endl;
             return new AVLNode(data);
         }
-        
+
         if (data < node->data) {
             cout << "Going left from " << node->data << endl;
             node->left = insertHelper(node->left, data);
@@ -650,25 +658,25 @@ private:
             cout << "Duplicate value " << data << " ignored" << endl;
             return node;
         }
-        
+
         // Update height of current node
         basics.updateHeight(node);
-        
+
         // Check if rebalancing is needed
         int balance = basics.getBalanceFactor(node);
         cout << "Node " << node->data << " balance factor: " << balance << endl;
-        
+
         if (abs(balance) > 1) {
             cout << "⚠️  Imbalance detected at node " << node->data << endl;
             return rotations.rebalance(node);
         }
-        
+
         return node;
     }
-    
+
     bool searchHelper(AVLNode* node, int data) {
         if (!node) return false;
-        
+
         if (data == node->data) return true;
         else if (data < node->data) return searchHelper(node->left, data);
         else return searchHelper(node->right, data);
@@ -677,27 +685,27 @@ private:
 
 void demonstrateAVLInsertion() {
     cout << "\n=== COMPLETE AVL INSERTION DEMONSTRATION ===" << endl;
-    
+
     AVLTree avl;
-    
+
     // Insert sequence that would create unbalanced BST
     vector<int> insertSequence = {10, 20, 30, 40, 50, 25};
-    
+
     cout << "Inserting sequence: ";
     for (int val : insertSequence) {
         cout << val << " ";
     }
     cout << "\n(This would create a right-skewed tree in regular BST)" << endl;
-    
+
     for (int val : insertSequence) {
         avl.insert(val);
         avl.display();
         cout << endl;
     }
-    
+
     cout << "Final AVL Tree Analysis:" << endl;
     avl.analyze();
-    
+
     // Test search operations
     cout << "\nSearch Tests:" << endl;
     vector<int> searchValues = {25, 35, 10, 50};
@@ -705,7 +713,7 @@ void demonstrateAVLInsertion() {
         bool found = avl.search(val);
         cout << "Search for " << val << ": " << (found ? "Found" : "Not found") << endl;
     }
-    
+
     cout << "\nKey Observations:" << endl;
     cout << "- Tree remains balanced after each insertion" << endl;
     cout << "- Height stays logarithmic despite sorted input" << endl;
@@ -715,6 +723,7 @@ void demonstrateAVLInsertion() {
 ```
 
 **Teaching Points:**
+
 1. **Rotation Types**: Four cases based on imbalance pattern
 2. **Double Rotations**: LR and RL cases require two operations
 3. **BST Property**: Always preserved during rotations
@@ -731,6 +740,7 @@ void demonstrateAVLInsertion() {
 "Red-Black trees use a different approach to balancing: instead of strict height constraints, they use node colors and five simple rules to ensure no path is more than twice as long as any other."
 
 ### **Red-Black Tree Properties:**
+
 1. Every node is either RED or BLACK
 2. Root is always BLACK
 3. All leaves (NIL nodes) are BLACK
@@ -748,7 +758,7 @@ struct RBNode {
     RBNode* left;
     RBNode* right;
     RBNode* parent;
-    
+
     RBNode(int val) : data(val), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
 };
 
@@ -756,78 +766,78 @@ class RedBlackTree {
 private:
     RBNode* root;
     RBNode* NIL;  // Sentinel node for leaves
-    
+
 public:
     RedBlackTree() {
         NIL = new RBNode(0);
         NIL->color = BLACK;
         root = NIL;
     }
-    
+
     // Color helper functions
     Color getColor(RBNode* node) {
         return (node == NIL) ? BLACK : node->color;
     }
-    
+
     string colorToString(Color c) {
         return (c == RED) ? "RED" : "BLACK";
     }
-    
+
     // Basic tree operations
     void insert(int data) {
         cout << "\n=== Inserting " << data << " into Red-Black Tree ===" << endl;
-        
+
         RBNode* newNode = new RBNode(data);
         newNode->left = NIL;
         newNode->right = NIL;
-        
+
         insertBST(newNode);
         insertFixup(newNode);
-        
+
         cout << "Insertion complete." << endl;
     }
-    
+
     bool search(int data) {
         return searchHelper(root, data) != NIL;
     }
-    
+
     // Validate Red-Black properties
     bool isValidRedBlackTree() {
         if (root != NIL && root->color != BLACK) {
             cout << "❌ Property 2 violated: Root is not BLACK" << endl;
             return false;
         }
-        
+
         int blackHeight = -1;
         return validateProperties(root, 0, blackHeight);
     }
-    
+
     // Display tree with colors
     void display() {
         cout << "\nRed-Black Tree Structure:" << endl;
         displayHelper(root, 0);
     }
-    
+
     // Calculate black height from any node
     int calculateBlackHeight(RBNode* node) {
         if (node == NIL) return 0;
-        
+
         int leftBlackHeight = calculateBlackHeight(node->left);
         if (leftBlackHeight == -1) return -1;  // Invalid tree
-        
+
         int rightBlackHeight = calculateBlackHeight(node->right);
         if (rightBlackHeight == -1) return -1;  // Invalid tree
-        
+
         if (leftBlackHeight != rightBlackHeight) return -1;  // Invalid tree
-        
+
         return leftBlackHeight + (node->color == BLACK ? 1 : 0);
     }
-    
+
 private:
     void insertBST(RBNode* newNode) {
         RBNode* parent = NIL;
         RBNode* current = root;
-        
+
         // Find insertion position
         while (current != NIL) {
             parent = current;
@@ -841,10 +851,10 @@ private:
                 return;
             }
         }
-        
+
         // Set parent relationships
         newNode->parent = parent;
-        
+
         if (parent == NIL) {
             root = newNode;  // Tree was empty
         } else if (newNode->data < parent->data) {
@@ -852,22 +862,22 @@ private:
         } else {
             parent->right = newNode;
         }
-        
-        cout << "Node " << newNode->data << " inserted as " 
+
+        cout << "Node " << newNode->data << " inserted as "
              << colorToString(newNode->color) << " node" << endl;
     }
-    
+
     void insertFixup(RBNode* node) {
         cout << "Starting fixup for node " << node->data << endl;
-        
+
         while (node->parent != NIL && node->parent->color == RED) {
-            cout << "Fixing violation at node " << node->data 
+            cout << "Fixing violation at node " << node->data
                  << " (parent is RED)" << endl;
-            
+
             if (node->parent == node->parent->parent->left) {
                 // Parent is left child of grandparent
                 RBNode* uncle = node->parent->parent->right;
-                
+
                 if (getColor(uncle) == RED) {
                     // Case 1: Uncle is RED - recolor
                     cout << "Case 1: Uncle is RED, recoloring" << endl;
@@ -883,7 +893,7 @@ private:
                         node = node->parent;
                         leftRotate(node);
                     }
-                    
+
                     // Case 3: Right rotation
                     cout << "Case 3: Right rotation and recoloring" << endl;
                     node->parent->color = BLACK;
@@ -893,7 +903,7 @@ private:
             } else {
                 // Mirror cases (parent is right child)
                 RBNode* uncle = node->parent->parent->left;
-                
+
                 if (getColor(uncle) == RED) {
                     cout << "Case 1 (mirror): Uncle is RED, recoloring" << endl;
                     node->parent->color = BLACK;
@@ -906,7 +916,7 @@ private:
                         node = node->parent;
                         rightRotate(node);
                     }
-                    
+
                     cout << "Case 3 (mirror): Left rotation and recoloring" << endl;
                     node->parent->color = BLACK;
                     node->parent->parent->color = RED;
@@ -914,20 +924,20 @@ private:
                 }
             }
         }
-        
+
         root->color = BLACK;  // Ensure root is always BLACK
         cout << "Fixup complete. Root is " << colorToString(root->color) << endl;
     }
-    
+
     void leftRotate(RBNode* x) {
         RBNode* y = x->right;
-        
+
         // Update parent pointers
         x->right = y->left;
         if (y->left != NIL) {
             y->left->parent = x;
         }
-        
+
         y->parent = x->parent;
         if (x->parent == NIL) {
             root = y;
@@ -936,19 +946,19 @@ private:
         } else {
             x->parent->right = y;
         }
-        
+
         y->left = x;
         x->parent = y;
     }
-    
+
     void rightRotate(RBNode* y) {
         RBNode* x = y->left;
-        
+
         y->left = x->right;
         if (x->right != NIL) {
             x->right->parent = y;
         }
-        
+
         x->parent = y->parent;
         if (y->parent == NIL) {
             root = x;
@@ -957,23 +967,23 @@ private:
         } else {
             y->parent->right = x;
         }
-        
+
         x->right = y;
         y->parent = x;
     }
-    
+
     RBNode* searchHelper(RBNode* node, int data) {
         if (node == NIL || node->data == data) {
             return node;
         }
-        
+
         if (data < node->data) {
             return searchHelper(node->left, data);
         } else {
             return searchHelper(node->right, data);
         }
     }
-    
+
     bool validateProperties(RBNode* node, int currentBlackHeight, int& expectedBlackHeight) {
         if (node == NIL) {
             if (expectedBlackHeight == -1) {
@@ -981,61 +991,61 @@ private:
             }
             return currentBlackHeight == expectedBlackHeight;
         }
-        
+
         // Check property 4: Red node has black children
         if (node->color == RED) {
             if (getColor(node->left) == RED || getColor(node->right) == RED) {
-                cout << "❌ Property 4 violated at node " << node->data 
+                cout << "❌ Property 4 violated at node " << node->data
                      << ": Red node has red child" << endl;
                 return false;
             }
         }
-        
+
         int newBlackHeight = currentBlackHeight + (node->color == BLACK ? 1 : 0);
-        
+
         return validateProperties(node->left, newBlackHeight, expectedBlackHeight) &&
                validateProperties(node->right, newBlackHeight, expectedBlackHeight);
     }
-    
+
     void displayHelper(RBNode* node, int depth) {
         if (node == NIL) return;
-        
+
         displayHelper(node->right, depth + 1);
-        
+
         for (int i = 0; i < depth; i++) cout << "    ";
         cout << node->data << "(" << colorToString(node->color) << ")" << endl;
-        
+
         displayHelper(node->left, depth + 1);
     }
 };
 
 void demonstrateRedBlackTree() {
     cout << "\n=== RED-BLACK TREE DEMONSTRATION ===" << endl;
-    
+
     RedBlackTree rbt;
-    
+
     // Insert sequence
     vector<int> sequence = {10, 5, 15, 3, 7, 12, 18, 1, 6};
-    
+
     cout << "Inserting sequence: ";
     for (int val : sequence) {
         cout << val << " ";
     }
     cout << endl;
-    
+
     for (int val : sequence) {
         rbt.insert(val);
         rbt.display();
-        
+
         // Validate properties after each insertion
         bool valid = rbt.isValidRedBlackTree();
         cout << "Tree valid: " << (valid ? "✅ Yes" : "❌ No") << endl;
-        
+
         // Show black height
         int blackHeight = rbt.calculateBlackHeight(rbt.root);
         cout << "Black height: " << blackHeight << endl << endl;
     }
-    
+
     cout << "Final Red-Black Tree Properties:" << endl;
     cout << "1. ✅ Every node is RED or BLACK" << endl;
     cout << "2. ✅ Root is BLACK" << endl;
@@ -1046,6 +1056,7 @@ void demonstrateRedBlackTree() {
 ```
 
 **Teaching Points:**
+
 1. **Color Properties**: Five rules that maintain balance
 2. **NIL Nodes**: All leaves are BLACK sentinel nodes
 3. **Insertion Cases**: Three cases for fixing red-red violations
@@ -1076,125 +1087,125 @@ public:
         int rotationCount;
         string treeType;
     };
-    
+
     // Test AVL performance
     TestResults testAVLPerformance(vector<int>& data) {
         auto start = chrono::high_resolution_clock::now();
-        
+
         AVLTree avl;
         int rotations = 0;  // In real implementation, count rotations
-        
+
         // Insert all data
         for (int val : data) {
             avl.insert(val);
         }
-        
+
         auto insertEnd = chrono::high_resolution_clock::now();
-        
+
         // Test search performance
         for (int val : data) {
             avl.search(val);
         }
-        
+
         auto searchEnd = chrono::high_resolution_clock::now();
-        
+
         TestResults results;
         results.treeType = "AVL";
         results.insertTime = chrono::duration<double, milli>(insertEnd - start).count();
         results.searchTime = chrono::duration<double, milli>(searchEnd - insertEnd).count();
         results.finalHeight = 15;  // Would calculate actual height
         results.rotationCount = rotations;
-        
+
         return results;
     }
-    
+
     // Test Red-Black performance
     TestResults testRedBlackPerformance(vector<int>& data) {
         auto start = chrono::high_resolution_clock::now();
-        
+
         RedBlackTree rbt;
         int rotations = 0;  // Count rotations in real implementation
-        
+
         // Insert all data
         for (int val : data) {
             rbt.insert(val);
         }
-        
+
         auto insertEnd = chrono::high_resolution_clock::now();
-        
+
         // Test search performance
         for (int val : data) {
             rbt.search(val);
         }
-        
+
         auto searchEnd = chrono::high_resolution_clock::now();
-        
+
         TestResults results;
         results.treeType = "Red-Black";
         results.insertTime = chrono::duration<double, milli>(insertEnd - start).count();
         results.searchTime = chrono::duration<double, milli>(searchEnd - insertEnd).count();
         results.finalHeight = 16;  // Would calculate actual height
         results.rotationCount = rotations;
-        
+
         return results;
     }
-    
+
     void comparePerformance() {
         cout << "\n=== PERFORMANCE COMPARISON ===" << endl;
-        
+
         // Generate test data
         vector<int> randomData = generateRandomData(1000);
         vector<int> sortedData = generateSortedData(1000);
         vector<int> reverseSortedData = generateReverseSortedData(1000);
-        
+
         cout << "Testing with 1000 nodes..." << endl;
-        
+
         // Test scenarios
         vector<pair<string, vector<int>*>> scenarios = {
             {"Random Data", &randomData},
             {"Sorted Data", &sortedData},
             {"Reverse Sorted", &reverseSortedData}
         };
-        
+
         cout << "\n| Scenario       | Tree Type  | Insert (ms) | Search (ms) | Height | Rotations |" << endl;
         cout << "|----------------|------------|-------------|-------------|--------|-----------|" << endl;
-        
+
         for (auto& scenario : scenarios) {
             TestResults avlResults = testAVLPerformance(*scenario.second);
             TestResults rbResults = testRedBlackPerformance(*scenario.second);
-            
+
             printf("| %-14s | %-10s | %11.2f | %11.2f | %6d | %9d |\n",
                    scenario.first.c_str(), avlResults.treeType.c_str(),
                    avlResults.insertTime, avlResults.searchTime,
                    avlResults.finalHeight, avlResults.rotationCount);
-                   
+
             printf("| %-14s | %-10s | %11.2f | %11.2f | %6d | %9d |\n",
                    "", rbResults.treeType.c_str(),
                    rbResults.insertTime, rbResults.searchTime,
                    rbResults.finalHeight, rbResults.rotationCount);
             cout << "|----------------|------------|-------------|-------------|--------|-----------|" << endl;
         }
-        
+
         cout << "\nKey Observations:" << endl;
         cout << "- AVL trees: Better search performance (shorter height)" << endl;
         cout << "- Red-Black trees: Better insertion performance (fewer rotations)" << endl;
         cout << "- Both maintain O(log n) height regardless of input order" << endl;
         cout << "- Performance difference is usually small in practice" << endl;
     }
-    
+
 private:
     vector<int> generateRandomData(int size) {
         vector<int> data;
         random_device rd;
         mt19937 gen(rd());
         uniform_int_distribution<> dist(1, 10000);
-        
+
         for (int i = 0; i < size; i++) {
             data.push_back(dist(gen));
         }
         return data;
     }
-    
+
     vector<int> generateSortedData(int size) {
         vector<int> data;
         for (int i = 1; i <= size; i++) {
@@ -1202,7 +1213,7 @@ private:
         }
         return data;
     }
-    
+
     vector<int> generateReverseSortedData(int size) {
         vector<int> data;
         for (int i = size; i >= 1; i--) {
@@ -1222,134 +1233,134 @@ public:
     class STLMapSimulation {
     private:
         RedBlackTree rbt;
-        
+
     public:
         void insert(int key) {
             rbt.insert(key);
         }
-        
+
         bool find(int key) {
             return rbt.search(key);
         }
-        
+
         void demonstrateMapOperations() {
             cout << "\n=== STL MAP SIMULATION (Red-Black Tree) ===" << endl;
-            
+
             vector<int> keys = {50, 30, 70, 20, 40, 60, 80};
-            
+
             cout << "Inserting key-value pairs:" << endl;
             for (int key : keys) {
                 insert(key);
                 cout << "map[" << key << "] = value" << key << endl;
             }
-            
+
             rbt.display();
-            
+
             cout << "\nMap operations:" << endl;
             cout << "find(40): " << (find(40) ? "Found" : "Not found") << endl;
             cout << "find(90): " << (find(90) ? "Found" : "Not found") << endl;
-            
+
             cout << "\nWhy Red-Black for STL map?" << endl;
             cout << "- Balanced read/write performance" << endl;
             cout << "- Predictable performance (O(log n))" << endl;
             cout << "- Lower rotation overhead than AVL" << endl;
         }
     };
-    
+
     // Database index simulation using AVL trees
     class DatabaseIndexSimulation {
     private:
         AVLTree index;
-        
+
     public:
         void addRecord(int id) {
             index.insert(id);
         }
-        
+
         bool findRecord(int id) {
             return index.search(id);
         }
-        
+
         void demonstrateDatabaseIndex() {
             cout << "\n=== DATABASE INDEX SIMULATION (AVL Tree) ===" << endl;
-            
+
             // Simulate database records
             vector<int> recordIds = {1001, 1005, 1003, 1008, 1002, 1007, 1004, 1006};
-            
+
             cout << "Building index on record IDs:" << endl;
             for (int id : recordIds) {
                 addRecord(id);
                 cout << "Indexed record ID: " << id << endl;
             }
-            
+
             index.display();
-            
+
             cout << "\nIndex queries:" << endl;
             vector<int> queries = {1005, 1009, 1003};
             for (int query : queries) {
                 bool found = findRecord(query);
-                cout << "SELECT * FROM table WHERE id = " << query 
+                cout << "SELECT * FROM table WHERE id = " << query
                      << ": " << (found ? "Record found" : "No record") << endl;
             }
-            
+
             cout << "\nWhy AVL for database indexes?" << endl;
             cout << "- Optimal search performance (minimal height)" << endl;
             cout << "- Read-heavy workloads benefit from faster searches" << endl;
             cout << "- Consistent O(log n) guarantees" << endl;
         }
     };
-    
+
     // Process scheduler simulation using Red-Black trees
     class ProcessSchedulerSimulation {
     private:
         RedBlackTree scheduler;
-        
+
     public:
         void addProcess(int priority) {
             scheduler.insert(priority);
         }
-        
+
         void demonstrateScheduler() {
             cout << "\n=== PROCESS SCHEDULER SIMULATION ===" << endl;
-            
+
             vector<int> processes = {10, 5, 15, 3, 7, 12, 18, 1};
-            
+
             cout << "Adding processes with priorities:" << endl;
             for (int priority : processes) {
                 addProcess(priority);
                 cout << "Process with priority " << priority << " added to scheduler" << endl;
             }
-            
+
             scheduler.display();
-            
+
             cout << "\nScheduler characteristics:" << endl;
             cout << "- O(log n) insertion of new processes" << endl;
             cout << "- O(log n) deletion of completed processes" << endl;
             cout << "- Balanced performance for dynamic workloads" << endl;
-            
+
             cout << "\nReal-world usage:" << endl;
             cout << "- Linux CFS (Completely Fair Scheduler)" << endl;
             cout << "- Real-time operating systems" << endl;
             cout << "- Load balancing algorithms" << endl;
         }
     };
-    
+
     // Decision tree comparison
     void compareDecisionCriteria() {
         cout << "\n=== CHOOSING THE RIGHT BALANCED TREE ===" << endl;
-        
+
         cout << "\n🎯 Use AVL Trees when:" << endl;
         cout << "✅ Search operations dominate (90%+ reads)" << endl;
         cout << "✅ You need guaranteed minimal height" << endl;
         cout << "✅ Memory is limited (height field vs color bit)" << endl;
         cout << "✅ Examples: Database indexes, symbol tables, dictionaries" << endl;
-        
+
         cout << "\n🎯 Use Red-Black Trees when:" << endl;
         cout << "✅ Balanced read/write operations" << endl;
         cout << "✅ You need fewer rotations during modifications" << endl;
         cout << "✅ Real-time systems requiring predictable performance" << endl;
         cout << "✅ Examples: STL containers, OS schedulers, general-purpose maps" << endl;
-        
+
         cout << "\n📊 Performance Summary:" << endl;
         cout << "| Metric           | AVL Trees    | Red-Black Trees |" << endl;
         cout << "|------------------|--------------|-----------------|" << endl;
@@ -1365,24 +1376,24 @@ public:
 
 void demonstrateRealWorldApplications() {
     cout << "\n=== REAL-WORLD BALANCED TREE APPLICATIONS ===" << endl;
-    
+
     RealWorldApplications apps;
-    
+
     // STL map simulation
     RealWorldApplications::STLMapSimulation stlSim;
     stlSim.demonstrateMapOperations();
-    
+
     // Database index simulation
     RealWorldApplications::DatabaseIndexSimulation dbSim;
     dbSim.demonstrateDatabaseIndex();
-    
+
     // Process scheduler simulation
     RealWorldApplications::ProcessSchedulerSimulation schedSim;
     schedSim.demonstrateScheduler();
-    
+
     // Decision criteria
     apps.compareDecisionCriteria();
-    
+
     cout << "\n🌟 Industry Usage Examples:" << endl;
     cout << "• C++ STL: std::map, std::set use Red-Black trees" << endl;
     cout << "• Java: TreeMap, TreeSet use Red-Black trees" << endl;
@@ -1417,30 +1428,30 @@ void demonstrateRealWorldApplications();
 int main() {
     cout << "🌳 Week 4: Balanced Trees (AVL & Red-Black)" << endl;
     cout << "===========================================" << endl;
-    
+
     // Day 1-2: AVL Trees Fundamentals
     cout << "\n📅 DAY 1-2: AVL TREE FUNDAMENTALS & HEIGHT MANAGEMENT" << endl;
     demonstrateAVLBasics();
     demonstrateAVLVisualization();
-    
+
     // Day 3-4: AVL Rotations & Balancing
     cout << "\n📅 DAY 3-4: AVL ROTATIONS & BALANCING MECHANISMS" << endl;
     demonstrateAVLRotations();
     demonstrateAVLInsertion();
-    
+
     // Day 5-6: Red-Black Trees
     cout << "\n📅 DAY 5-6: RED-BLACK TREES & COLOR-BASED BALANCING" << endl;
     demonstrateRedBlackTree();
-    
+
     // Day 7: Performance & Applications
     cout << "\n📅 DAY 7: PERFORMANCE COMPARISON & REAL-WORLD APPLICATIONS" << endl;
     PerformanceComparator comp;
     comp.comparePerformance();
     demonstrateRealWorldApplications();
-    
+
     cout << "\n🎉 Week 4 Balanced Trees Mastery Complete!" << endl;
     cout << "Next: Week 5 - Heaps & Priority Queues" << endl;
-    
+
     return 0;
 }
 ```
@@ -1452,19 +1463,22 @@ int main() {
 ### **Balanced Trees Concepts Mastered:**
 
 1. **The Balancing Problem**
+
    - Why regular BSTs fail with sorted input
    - Height degradation from O(log n) to O(n)
    - Need for automatic rebalancing mechanisms
 
 2. **AVL Trees (Height-Balanced)**
+
    - Strict balance factor constraint: |left_height - right_height| ≤ 1
    - Four rotation cases: LL, RR, LR, RL
-   - Height guarantee: ≤ 1.44 * log₂(n)
+   - Height guarantee: ≤ 1.44 \* log₂(n)
    - Optimal for search-heavy applications
 
 3. **Red-Black Trees (Color-Balanced)**
+
    - Five color-based properties for balance
-   - Height guarantee: ≤ 2 * log₂(n)
+   - Height guarantee: ≤ 2 \* log₂(n)
    - Fewer rotations during modifications
    - Optimal for general-purpose applications
 
@@ -1491,18 +1505,21 @@ int main() {
 ### **Student Assessment Rubric**
 
 **Balanced Tree Fundamentals (Must Have):**
+
 - [ ] Understands why balancing is necessary
 - [ ] Can implement AVL rotations correctly
 - [ ] Grasps Red-Black tree properties
 - [ ] Performs complexity analysis for both tree types
 
 **Advanced Balancing Skills (Should Have):**
+
 - [ ] Implements complete AVL insertion with balancing
 - [ ] Handles Red-Black insertion fixup cases
 - [ ] Compares performance characteristics
 - [ ] Chooses appropriate tree for specific use cases
 
 **Expert Knowledge (Nice to Have):**
+
 - [ ] Understands mathematical height bounds
 - [ ] Can implement deletion operations
 - [ ] Connects to real-world systems
