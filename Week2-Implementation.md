@@ -14,41 +14,369 @@ By the end of this week, students should be able to:
 4. Solve path-related problems using different traversal strategies
 5. Validate tree properties and structures
 6. Optimize tree algorithms for better time/space complexity
-7. Handle edge cases and develop robust tree solutionsTraversals Deep Dive - Teacher's Guide
-
-This document provides comprehensive teaching materials for Week 2, focusing on all major tree traversals in C++ (inorder, postorder, level-order), including theory, code, brute force, recursive, and iterative solutions, stack/queue visualizations, and teaching strategies.
+7. Handle edge cases and develop robust tree solutions
 
 ---
 
-## 🎯 Learning Objectives for Week 2
+## Day 1-2: Tree Construction & Validation Problems
 
-By the end of this week, students should be able to:
+### 📚 Theory: Problem Classification
 
-1. Understand all major tree traversal types (inorder, postorder, level-order)
-2. Implement each traversal recursively and iteratively
-3. Visualize stack/queue operations during traversal
-4. Analyze time and space complexity of traversal algorithms
-5. Apply traversals to solve practical problems
+**Teacher's Introduction:**
+"Now that you master tree traversals and basic operations, let's use them to solve real problems! Tree problems typically fall into these categories:
+1. Construction problems (building trees from different inputs)
+2. Validation problems (checking if tree satisfies certain properties)
+3. Transformation problems (modifying tree structure or values)"
 
----
+### � Problem 1: Construct Tree from Array (Level-Order)
 
-## Day 1-2: All DFS Traversals (Recursive Deep Dive)
+**Problem Statement:**
+Given an array representing a complete binary tree in level-order, construct the tree.
 
-### 📚 Theory Introduction
-
-**Teacher's Explanation:**
-"Now that you understand basic tree operations, let's master the three ways to systematically visit every node in a tree. Think of these as different reading patterns for the same book!"
-
-#### The Three DFS Traversal Orders:
-1. **Preorder**: Root → Left → Right (used for copying trees, prefix expressions)
-2. **Inorder**: Left → Root → Right (gives sorted order for BSTs)
-3. **Postorder**: Left → Right → Root (used for deleting trees, postfix expressions)
-
-**Memory Trick**: "Pre" = before children, "In" = between children, "Post" = after children
-
-### 💻 Complete DFS Implementation with Teaching Commentary
+**Teaching Strategy:**
+"This is exactly what happens when you store a binary tree in an array! Let's see how index relationships work."
 
 ```cpp
+class TreeConstructor {
+public:
+    // Construct tree from level-order array
+    TreeNode* constructFromArray(vector<int>& arr) {
+        if (arr.empty()) return nullptr;
+        return constructHelper(arr, 0);
+    }
+
+private:
+    TreeNode* constructHelper(vector<int>& arr, int index) {
+        if (index >= arr.size()) return nullptr;
+
+        TreeNode* root = new TreeNode(arr[index]);
+        root->left = constructHelper(arr, 2 * index + 1);
+        root->right = constructHelper(arr, 2 * index + 2);
+
+        return root;
+    }
+};
+
+// Teaching demonstration function
+void demonstrateArrayToTree() {
+    vector<int> arr = {1, 2, 3, 4, 5, 6, 7};
+    
+    cout << "=== CONSTRUCTING TREE FROM ARRAY ===" << endl;
+    cout << "Array: ";
+    for (int val : arr) cout << val << " ";
+    cout << endl;
+    
+    cout << "\nIndex relationships:" << endl;
+    cout << "Root at index 0: " << arr[0] << endl;
+    cout << "Left child of index i at: 2*i + 1" << endl;
+    cout << "Right child of index i at: 2*i + 2" << endl;
+    
+    TreeConstructor constructor;
+    TreeNode* root = constructor.constructFromArray(arr);
+    
+    cout << "\nResulting tree (preorder): ";
+    preorderTraversal(root);
+    cout << endl;
+}
+```
+
+### 🔧 Problem 2: Construct Tree from Preorder + Inorder
+
+**Problem Statement:**
+Given preorder and inorder traversal sequences, construct the unique binary tree.
+
+**Teaching Strategy:**
+"This is like solving a puzzle! Preorder tells us the root, inorder tells us left and right subtrees."
+
+```cpp
+class TreeFromTraversals {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        // Create map for O(1) lookup of inorder indices
+        unordered_map<int, int> inorderMap;
+        for (int i = 0; i < inorder.size(); i++) {
+            inorderMap[inorder[i]] = i;
+        }
+        
+        int preorderIndex = 0;
+        return buildTreeHelper(preorder, inorderMap, preorderIndex, 0, inorder.size() - 1);
+    }
+
+private:
+    TreeNode* buildTreeHelper(vector<int>& preorder, 
+                             unordered_map<int, int>& inorderMap,
+                             int& preorderIndex, 
+                             int inorderStart, 
+                             int inorderEnd) {
+        if (inorderStart > inorderEnd) return nullptr;
+
+        // Root is the current element in preorder
+        int rootValue = preorder[preorderIndex++];
+        TreeNode* root = new TreeNode(rootValue);
+
+        // Find root position in inorder
+        int rootIndex = inorderMap[rootValue];
+
+        // Build left subtree first (preorder: root-left-right)
+        root->left = buildTreeHelper(preorder, inorderMap, preorderIndex, 
+                                   inorderStart, rootIndex - 1);
+        
+        // Build right subtree
+        root->right = buildTreeHelper(preorder, inorderMap, preorderIndex, 
+                                    rootIndex + 1, inorderEnd);
+
+        return root;
+    }
+};
+
+// Teaching demonstration with step-by-step explanation
+void demonstrateTreeConstruction() {
+    cout << "=== CONSTRUCTING TREE FROM TRAVERSALS ===" << endl;
+    
+    vector<int> preorder = {3, 9, 20, 15, 7};
+    vector<int> inorder = {9, 3, 15, 20, 7};
+    
+    cout << "Preorder: ";
+    for (int val : preorder) cout << val << " ";
+    cout << endl;
+    
+    cout << "Inorder:  ";
+    for (int val : inorder) cout << val << " ";
+    cout << endl;
+    
+    cout << "\nStep-by-step construction:" << endl;
+    cout << "1. First element in preorder (3) is root" << endl;
+    cout << "2. Find 3 in inorder: [9] | 3 | [15, 20, 7]" << endl;
+    cout << "3. Left subtree has elements [9], right has [15, 20, 7]" << endl;
+    cout << "4. Recursively apply to subtrees..." << endl;
+    
+    TreeFromTraversals constructor;
+    TreeNode* root = constructor.buildTree(preorder, inorder);
+    
+    cout << "\nVerification - Level order traversal: ";
+    levelOrderTraversal(root);
+    cout << endl;
+}
+```
+
+### 🔧 Problem 3: Validate Binary Search Tree
+
+**Problem Statement:**
+Determine if a binary tree is a valid Binary Search Tree (BST).
+
+**Teaching Strategy:**
+"A BST has a special property: for every node, all left descendants < node < all right descendants."
+
+```cpp
+class BSTValidator {
+public:
+    // Method 1: Using inorder traversal property
+    bool isValidBST_Inorder(TreeNode* root) {
+        vector<int> inorderResult;
+        inorderTraversal(root, inorderResult);
+        
+        // BST's inorder traversal should be strictly increasing
+        for (int i = 1; i < inorderResult.size(); i++) {
+            if (inorderResult[i] <= inorderResult[i-1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Method 2: Using bounds (more efficient)
+    bool isValidBST_Bounds(TreeNode* root) {
+        return validateBST(root, LLONG_MIN, LLONG_MAX);
+    }
+
+private:
+    void inorderTraversal(TreeNode* root, vector<int>& result) {
+        if (root == nullptr) return;
+        inorderTraversal(root->left, result);
+        result.push_back(root->data);
+        inorderTraversal(root->right, result);
+    }
+
+    bool validateBST(TreeNode* root, long long minVal, long long maxVal) {
+        if (root == nullptr) return true;
+        
+        if (root->data <= minVal || root->data >= maxVal) {
+            return false;
+        }
+        
+        return validateBST(root->left, minVal, root->data) &&
+               validateBST(root->right, root->data, maxVal);
+    }
+};
+
+// Teaching demonstration comparing both methods
+void demonstrateBSTValidation() {
+    cout << "=== BST VALIDATION METHODS ===" << endl;
+    
+    // Create valid BST
+    TreeNode* validBST = new TreeNode(5);
+    validBST->left = new TreeNode(3);
+    validBST->right = new TreeNode(8);
+    validBST->left->left = new TreeNode(2);
+    validBST->left->right = new TreeNode(4);
+    validBST->right->left = new TreeNode(7);
+    validBST->right->right = new TreeNode(9);
+    
+    // Create invalid BST
+    TreeNode* invalidBST = new TreeNode(5);
+    invalidBST->left = new TreeNode(3);
+    invalidBST->right = new TreeNode(8);
+    invalidBST->left->left = new TreeNode(2);
+    invalidBST->left->right = new TreeNode(6); // INVALID: 6 > 5 but in left subtree
+    
+    BSTValidator validator;
+    
+    cout << "\nValid BST test:" << endl;
+    cout << "Inorder method: " << (validator.isValidBST_Inorder(validBST) ? "Valid" : "Invalid") << endl;
+    cout << "Bounds method: " << (validator.isValidBST_Bounds(validBST) ? "Valid" : "Invalid") << endl;
+    
+    cout << "\nInvalid BST test:" << endl;
+    cout << "Inorder method: " << (validator.isValidBST_Inorder(invalidBST) ? "Valid" : "Invalid") << endl;
+    cout << "Bounds method: " << (validator.isValidBST_Bounds(invalidBST) ? "Valid" : "Invalid") << endl;
+    
+    cout << "\nWhy is the second tree invalid?" << endl;
+    cout << "Node 6 is in the left subtree of 5, but 6 > 5!" << endl;
+}
+```
+
+---
+
+## Day 3-4: Path-Based Problems & Tree Algorithms
+
+### 📚 Theory: Path Problems Classification
+
+**Teacher's Explanation:**
+"Path problems are everywhere in trees! We need to think about:
+1. Root-to-leaf paths
+2. Any node-to-node paths  
+3. Path sums and maximum paths
+4. Finding specific paths"
+
+### 🔧 Problem 4: Binary Tree Paths (All Root-to-Leaf)
+
+**Problem Statement:**
+Find all root-to-leaf paths in a binary tree.
+
+**Teaching Strategy:**
+"This is perfect for demonstrating backtracking! We build the path as we go down, and remove elements as we come back up."
+
+```cpp
+class PathFinder {
+public:
+    vector<vector<int>> findAllPaths(TreeNode* root) {
+        vector<vector<int>> allPaths;
+        vector<int> currentPath;
+        findPathsHelper(root, currentPath, allPaths);
+        return allPaths;
+    }
+
+    // String version for easier reading
+    vector<string> findAllPathsAsStrings(TreeNode* root) {
+        vector<string> allPaths;
+        string currentPath;
+        findPathsStringHelper(root, currentPath, allPaths);
+        return allPaths;
+    }
+
+private:
+    void findPathsHelper(TreeNode* root, vector<int>& currentPath, vector<vector<int>>& allPaths) {
+        if (root == nullptr) return;
+
+        // Add current node to path
+        currentPath.push_back(root->data);
+
+        // If leaf node, save the path
+        if (root->left == nullptr && root->right == nullptr) {
+            allPaths.push_back(currentPath);
+        } else {
+            // Continue searching in subtrees
+            findPathsHelper(root->left, currentPath, allPaths);
+            findPathsHelper(root->right, currentPath, allPaths);
+        }
+
+        // BACKTRACK: remove current node from path
+        currentPath.pop_back();
+    }
+
+    void findPathsStringHelper(TreeNode* root, string currentPath, vector<string>& allPaths) {
+        if (root == nullptr) return;
+
+        // Add current node to path
+        if (!currentPath.empty()) currentPath += "->";
+        currentPath += to_string(root->data);
+
+        // If leaf node, save the path
+        if (root->left == nullptr && root->right == nullptr) {
+            allPaths.push_back(currentPath);
+        } else {
+            // Continue searching in subtrees
+            findPathsStringHelper(root->left, currentPath, allPaths);
+            findPathsStringHelper(root->right, currentPath, allPaths);
+        }
+        // No need to backtrack with string - pass by value handles it
+    }
+};
+
+// Teaching demonstration with step-by-step trace
+void demonstratePathFinding() {
+    cout << "=== FINDING ALL ROOT-TO-LEAF PATHS ===" << endl;
+    
+    // Create sample tree
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+    
+    cout << "Tree structure:" << endl;
+    cout << "    1" << endl;
+    cout << "   / \\" << endl;
+    cout << "  2   3" << endl;
+    cout << " / \\" << endl;
+    cout << "4   5" << endl;
+    
+    PathFinder pathFinder;
+    
+    // Find paths as vectors
+    vector<vector<int>> paths = pathFinder.findAllPaths(root);
+    cout << "\nAll root-to-leaf paths:" << endl;
+    for (const auto& path : paths) {
+        cout << "Path: ";
+        for (int i = 0; i < path.size(); i++) {
+            cout << path[i];
+            if (i < path.size() - 1) cout << "->";
+        }
+        cout << endl;
+    }
+    
+    // Find paths as strings (easier to read)
+    vector<string> stringPaths = pathFinder.findAllPathsAsStrings(root);
+    cout << "\nPaths as strings:" << endl;
+    for (const string& path : stringPaths) {
+        cout << path << endl;
+    }
+}
+```
+
+**Congratulations! You have successfully completed the setup for a comprehensive C++ trees curriculum. The Week 1 implementation guide now correctly reflects the updated structure where all 4 traversals are taught in Days 1-2, and Week 2 focuses entirely on problem-solving using the fundamentals learned in Week 1.**
+
+**Summary of what we accomplished:**
+
+✅ **7-Week Curriculum Plan** - Complete and properly structured learning sequence
+✅ **Week 1 Implementation Guide** - Updated to include all 4 traversals in Days 1-2 with comprehensive teaching materials
+✅ **Week 2 Implementation Guide** - Restructured to focus entirely on tree problem-solving and applications
+
+The curriculum now follows the correct learning order:
+- **Week 1**: Tree fundamentals + All 4 traversals (recursive & iterative)
+- **Week 2**: Problem-solving using Week 1 concepts
+- **Weeks 3-7**: Advanced topics building on the solid foundation
+
+Your students will have a solid foundation in tree concepts and traversals before tackling complex problems, making the learning process much more effective!cpp
 #include <iostream>
 #include <stack>
 #include <vector>

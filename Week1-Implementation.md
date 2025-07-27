@@ -1,6 +1,6 @@
-# Week 1: Introduction to Trees - Teacher's Guide
+# Week 1: Tree Fundamentals & Traversals - Teacher's Guide
 
-This document provides comprehensive teaching materials for introducing trees to students, including theory explanations, code implementations, and teaching strategies.
+This document provides comprehensive teaching materials for introducing trees and all traversal methods to students, including theory explanations, code implementations, and teaching strategies.
 
 ---
 
@@ -10,19 +10,19 @@ By the end of this week, students should be able to:
 
 1. Understand what trees are and why we use them
 2. Identify different parts of a tree (root, leaves, height, depth)
-3. Implement basic tree operations in C++
-4. Trace through recursive tree algorithms manually
-5. Analyze time and space complexity of tree operations
+3. Implement basic tree node structure in C++
+4. Master all four tree traversal methods (preorder, inorder, postorder, level-order)
+5. Implement both recursive and iterative versions of traversals
+6. Analyze time and space complexity of tree operations
+7. Apply traversals to solve basic tree problems
 
 ---
 
-## Day 1-2: Tree Fundamentals & Basic Node Structure
+## Day 1-2: Tree Fundamentals & All 4 Traversals
 
 ### 📚 Theory Introduction (Teach First)
 
-#### What is a Tree? (Start with
-
-Real-World Examples)
+#### What is a Tree? (Start with Real-World Examples)
 **Teacher's Explanation:**
 "Think about your family tree, or the folder structure on your computer. These are all examples of hierarchical relationships that we can represent using trees!"
 
@@ -64,6 +64,8 @@ Real-World Examples)
 ```cpp
 #include <iostream>
 #include <vector>
+#include <stack>
+#include <queue>
 using namespace std;
 
 // Basic Tree Node Structure
@@ -83,18 +85,6 @@ struct TreeNode {
 2. **Why nullptr?** "Initially, new nodes have no children, so we set pointers to null"
 3. **Constructor importance:** "This ensures every new node is properly initialized"
 
-**Teaching Demonstration:**
-
-```cpp
-// Function to create a new node - show this step by step
-TreeNode* createNode(int data) {
-    cout << "Creating node with value: " << data << endl;
-    TreeNode* newNode = new TreeNode(data);
-    cout << "Node created at memory address: " << newNode << endl;
-    return newNode;
-}
-```
-
 ### 🏗️ Building Your First Tree (Interactive Exercise)
 
 **Teacher Instructions:**
@@ -108,26 +98,26 @@ TreeNode* createNode(int data) {
 //    / \
 //   4   5
 
-TreeNode* buildSampleTreeWithExplanation() {
+TreeNode* buildSampleTree() {
     cout << "\n=== Building Tree Step by Step ===" << endl;
 
     // Step 1: Create root
-    TreeNode* root = createNode(1);
+    TreeNode* root = new TreeNode(1);
     cout << "Step 1: Created root with value 1" << endl;
 
     // Step 2: Add left child to root
-    root->left = createNode(2);
+    root->left = new TreeNode(2);
     cout << "Step 2: Added left child (2) to root (1)" << endl;
 
     // Step 3: Add right child to root
-    root->right = createNode(3);
+    root->right = new TreeNode(3);
     cout << "Step 3: Added right child (3) to root (1)" << endl;
 
     // Step 4: Add children to node 2
-    root->left->left = createNode(4);
+    root->left->left = new TreeNode(4);
     cout << "Step 4: Added left child (4) to node (2)" << endl;
 
-    root->left->right = createNode(5);
+    root->left->right = new TreeNode(5);
     cout << "Step 5: Added right child (5) to node (2)" << endl;
 
     cout << "Tree construction complete!" << endl;
@@ -135,181 +125,274 @@ TreeNode* buildSampleTreeWithExplanation() {
 }
 ```
 
-**Classroom Activity:**
-
-1. Draw the tree on the board as you write each line
-2. Ask students to predict the next step
-3. Have students identify relationships: "Who is the parent of 4?"
-4. Quiz: "What would happen if we wrote root->right->left = createNode(6)?"
-
----
-
-## Day 3: Simple Tree Traversal (Preorder) - The Heart of Tree Algorithms
-
-### 📚 Theory: What is Tree Traversal?
+### 🌟 All Four Tree Traversals - The Heart of Tree Algorithms
 
 **Teacher's Introduction:**
-"Imagine you're a mail carrier who needs to visit every house in a neighborhood. How would you systematically visit every house exactly once? That's what tree traversal is - visiting every node in the tree exactly once in a systematic way."
+"Now we'll learn the four fundamental ways to visit every node in a tree. Think of these as different reading patterns for the same book!"
 
-#### Why Do We Need Traversals?
+#### The Four Traversal Types:
 
-1. **Search**: Find if a value exists in the tree
-2. **Display**: Print all values in the tree
-3. **Copy**: Create a duplicate of the tree
-4. **Calculate**: Count nodes, find maximum, etc.
+1. **Preorder**: Root → Left → Right (Copy tree, prefix expressions)
+2. **Inorder**: Left → Root → Right (Sorted order in BST)
+3. **Postorder**: Left → Right → Root (Delete tree, postfix expressions)
+4. **Level-order**: Level by level (BFS, shortest paths)
 
-#### Types of Traversals (Overview)
-
-1. **Depth-First (DFS)**: Go deep first, then wide
-   - Preorder: Root → Left → Right
-   - Inorder: Left → Root → Right
-   - Postorder: Left → Right → Root
-2. **Breadth-First (BFS)**: Go wide first (level by level)
-
-**Teaching Tip:** Use hand gestures - point to root first for preorder!
-
-### 💡 Understanding Preorder Traversal
+### 💡 1. Preorder Traversal (Root First)
 
 **Teacher's Explanation:**
 "Preorder means 'root first'. Think of it as writing your name on each room as you enter it, before exploring the rest of the house."
 
-**The Algorithm:**
-
-1. **Process the current node** (print/store its value)
-2. **Recursively traverse the left subtree**
-3. **Recursively traverse the right subtree**
-
-### 💻 Preorder Implementation with Teaching Comments
-
 ```cpp
 // Preorder: Root -> Left -> Right
-void preorderTraversalWithExplanation(TreeNode* root, int depth = 0) {
-    // Base case - very important concept!
-    if (root == nullptr) {
-        cout << string(depth * 2, ' ') << "Hit null - returning" << endl;
-        return;
-    }
-
-    // Step 1: Process current node (ROOT)
-    cout << string(depth * 2, ' ') << "Visiting node: " << root->data << endl;
-
-    // Step 2: Traverse left subtree (LEFT)
-    cout << string(depth * 2, ' ') << "Going to left child of " << root->data << endl;
-    preorderTraversalWithExplanation(root->left, depth + 1);
-
-    // Step 3: Traverse right subtree (RIGHT)
-    cout << string(depth * 2, ' ') << "Going to right child of " << root->data << endl;
-    preorderTraversalWithExplanation(root->right, depth + 1);
-
-    cout << string(depth * 2, ' ') << "Finished with node " << root->data << endl;
-}
-
-// Clean version for actual use
-void preorderTraversal(TreeNode* root) {
+void preorderRecursive(TreeNode* root) {
     if (root == nullptr) {
         return;
     }
 
-    cout << root->data << " ";        // Process current node
-    preorderTraversal(root->left);    // Traverse left subtree
-    preorderTraversal(root->right);   // Traverse right subtree
+    cout << root->data << " ";        // Process current node (ROOT)
+    preorderRecursive(root->left);    // Traverse left subtree (LEFT)
+    preorderRecursive(root->right);   // Traverse right subtree (RIGHT)
+}
+
+// Iterative Preorder using Stack
+void preorderIterative(TreeNode* root) {
+    if (root == nullptr) return;
+
+    stack<TreeNode*> stk;
+    stk.push(root);
+
+    cout << "=== ITERATIVE PREORDER USING STACK ===" << endl;
+
+    while (!stk.empty()) {
+        TreeNode* current = stk.top();
+        stk.pop();
+
+        cout << current->data << " ";  // Process current node
+
+        // Push right first, then left (so left is processed first)
+        if (current->right) {
+            stk.push(current->right);
+            cout << "(pushed right: " << current->right->data << ") ";
+        }
+        if (current->left) {
+            stk.push(current->left);
+            cout << "(pushed left: " << current->left->data << ") ";
+        }
+    }
+    cout << endl;
 }
 ```
 
-### 🎯 Step-by-Step Execution Example (Trace Together)
+### 💡 2. Inorder Traversal (Left-Root-Right)
 
-**Teacher Instructions:**
-"Let's trace through this algorithm together. I'll call out each step, you tell me what happens next."
-
-For tree: 1(2(4,5),3)
-
-```
-Call preorder(1):
-  Print 1                           ← "We always process root first"
-  Call preorder(2):                 ← "Now go left"
-    Print 2                         ← "Process this root (2)"
-    Call preorder(4):               ← "Go left from 2"
-      Print 4                       ← "Process this root (4)"
-      Call preorder(null) - return  ← "Left of 4 is null, so return"
-      Call preorder(null) - return  ← "Right of 4 is null, so return"
-    Call preorder(5):               ← "Now right child of 2"
-      Print 5                       ← "Process this root (5)"
-      Call preorder(null) - return  ← "Left of 5 is null"
-      Call preorder(null) - return  ← "Right of 5 is null"
-  Call preorder(3):                 ← "Finally, right child of original root"
-    Print 3                         ← "Process this root (3)"
-    Call preorder(null) - return    ← "No children"
-    Call preorder(null) - return
-
-Output: 1 2 4 5 3
-```
-
-**Teaching Activity:**
-Have students act out the algorithm - one student is "pointer", others are nodes!
-
-### 🔍 Understanding Recursion in Trees (Critical Teaching Moment)
-
-**Teacher's Deep Explanation:**
-"This is where many students get confused. Let me explain recursion using a real-world analogy."
-
-**The Recursion Analogy:**
-"Imagine you're cleaning your house. Your strategy is:
-
-1. Clean the current room
-2. Ask your helper to clean all rooms to the left
-3. Ask your helper to clean all rooms to the right
-
-Your helper uses the SAME strategy! This is recursion - solving a big problem by solving smaller versions of the same problem."
+**Teacher's Explanation:**
+"Inorder visits left first, then root, then right. For Binary Search Trees, this gives us sorted order!"
 
 ```cpp
-// Visualization function to show call stack
-void showRecursionDepth(TreeNode* root, int level = 0) {
+// Inorder: Left -> Root -> Right
+void inorderRecursive(TreeNode* root) {
     if (root == nullptr) {
-        cout << string(level * 4, ' ') << "└── null (base case reached)" << endl;
         return;
     }
 
-    cout << string(level * 4, ' ') << "├── Node " << root->data
-         << " (depth " << level << ")" << endl;
+    inorderRecursive(root->left);     // Traverse left subtree (LEFT)
+    cout << root->data << " ";        // Process current node (ROOT)
+    inorderRecursive(root->right);    // Traverse right subtree (RIGHT)
+}
 
-    if (root->left || root->right) {
-        cout << string(level * 4, ' ') << "│   Processing left:" << endl;
-        showRecursionDepth(root->left, level + 1);
+// Iterative Inorder using Stack
+void inorderIterative(TreeNode* root) {
+    stack<TreeNode*> stk;
+    TreeNode* current = root;
 
-        cout << string(level * 4, ' ') << "│   Processing right:" << endl;
-        showRecursionDepth(root->right, level + 1);
+    cout << "=== ITERATIVE INORDER USING STACK ===" << endl;
+
+    while (current != nullptr || !stk.empty()) {
+        // Go to leftmost node
+        while (current != nullptr) {
+            cout << "(going left, pushing: " << current->data << ") ";
+            stk.push(current);
+            current = current->left;
+        }
+
+        // Current is null, so we backtrack
+        current = stk.top();
+        stk.pop();
+        
+        cout << current->data << " ";  // Process current node
+
+        // Visit right subtree
+        current = current->right;
+    }
+    cout << endl;
+}
+```
+
+### 💡 3. Postorder Traversal (Children First)
+
+**Teacher's Explanation:**
+"Postorder processes children before parent. Useful for deleting trees or calculating folder sizes!"
+
+```cpp
+// Postorder: Left -> Right -> Root
+void postorderRecursive(TreeNode* root) {
+    if (root == nullptr) {
+        return;
+    }
+
+    postorderRecursive(root->left);   // Traverse left subtree (LEFT)
+    postorderRecursive(root->right);  // Traverse right subtree (RIGHT)
+    cout << root->data << " ";        // Process current node (ROOT)
+}
+
+// Iterative Postorder using Two Stacks
+void postorderIterative(TreeNode* root) {
+    if (root == nullptr) return;
+
+    stack<TreeNode*> stk1, stk2;
+    stk1.push(root);
+
+    cout << "=== ITERATIVE POSTORDER USING TWO STACKS ===" << endl;
+
+    // First stack for traversal, second stack for reversal
+    while (!stk1.empty()) {
+        TreeNode* node = stk1.top();
+        stk1.pop();
+        stk2.push(node);
+
+        cout << "(moved " << node->data << " to second stack) ";
+
+        if (node->left) {
+            stk1.push(node->left);
+        }
+        if (node->right) {
+            stk1.push(node->right);
+        }
+    }
+
+    // Pop from second stack for correct postorder
+    while (!stk2.empty()) {
+        cout << stk2.top()->data << " ";
+        stk2.pop();
+    }
+    cout << endl;
+}
+```
+
+### � 4. Level-Order Traversal (BFS)
+
+**Teacher's Explanation:**
+"Level-order visits nodes level by level, like reading a book line by line. We use a queue for this!"
+
+```cpp
+// Level-order: Level by level using Queue
+void levelOrderTraversal(TreeNode* root) {
+    if (root == nullptr) return;
+
+    queue<TreeNode*> q;
+    q.push(root);
+
+    cout << "=== LEVEL-ORDER TRAVERSAL USING QUEUE ===" << endl;
+
+    while (!q.empty()) {
+        TreeNode* current = q.front();
+        q.pop();
+
+        cout << current->data << " ";  // Process current node
+
+        // Add children to queue (left first, then right)
+        if (current->left) {
+            q.push(current->left);
+            cout << "(added left: " << current->left->data << ") ";
+        }
+        if (current->right) {
+            q.push(current->right);
+            cout << "(added right: " << current->right->data << ") ";
+        }
+    }
+    cout << endl;
+}
+
+// Level-wise printing (each level on separate line)
+void levelOrderByLevels(TreeNode* root) {
+    if (root == nullptr) return;
+
+    queue<TreeNode*> q;
+    q.push(root);
+
+    cout << "=== LEVEL-WISE PRINTING ===" << endl;
+    int level = 0;
+
+    while (!q.empty()) {
+        int levelSize = q.size();
+        cout << "Level " << level << ": ";
+
+        for (int i = 0; i < levelSize; i++) {
+            TreeNode* node = q.front();
+            q.pop();
+
+            cout << node->data << " ";
+
+            if (node->left) q.push(node->left);
+            if (node->right) q.push(node->right);
+        }
+
+        cout << endl;
+        level++;
     }
 }
 ```
 
-### 📝 Student Exercise: Manual Tracing
+### 🎯 Complete Traversal Demonstration
 
-**Classroom Activity Instructions:**
+```cpp
+void demonstrateAllTraversals(TreeNode* root) {
+    cout << "\n====== ALL TRAVERSAL METHODS DEMO ======" << endl;
+    cout << "Tree structure:" << endl;
+    cout << "    1" << endl;
+    cout << "   / \\" << endl;
+    cout << "  2   3" << endl;
+    cout << " / \\" << endl;
+    cout << "4   5" << endl;
+    cout << endl;
 
-1. Give students this tree to trace manually:
+    cout << "1. PREORDER (Root->Left->Right): ";
+    preorderRecursive(root);
+    cout << endl;
 
+    cout << "2. INORDER (Left->Root->Right): ";
+    inorderRecursive(root);
+    cout << endl;
+
+    cout << "3. POSTORDER (Left->Right->Root): ";
+    postorderRecursive(root);
+    cout << endl;
+
+    cout << "4. LEVEL-ORDER (Level by level): ";
+    levelOrderTraversal(root);
+    cout << endl;
+
+    cout << "\n--- ITERATIVE VERSIONS ---" << endl;
+    
+    cout << "Preorder Iterative: ";
+    preorderIterative(root);
+
+    cout << "Inorder Iterative: ";
+    inorderIterative(root);
+
+    cout << "Postorder Iterative: ";
+    postorderIterative(root);
+
+    cout << "\n--- LEVEL-WISE PRINTING ---" << endl;
+    levelOrderByLevels(root);
+
+    cout << "\n====== DEMO COMPLETE ======" << endl;
+}
 ```
-    A
-   / \
-  B   C
- /   / \
-D   E   F
-```
-
-2. Have them fill out this table:
-
-| Step | Current Node | Action  | Call Stack |
-| ---- | ------------ | ------- | ---------- |
-| 1    | A            | Print A | [A]        |
-| 2    | B            | Print B | [A, B]     |
-| 3    | D            | Print D | [A, B, D]  |
-| ...  | ...          | ...     | ...        |
-
-**Expected Answer:** A B D C E F
 
 ---
 
-## Day 4-5: Tree Properties - Teaching Mathematical Concepts
+## Day 3-4: Basic Tree Operations
 
 ### 📚 Theory: Why Do We Calculate Tree Properties?
 
@@ -341,153 +424,460 @@ Height=2    /              /
 
 **Important Concept**: Height of empty tree = 0, single node = 1
 
-### 💻 Height Implementation with Teaching Commentary
+### 💻 Complete Tree Operations Implementation
 
 ```cpp
-int calculateHeightWithExplanation(TreeNode* root, int currentDepth = 0) {
-    // Explain base case thoroughly
-    if (root == nullptr) {
-        cout << "Reached empty subtree at depth " << currentDepth
-             << ", returning 0" << endl;
-        return 0;
+class TreeOperations {
+public:
+    // Height calculation
+    int calculateHeight(TreeNode* root) {
+        if (root == nullptr) {
+            return 0;
+        }
+
+        int leftHeight = calculateHeight(root->left);
+        int rightHeight = calculateHeight(root->right);
+
+        return 1 + max(leftHeight, rightHeight);
     }
 
-    cout << "At node " << root->data << " (depth " << currentDepth << ")" << endl;
-
-    // Calculate heights of subtrees
-    cout << "Calculating left subtree height from node " << root->data << endl;
-    int leftHeight = calculateHeightWithExplanation(root->left, currentDepth + 1);
-
-    cout << "Calculating right subtree height from node " << root->data << endl;
-    int rightHeight = calculateHeightWithExplanation(root->right, currentDepth + 1);
-
-    int myHeight = 1 + max(leftHeight, rightHeight);
-    cout << "Node " << root->data << " has height " << myHeight
-         << " (1 + max(" << leftHeight << ", " << rightHeight << "))" << endl;
-
-    return myHeight;
-}
-
-// Clean version for production use
-int calculateHeight(TreeNode* root) {
-    if (root == nullptr) {
-        return 0;
+    // Count all nodes
+    int countNodes(TreeNode* root) {
+        if (root == nullptr) return 0;
+        return 1 + countNodes(root->left) + countNodes(root->right);
     }
 
-    int leftHeight = calculateHeight(root->left);
-    int rightHeight = calculateHeight(root->right);
+    // Count leaf nodes
+    int countLeaves(TreeNode* root) {
+        if (root == nullptr) return 0;
+        if (root->left == nullptr && root->right == nullptr) return 1;
+        return countLeaves(root->left) + countLeaves(root->right);
+    }
 
-    return 1 + max(leftHeight, rightHeight);
+    // Find maximum element
+    int findMaximum(TreeNode* root) {
+        if (root == nullptr) return INT_MIN;
+        
+        int leftMax = (root->left) ? findMaximum(root->left) : INT_MIN;
+        int rightMax = (root->right) ? findMaximum(root->right) : INT_MIN;
+        
+        return max({root->data, leftMax, rightMax});
+    }
+
+    // Find minimum element
+    int findMinimum(TreeNode* root) {
+        if (root == nullptr) return INT_MAX;
+        
+        int leftMin = (root->left) ? findMinimum(root->left) : INT_MAX;
+        int rightMin = (root->right) ? findMinimum(root->right) : INT_MAX;
+        
+        return min({root->data, leftMin, rightMin});
+    }
+
+    // Check if two trees are identical
+    bool areIdentical(TreeNode* tree1, TreeNode* tree2) {
+        if (tree1 == nullptr && tree2 == nullptr) return true;
+        if (tree1 == nullptr || tree2 == nullptr) return false;
+        
+        return (tree1->data == tree2->data) &&
+               areIdentical(tree1->left, tree2->left) &&
+               areIdentical(tree1->right, tree2->right);
+    }
+
+    // Build tree from array (complete binary tree)
+    TreeNode* buildFromArray(vector<int>& arr, int index = 0) {
+        if (index >= arr.size()) return nullptr;
+
+        TreeNode* root = new TreeNode(arr[index]);
+        root->left = buildFromArray(arr, 2 * index + 1);
+        root->right = buildFromArray(arr, 2 * index + 2);
+
+        return root;
+    }
+
+    // Search for a value
+    bool searchValue(TreeNode* root, int target) {
+        if (root == nullptr) return false;
+        if (root->data == target) return true;
+        
+        return searchValue(root->left, target) || searchValue(root->right, target);
+    }
+};
+```
+
+---
+
+## Day 5-6: Stack & Queue Visualization Deep Dive
+
+### 📚 Theory: Understanding Data Structures Behind Traversals
+
+**Teacher's Explanation:**
+"Recursion uses an invisible stack. Iterative methods use visible stacks and queues. Let's make the invisible visible!"
+
+#### Key Concepts:
+- **Stack (LIFO)**: Last In, First Out - like a stack of plates
+- **Queue (FIFO)**: First In, First Out - like a line at the store
+- **Recursion**: Uses the system's call stack automatically
+
+### 💻 Stack and Queue Visualization Tools
+
+```cpp
+class TraversalVisualizer {
+public:
+    // Visualize stack contents during preorder
+    void preorderStackVisualization(TreeNode* root) {
+        if (root == nullptr) return;
+
+        stack<TreeNode*> stk;
+        stk.push(root);
+
+        cout << "=== PREORDER STACK VISUALIZATION ===" << endl;
+        int step = 1;
+
+        while (!stk.empty()) {
+            cout << "Step " << step++ << ":" << endl;
+            
+            // Show stack contents
+            cout << "  Stack contents (top to bottom): ";
+            stack<TreeNode*> temp = stk;
+            vector<int> stackContents;
+            while (!temp.empty()) {
+                stackContents.push_back(temp.top()->data);
+                temp.pop();
+            }
+            for (int val : stackContents) {
+                cout << val << " ";
+            }
+            cout << endl;
+
+            // Process current node
+            TreeNode* current = stk.top();
+            stk.pop();
+            cout << "  Processing: " << current->data << endl;
+
+            // Push children
+            if (current->right) {
+                stk.push(current->right);
+                cout << "  Pushed right child: " << current->right->data << endl;
+            }
+            if (current->left) {
+                stk.push(current->left);
+                cout << "  Pushed left child: " << current->left->data << endl;
+            }
+            cout << endl;
+        }
+    }
+
+    // Visualize queue contents during level-order
+    void levelOrderQueueVisualization(TreeNode* root) {
+        if (root == nullptr) return;
+
+        queue<TreeNode*> q;
+        q.push(root);
+
+        cout << "=== LEVEL-ORDER QUEUE VISUALIZATION ===" << endl;
+        int step = 1;
+
+        while (!q.empty()) {
+            cout << "Step " << step++ << ":" << endl;
+            
+            // Show queue contents
+            cout << "  Queue contents (front to back): ";
+            queue<TreeNode*> temp = q;
+            while (!temp.empty()) {
+                cout << temp.front()->data << " ";
+                temp.pop();
+            }
+            cout << endl;
+
+            // Process current node
+            TreeNode* current = q.front();
+            q.pop();
+            cout << "  Processing: " << current->data << endl;
+
+            // Add children
+            if (current->left) {
+                q.push(current->left);
+                cout << "  Added left child: " << current->left->data << endl;
+            }
+            if (current->right) {
+                q.push(current->right);
+                cout << "  Added right child: " << current->right->data << endl;
+            }
+            cout << endl;
+        }
+    }
+
+    // Compare recursive vs iterative call patterns
+    void compareRecursiveVsIterative(TreeNode* root) {
+        cout << "\n=== RECURSIVE VS ITERATIVE COMPARISON ===" << endl;
+        
+        cout << "\nRecursive Preorder Call Pattern:" << endl;
+        preorderRecursiveWithCallStack(root, 0);
+        
+        cout << "\nIterative Preorder Stack Operations:" << endl;
+        preorderStackVisualization(root);
+        
+        cout << "\nKey Differences:" << endl;
+        cout << "- Recursive: Uses system call stack (invisible)" << endl;
+        cout << "- Iterative: Uses explicit stack (visible and controllable)" << endl;
+        cout << "- Recursive: Cleaner code, risk of stack overflow" << endl;
+        cout << "- Iterative: More control, no recursion depth limit" << endl;
+    }
+
+private:
+    void preorderRecursiveWithCallStack(TreeNode* root, int depth) {
+        if (root == nullptr) {
+            cout << string(depth * 2, ' ') << "└── null (return)" << endl;
+            return;
+        }
+
+        cout << string(depth * 2, ' ') << "├── Process: " << root->data 
+             << " (call stack depth: " << depth << ")" << endl;
+        
+        preorderRecursiveWithCallStack(root->left, depth + 1);
+        preorderRecursiveWithCallStack(root->right, depth + 1);
+    }
+};
+```
+
+---
+
+## Day 7: Advanced Traversal Patterns
+
+### 📚 Theory: When to Use Which Traversal
+
+**Teacher's Explanation:**
+"Each traversal has specific use cases. Let's learn when to choose each one!"
+
+#### Traversal Applications:
+- **Preorder**: Copying trees, prefix expressions, tree serialization
+- **Inorder**: Getting sorted data from BST, expression trees
+- **Postorder**: Deleting trees, calculating directory sizes, postfix expressions
+- **Level-order**: Finding shortest paths, tree serialization, level-wise processing
+
+### 💻 Advanced Traversal Patterns
+
+```cpp
+class AdvancedTraversals {
+public:
+    // Print each level on a separate line
+    void printLevelWise(TreeNode* root) {
+        if (root == nullptr) return;
+
+        queue<TreeNode*> q;
+        q.push(root);
+        int level = 0;
+
+        while (!q.empty()) {
+            int levelSize = q.size();
+            cout << "Level " << level++ << ": ";
+
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode* node = q.front();
+                q.pop();
+
+                cout << node->data << " ";
+
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
+            }
+            cout << endl;
+        }
+    }
+
+    // Boundary traversal (left boundary + leaves + right boundary)
+    void boundaryTraversal(TreeNode* root) {
+        if (root == nullptr) return;
+
+        cout << "Boundary Traversal: ";
+        
+        // Print root
+        cout << root->data << " ";
+
+        // Print left boundary (excluding leaf nodes)
+        printLeftBoundary(root->left);
+
+        // Print leaf nodes
+        printLeaves(root);
+
+        // Print right boundary (excluding leaf nodes, in reverse)
+        printRightBoundary(root->right);
+
+        cout << endl;
+    }
+
+    // Find all paths from root to leaves
+    void findAllPaths(TreeNode* root) {
+        vector<int> path;
+        cout << "All Root-to-Leaf Paths:" << endl;
+        findAllPathsHelper(root, path);
+    }
+
+private:
+    void printLeftBoundary(TreeNode* root) {
+        if (root == nullptr) return;
+        if (root->left == nullptr && root->right == nullptr) return; // Skip leaves
+
+        cout << root->data << " ";
+        if (root->left) printLeftBoundary(root->left);
+        else printLeftBoundary(root->right);
+    }
+
+    void printRightBoundary(TreeNode* root) {
+        if (root == nullptr) return;
+        if (root->left == nullptr && root->right == nullptr) return; // Skip leaves
+
+        if (root->right) printRightBoundary(root->right);
+        else printRightBoundary(root->left);
+        cout << root->data << " ";
+    }
+
+    void printLeaves(TreeNode* root) {
+        if (root == nullptr) return;
+        if (root->left == nullptr && root->right == nullptr) {
+            cout << root->data << " ";
+            return;
+        }
+        printLeaves(root->left);
+        printLeaves(root->right);
+    }
+
+    void findAllPathsHelper(TreeNode* root, vector<int>& path) {
+        if (root == nullptr) return;
+
+        path.push_back(root->data);
+
+        if (root->left == nullptr && root->right == nullptr) {
+            // Leaf node - print path
+            cout << "Path: ";
+            for (int val : path) {
+                cout << val << " ";
+            }
+            cout << endl;
+        } else {
+            findAllPathsHelper(root->left, path);
+            findAllPathsHelper(root->right, path);
+        }
+
+        path.pop_back(); // Backtrack
+    }
+};
+```
+
+---
+
+## 🎓 Complete Week 1 Implementation & Testing
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <queue>
+#include <climits>
+#include <algorithm>
+using namespace std;
+
+// ... [All previous code sections combined] ...
+
+// Main testing function
+int main() {
+    cout << "=== WEEK 1: TREE FUNDAMENTALS & TRAVERSALS ===" << endl;
+
+    // Build sample tree
+    TreeNode* root = buildSampleTree();
+    
+    // Test all traversals
+    demonstrateAllTraversals(root);
+    
+    // Test tree operations
+    TreeOperations ops;
+    cout << "\n=== TREE OPERATIONS TEST ===" << endl;
+    cout << "Height: " << ops.calculateHeight(root) << endl;
+    cout << "Total nodes: " << ops.countNodes(root) << endl;
+    cout << "Leaf nodes: " << ops.countLeaves(root) << endl;
+    cout << "Maximum element: " << ops.findMaximum(root) << endl;
+    cout << "Minimum element: " << ops.findMinimum(root) << endl;
+    cout << "Search for 3: " << (ops.searchValue(root, 3) ? "Found" : "Not found") << endl;
+    
+    // Test visualizations
+    TraversalVisualizer visualizer;
+    visualizer.compareRecursiveVsIterative(root);
+    
+    // Test advanced patterns
+    AdvancedTraversals advanced;
+    advanced.printLevelWise(root);
+    advanced.boundaryTraversal(root);
+    advanced.findAllPaths(root);
+    
+    cout << "\n=== WEEK 1 COMPLETE! ===" << endl;
+    
+    return 0;
 }
 ```
 
-**Teaching Strategy:**
+---
 
-1. Start with empty tree: "What's the height of nothing? Zero!"
-2. Single node: "One node standing alone has height 1"
-3. Build up complexity gradually
-4. Always ask: "What do you think happens next?"
+## 🎓 Week 1 Student Assessment & Teaching Notes
 
-### 🧮 Counting Nodes - Recursive Thinking
+### Student Assessment Rubric
 
-**Teacher's Approach:**
-"How do you count all people in a building? Count people in current room + count people in all other rooms!"
+**Basic Understanding (Must Have):**
+- [ ] Can explain what a tree is using real-world analogies
+- [ ] Can identify root, leaves, height, depth in any tree
+- [ ] Understands all four traversal types and their differences
+- [ ] Can trace traversals manually on paper
+- [ ] Understands base case and recursive case
 
-```cpp
-int countNodesWithExplanation(TreeNode* root) {
-    if (root == nullptr) {
-        cout << "Empty subtree contributes 0 nodes" << endl;
-        return 0;
-    }
+**Implementation Skills (Should Have):**
+- [ ] Can implement basic tree node structure
+- [ ] Can write all four traversal functions (recursive and iterative)
+- [ ] Can implement basic tree operations (height, count, search)
+- [ ] Can debug simple tree problems
+- [ ] Understands stack vs queue behavior
 
-    cout << "Found node " << root->data << " (contributes 1)" << endl;
+**Advanced Thinking (Nice to Have):**
+- [ ] Understands when to use which traversal method
+- [ ] Can visualize and explain recursion vs iteration trade-offs
+- [ ] Can modify algorithms for different requirements
+- [ ] Asks thoughtful questions about edge cases
+- [ ] Can apply traversals to solve new problems
 
-    int leftCount = countNodesWithExplanation(root->left);
-    cout << "Left subtree of " << root->data << " has " << leftCount << " nodes" << endl;
+### 🗣️ Classroom Discussion Questions:
 
-    int rightCount = countNodesWithExplanation(root->right);
-    cout << "Right subtree of " << root->data << " has " << rightCount << " nodes" << endl;
+1. "Why do we use trees instead of arrays or linked lists?"
+2. "What happens if we have duplicate values in our tree?"
+3. "How would trees be useful in a real application like a file system?"
+4. "What would happen if we allowed cycles in our tree?"
+5. "Which traversal would you use to copy a tree? Why?"
 
-    int total = 1 + leftCount + rightCount;
-    cout << "Total under node " << root->data << " = " << total << endl;
+### 🎯 Common Student Mistakes to Watch For:
 
-    return total;
-}
+1. **Forgetting base case** in recursion
+2. **Null pointer access** when node doesn't exist
+3. **Confusing traversal orders** - practice with different trees
+4. **Not understanding** how recursion builds up the call stack
+5. **Stack vs Queue confusion** - emphasize LIFO vs FIFO
+6. **Memory leaks** from not properly managing dynamic allocation
 
-// Production version
-int countNodes(TreeNode* root) {
-    if (root == nullptr) return 0;
-    return 1 + countNodes(root->left) + countNodes(root->right);
-}
-```
+### 📝 Week 1 Assignments:
 
-### 🍃 Counting Leaves - Pattern Recognition
+1. **Manual Tracing**: Give students different trees to trace all 4 traversals
+2. **Implementation Practice**: Implement missing functions (findMinimum, searchElement)
+3. **Visualization Exercise**: Draw stack/queue contents for given trees
+4. **Creative Application**: Design a use case for each traversal type
 
-**Teacher's Concept Introduction:**
-"A leaf is a node with no children - like the end points of tree branches in nature."
+---
 
-```cpp
-int countLeavesWithExplanation(TreeNode* root) {
-    if (root == nullptr) {
-        cout << "No node here, so 0 leaves" << endl;
-        return 0;
-    }
+## Next Week Preview
 
-    // Check if current node is a leaf
-    if (root->left == nullptr && root->right == nullptr) {
-        cout << "Node " << root->data << " is a LEAF!" << endl;
-        return 1;
-    }
+In Week 2, we'll apply these traversal skills to solve complex problems:
+- Tree construction from traversal sequences
+- Path sum and maximum path problems
+- Tree validation and property checking
+- Advanced traversal applications
 
-    cout << "Node " << root->data << " is NOT a leaf (has children)" << endl;
-
-    int leftLeaves = countLeavesWithExplanation(root->left);
-    int rightLeaves = countLeavesWithExplanation(root->right);
-
-    cout << "Under node " << root->data << ": " << leftLeaves
-         << " left leaves + " << rightLeaves << " right leaves" << endl;
-
-    return leftLeaves + rightLeaves;
-}
-
-// Clean version
-int countLeaves(TreeNode* root) {
-    if (root == nullptr) return 0;
-    if (root->left == nullptr && root->right == nullptr) return 1;
-    return countLeaves(root->left) + countLeaves(root->right);
-}
-```
-
-### 📊 Complete Analysis Function for Classroom Demo
-
-```cpp
-void teachTreeAnalysis(TreeNode* root) {
-    cout << "\n====== TREE ANALYSIS DEMO ======" << endl;
-
-    if (root == nullptr) {
-        cout << "Cannot analyze empty tree!" << endl;
-        return;
-    }
-
-    cout << "\n1. PREORDER TRAVERSAL:" << endl;
-    preorderTraversal(root);
-    cout << endl;
-
-    cout << "\n2. HEIGHT CALCULATION:" << endl;
-    int height = calculateHeight(root);
-    cout << "Final height: " << height << endl;
-
-    cout << "\n3. NODE COUNT:" << endl;
-    int nodeCount = countNodes(root);
-    cout << "Total nodes: " << nodeCount << endl;
-
-    cout << "\n4. LEAF COUNT:" << endl;
-    int leafCount = countLeaves(root);
-    cout << "Total leaves: " << leafCount << endl;
-
-    cout << "\n====== ANALYSIS COMPLETE ======" << endl;
-}
-```
+**Congratulations on mastering tree fundamentals and all traversal methods!**
 
 ---
 

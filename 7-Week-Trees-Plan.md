@@ -19,7 +19,7 @@ This plan is designed to help students master both the theoretical and coding as
   - Differences between recursive and iterative approaches
 - **Coding:**
 
-  **Day 1-2: Basic Tree Structure & Operations**
+  **Day 1-2: Basic Tree Structure & All 4 Traversals**
   
   - Implement basic tree node structure in C++:
     ```cpp
@@ -31,59 +31,45 @@ This plan is designed to help students master both the theoretical and coding as
     };
     ```
   - Create and connect nodes manually
+  - Implement all four traversals:
+    - Preorder (Root → Left → Right)
+    - Inorder (Left → Root → Right) 
+    - Postorder (Left → Right → Root)
+    - Level-order (BFS using queue)
+  - Both recursive and iterative implementations
+  - Visualize call stack for recursive traversals
+  - Stack/queue visualization for iterative approaches
+
+  **Day 3-4: Basic Tree Operations**
+
   - Basic tree operations: height, count nodes, count leaves
   - Find maximum/minimum element in tree
   - Check if two trees are identical
   - Build tree from array representation
+  - Search for elements using different traversals
 
-  **Day 3-4: DFS Traversals (Recursive)**
+  **Day 5-6: Stack & Queue Visualization Deep Dive**
 
-  - Implement all three DFS traversals recursively:
-    ```cpp
-    void preorder(TreeNode* root) {
-        if (!root) return;
-        cout << root->data << " ";  // Process root
-        preorder(root->left);       // Traverse left
-        preorder(root->right);      // Traverse right
-    }
-    ```
-  - Visualize call stack for each traversal with examples
-  - Draw stack frames step by step
-  - Understand when each node gets processed vs visited
-
-  **Day 5-6: Iterative Traversals & Stack Visualization**
-
-  - Implement iterative preorder using explicit stack:
-    ```cpp
-    void iterativePreorder(TreeNode* root) {
-        if (!root) return;
-        stack<TreeNode*> st;
-        st.push(root);
-        while (!st.empty()) {
-            TreeNode* node = st.top();
-            st.pop();
-            cout << node->data << " ";
-            if (node->right) st.push(node->right);
-            if (node->left) st.push(node->left);
-        }
-    }
-    ```
-  - Implement iterative inorder and postorder
-  - Compare recursive vs iterative approaches
   - Manually trace recursive calls with stack diagrams
+  - Understand when each node gets processed vs visited
+  - Compare recursive vs iterative approaches for all traversals
+  - Draw execution flow for different tree structures
+  - Practice drawing stack/queue contents at each step
 
-  **Day 7: Level Order Traversal (BFS)**
+  **Day 7: Advanced Traversal Patterns**
 
-  - Implement BFS using queue
-  - Level-wise printing
-  - Understanding queue operations for BFS
+  - Level-wise printing (each level on separate line)
+  - Understanding LIFO (stack) vs FIFO (queue) behavior
+  - When to use which traversal method
+  - Traversal applications and use cases
 
 - **Practice Problems:**
   - Build a tree from given structure
+  - Implement all four traversals (recursive and iterative)
   - Calculate tree properties (height, node count, leaf count)
-  - Print all four traversals for given tree
-  - Implement both recursive and iterative versions
-  - Search for elements using different traversals
+  - Print traversals for given trees and verify outputs
+  - Search for elements using different traversal methods
+  - Compare traversal results and understand their applications
 - **Resources:**
   - GeeksforGeeks: Tree Data Structure & Traversals
   - Visualgo.net: Tree basics and traversal animations
