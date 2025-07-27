@@ -1,6 +1,6 @@
-# 7-Week Plan to Master Trees in C++
+# 7-Module Plan to Master Trees in C++
 
-This comprehensive plan is designed to help students master both the theoretical foundations and practical coding aspects of trees in C++. Each week builds upon previous knowledge with deep theory explanations, visual learning aids, hands-on coding practice, and real-world applications.
+This comprehensive plan is designed to help students master both the theoretical foundations and practical coding aspects of trees in C++. Each module builds upon previous knowledge with deep theory explanations, visual learning aids, hands-on coding practice, and real-world applications.
 
 ## 📚 **Why Trees Matter in Computer Science**
 
@@ -17,7 +17,7 @@ Understanding trees is crucial for any programmer because they provide efficient
 
 ---
 
-## Week 1: Tree Fundamentals & Traversals
+## Module 1: Tree Fundamentals & Traversals
 
 ### 📖 **Theoretical Foundations**
 
@@ -222,7 +222,7 @@ void preorderIterative(TreeNode* root) {
 - **O(n)**: Linear operations (traversals, searching in worst case)
 - **O(h)**: Height-dependent operations (insertion, deletion)
 
-#### **Real-World Applications of Week 1 Concepts**
+#### **Real-World Applications of Module 1 Concepts**
 
 **Where Tree Fundamentals Are Used:**
 
@@ -414,7 +414,7 @@ Should I approve this loan?
 
 ### 🎯 **Learning Objectives - What You'll Master**
 
-By the end of Week 1, you will:
+By the end of Module 1, you will:
 
 1. **Conceptual Understanding**: Explain tree properties and classify tree types with real-world examples
 2. **Implementation Skills**: Build trees and implement all traversal methods for practical applications
@@ -485,7 +485,7 @@ By the end of Week 1, you will:
 
 ---
 
-## Week 2: Tree Problem Solving & Applications
+## Module 2: Tree Problem Solving & Applications
 
 ### 📖 **Theoretical Foundations**
 
@@ -643,7 +643,7 @@ By the end of Week 1, you will:
 
 ### 🎯 **Learning Objectives - Problem-Solving Mastery**
 
-By the end of Week 2, you will:
+By the end of Module 2, you will:
 
 1. **Pattern Recognition**: Identify problem types and choose optimal approaches
 2. **Algorithm Design**: Apply divide-and-conquer, DP, and backtracking patterns
@@ -722,7 +722,7 @@ By the end of Week 2, you will:
 
 ---
 
-## Week 3: Binary Search Trees (BST)
+## Module 3: Binary Search Trees (BST)
 
 ### 📖 **Theoretical Foundations**
 
@@ -882,7 +882,7 @@ return child;
 
 - **Sorted input**: Inserting already sorted data creates linked list
 - **No self-balancing**: Standard BST doesn't reorganize itself
-- **Solution**: Self-balancing trees (AVL, Red-Black) covered in Week 4
+- **Solution**: Self-balancing trees (AVL, Red-Black) covered in Module 4
 
 #### **BST Applications in Real World**
 
@@ -928,7 +928,7 @@ return child;
 
 ### 🎯 **Learning Objectives - BST Mastery**
 
-By the end of Week 3, you will:
+By the end of Module 3, you will:
 
 1. **Conceptual Understanding**: Explain BST properties and their implications
 2. **Implementation Skills**: Code all BST operations efficiently
@@ -988,7 +988,7 @@ By the end of Week 3, you will:
 
 ---
 
-## Week 4: Balanced Trees (AVL & Red-Black)
+## Module 4: Balanced Trees (AVL & Red-Black)
 
 ### 📖 **Theoretical Foundations**
 
@@ -1223,7 +1223,7 @@ B(10)      R(50)      ← All paths have same black count
 
 ### 🎯 **Learning Objectives - Balanced Tree Mastery**
 
-By the end of Week 4, you will:
+By the end of Module 4, you will:
 
 1. **Problem Recognition**: Understand when and why balancing is necessary
 2. **AVL Mastery**: Implement height-balanced trees with rotations
@@ -1281,7 +1281,7 @@ By the end of Week 4, you will:
 
 ---
 
-## Week 5: Heaps & Priority Queues
+## Module 5: Heaps & Priority Queues
 
 ### 📖 **Theoretical Foundations**
 
@@ -1545,7 +1545,7 @@ priority_queue<pair<int, int>> maxHeap;  // (value, index)
 
 ### 🎯 **Learning Objectives - Heap Mastery**
 
-By the end of Week 5, you will:
+By the end of Module 5, you will:
 
 1. **Conceptual Understanding**: Grasp heap properties and complete binary tree structure
 2. **Implementation Skills**: Build heaps from scratch using arrays
@@ -1607,7 +1607,7 @@ By the end of Week 5, you will:
 
 ---
 
-## Week 6: Advanced Tree Topics (Tries & Segment Trees)
+## Module 6: Advanced Tree Topics (Tries & Segment Trees)
 
 ### 📖 **Theoretical Foundations**
 
@@ -1895,7 +1895,7 @@ void update(int treeIndex, int start, int end, int idx, int newVal) {
 
 ### 🎯 **Learning Objectives - Advanced Tree Mastery**
 
-By the end of Week 6, you will:
+By the end of Module 6, you will:
 
 1. **Trie Mastery**: Implement efficient string processing data structures
 2. **Segment Tree Understanding**: Build range query systems from scratch
@@ -1952,14 +1952,14 @@ By the end of Week 6, you will:
 
 ---
 
-## Week 7: Problem Solving & Comprehensive Projects
+## Module 7: Problem Solving & Comprehensive Projects
 
 ### 📖 **Theoretical Foundations**
 
 #### **Comprehensive Tree Knowledge Integration**
 
 **Tree Type Decision Matrix:**
-After 6 weeks of study, you now have a powerful toolkit. Here's when to use each:
+After 6 modules of study, you now have a powerful toolkit. Here's when to use each:
 
 | Problem Characteristics           | Best Tree Type        | Key Reason                             |
 | --------------------------------- | --------------------- | -------------------------------------- |
@@ -2186,7 +2186,7 @@ struct OptimizedNode {
 
 ### 🎯 **Learning Objectives - Expert-Level Mastery**
 
-By the end of Week 7, you will:
+By the end of Module 7, you will:
 
 1. **Integration Skills**: Combine multiple tree concepts to solve complex problems
 2. **Design Expertise**: Choose optimal tree structures for real-world systems
@@ -2271,13 +2271,13 @@ By the end of Week 7, you will:
 
 **Assessment Checklist:**
 
-- Week 1: Can implement basic tree operations and all traversal methods with deep understanding of recursive vs iterative approaches
-- Week 2: Can solve complex tree problems using traversals and tree properties, recognizing problem patterns and applying appropriate algorithms
-- Week 3: Proficient in BST operations and validation, understanding the mathematical properties that make BSTs efficient
-- Week 4: Understand balancing concepts and rotations, can implement AVL trees and explain why self-balancing is crucial
-- Week 5: Can implement heap from scratch, understand array representation, and apply heaps to priority queue problems
-- Week 6: Comfortable with tries and basic segment trees, can choose appropriate advanced data structures for specific problems
-- Week 7: Solve complex tree problems independently, integrate multiple concepts, and design tree-based systems
+- Module 1: Can implement basic tree operations and all traversal methods with deep understanding of recursive vs iterative approaches
+- Module 2: Can solve complex tree problems using traversals and tree properties, recognizing problem patterns and applying appropriate algorithms
+- Module 3: Proficient in BST operations and validation, understanding the mathematical properties that make BSTs efficient
+- Module 4: Understand balancing concepts and rotations, can implement AVL trees and explain why self-balancing is crucial
+- Module 5: Can implement heap from scratch, understand array representation, and apply heaps to priority queue problems
+- Module 6: Comfortable with tries and basic segment trees, can choose appropriate advanced data structures for specific problems
+- Module 7: Solve complex tree problems independently, integrate multiple concepts, and design tree-based systems
 
 **Tips for Success:**
 
@@ -2290,7 +2290,7 @@ By the end of Week 7, you will:
 - **Build Projects**: Apply knowledge practically through file system simulators, expression evaluators, and autocomplete systems
 - **Debug Systematically**: Learn to use debuggers effectively with tree structures and validate invariants
 - **Connect to Real World**: Understand how trees are used in databases, operating systems, compilers, and web applications
-- **Progressive Learning**: Each week builds on previous knowledge - ensure solid foundation before advancing
+- **Progressive Learning**: Each module builds on previous knowledge - ensure solid foundation before advancing
 - **Code Quality**: Focus on writing clean, maintainable code with proper error handling and edge case management
 - **Pattern Recognition**: Identify common problem patterns and standard solution templates
 - **Performance Mindset**: Consider practical performance implications, not just theoretical complexity
