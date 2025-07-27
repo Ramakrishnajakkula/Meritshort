@@ -24,6 +24,7 @@ By the end of this week, students should be able to:
 
 **Teacher's Introduction:**
 "Now that you master tree traversals and basic operations, let's use them to solve real problems! Tree problems typically fall into these categories:
+
 1. Construction problems (building trees from different inputs)
 2. Validation problems (checking if tree satisfies certain properties)
 3. Transformation problems (modifying tree structure or values)"
@@ -60,20 +61,20 @@ private:
 // Teaching demonstration function
 void demonstrateArrayToTree() {
     vector<int> arr = {1, 2, 3, 4, 5, 6, 7};
-    
+
     cout << "=== CONSTRUCTING TREE FROM ARRAY ===" << endl;
     cout << "Array: ";
     for (int val : arr) cout << val << " ";
     cout << endl;
-    
+
     cout << "\nIndex relationships:" << endl;
     cout << "Root at index 0: " << arr[0] << endl;
     cout << "Left child of index i at: 2*i + 1" << endl;
     cout << "Right child of index i at: 2*i + 2" << endl;
-    
+
     TreeConstructor constructor;
     TreeNode* root = constructor.constructFromArray(arr);
-    
+
     cout << "\nResulting tree (preorder): ";
     preorderTraversal(root);
     cout << endl;
@@ -97,16 +98,16 @@ public:
         for (int i = 0; i < inorder.size(); i++) {
             inorderMap[inorder[i]] = i;
         }
-        
+
         int preorderIndex = 0;
         return buildTreeHelper(preorder, inorderMap, preorderIndex, 0, inorder.size() - 1);
     }
 
 private:
-    TreeNode* buildTreeHelper(vector<int>& preorder, 
+    TreeNode* buildTreeHelper(vector<int>& preorder,
                              unordered_map<int, int>& inorderMap,
-                             int& preorderIndex, 
-                             int inorderStart, 
+                             int& preorderIndex,
+                             int inorderStart,
                              int inorderEnd) {
         if (inorderStart > inorderEnd) return nullptr;
 
@@ -118,11 +119,11 @@ private:
         int rootIndex = inorderMap[rootValue];
 
         // Build left subtree first (preorder: root-left-right)
-        root->left = buildTreeHelper(preorder, inorderMap, preorderIndex, 
+        root->left = buildTreeHelper(preorder, inorderMap, preorderIndex,
                                    inorderStart, rootIndex - 1);
-        
+
         // Build right subtree
-        root->right = buildTreeHelper(preorder, inorderMap, preorderIndex, 
+        root->right = buildTreeHelper(preorder, inorderMap, preorderIndex,
                                     rootIndex + 1, inorderEnd);
 
         return root;
@@ -132,27 +133,27 @@ private:
 // Teaching demonstration with step-by-step explanation
 void demonstrateTreeConstruction() {
     cout << "=== CONSTRUCTING TREE FROM TRAVERSALS ===" << endl;
-    
+
     vector<int> preorder = {3, 9, 20, 15, 7};
     vector<int> inorder = {9, 3, 15, 20, 7};
-    
+
     cout << "Preorder: ";
     for (int val : preorder) cout << val << " ";
     cout << endl;
-    
+
     cout << "Inorder:  ";
     for (int val : inorder) cout << val << " ";
     cout << endl;
-    
+
     cout << "\nStep-by-step construction:" << endl;
     cout << "1. First element in preorder (3) is root" << endl;
     cout << "2. Find 3 in inorder: [9] | 3 | [15, 20, 7]" << endl;
     cout << "3. Left subtree has elements [9], right has [15, 20, 7]" << endl;
     cout << "4. Recursively apply to subtrees..." << endl;
-    
+
     TreeFromTraversals constructor;
     TreeNode* root = constructor.buildTree(preorder, inorder);
-    
+
     cout << "\nVerification - Level order traversal: ";
     levelOrderTraversal(root);
     cout << endl;
@@ -174,7 +175,7 @@ public:
     bool isValidBST_Inorder(TreeNode* root) {
         vector<int> inorderResult;
         inorderTraversal(root, inorderResult);
-        
+
         // BST's inorder traversal should be strictly increasing
         for (int i = 1; i < inorderResult.size(); i++) {
             if (inorderResult[i] <= inorderResult[i-1]) {
@@ -199,11 +200,11 @@ private:
 
     bool validateBST(TreeNode* root, long long minVal, long long maxVal) {
         if (root == nullptr) return true;
-        
+
         if (root->data <= minVal || root->data >= maxVal) {
             return false;
         }
-        
+
         return validateBST(root->left, minVal, root->data) &&
                validateBST(root->right, root->data, maxVal);
     }
@@ -212,7 +213,7 @@ private:
 // Teaching demonstration comparing both methods
 void demonstrateBSTValidation() {
     cout << "=== BST VALIDATION METHODS ===" << endl;
-    
+
     // Create valid BST
     TreeNode* validBST = new TreeNode(5);
     validBST->left = new TreeNode(3);
@@ -221,24 +222,24 @@ void demonstrateBSTValidation() {
     validBST->left->right = new TreeNode(4);
     validBST->right->left = new TreeNode(7);
     validBST->right->right = new TreeNode(9);
-    
+
     // Create invalid BST
     TreeNode* invalidBST = new TreeNode(5);
     invalidBST->left = new TreeNode(3);
     invalidBST->right = new TreeNode(8);
     invalidBST->left->left = new TreeNode(2);
     invalidBST->left->right = new TreeNode(6); // INVALID: 6 > 5 but in left subtree
-    
+
     BSTValidator validator;
-    
+
     cout << "\nValid BST test:" << endl;
     cout << "Inorder method: " << (validator.isValidBST_Inorder(validBST) ? "Valid" : "Invalid") << endl;
     cout << "Bounds method: " << (validator.isValidBST_Bounds(validBST) ? "Valid" : "Invalid") << endl;
-    
+
     cout << "\nInvalid BST test:" << endl;
     cout << "Inorder method: " << (validator.isValidBST_Inorder(invalidBST) ? "Valid" : "Invalid") << endl;
     cout << "Bounds method: " << (validator.isValidBST_Bounds(invalidBST) ? "Valid" : "Invalid") << endl;
-    
+
     cout << "\nWhy is the second tree invalid?" << endl;
     cout << "Node 6 is in the left subtree of 5, but 6 > 5!" << endl;
 }
@@ -252,8 +253,9 @@ void demonstrateBSTValidation() {
 
 **Teacher's Explanation:**
 "Path problems are everywhere in trees! We need to think about:
+
 1. Root-to-leaf paths
-2. Any node-to-node paths  
+2. Any node-to-node paths
 3. Path sums and maximum paths
 4. Finding specific paths"
 
@@ -325,23 +327,23 @@ private:
 // Teaching demonstration with step-by-step trace
 void demonstratePathFinding() {
     cout << "=== FINDING ALL ROOT-TO-LEAF PATHS ===" << endl;
-    
+
     // Create sample tree
     TreeNode* root = new TreeNode(1);
     root->left = new TreeNode(2);
     root->right = new TreeNode(3);
     root->left->left = new TreeNode(4);
     root->left->right = new TreeNode(5);
-    
+
     cout << "Tree structure:" << endl;
     cout << "    1" << endl;
     cout << "   / \\" << endl;
     cout << "  2   3" << endl;
     cout << " / \\" << endl;
     cout << "4   5" << endl;
-    
+
     PathFinder pathFinder;
-    
+
     // Find paths as vectors
     vector<vector<int>> paths = pathFinder.findAllPaths(root);
     cout << "\nAll root-to-leaf paths:" << endl;
@@ -353,7 +355,7 @@ void demonstratePathFinding() {
         }
         cout << endl;
     }
-    
+
     // Find paths as strings (easier to read)
     vector<string> stringPaths = pathFinder.findAllPathsAsStrings(root);
     cout << "\nPaths as strings:" << endl;
@@ -372,6 +374,7 @@ void demonstratePathFinding() {
 ✅ **Week 2 Implementation Guide** - Restructured to focus entirely on tree problem-solving and applications
 
 The curriculum now follows the correct learning order:
+
 - **Week 1**: Tree fundamentals + All 4 traversals (recursive & iterative)
 - **Week 2**: Problem-solving using Week 1 concepts
 - **Weeks 3-7**: Advanced topics building on the solid foundation
@@ -384,32 +387,32 @@ using namespace std;
 
 // Enhanced TreeNode for better debugging
 struct TreeNode {
-    int data;
-    TreeNode* left;
-    TreeNode* right;
-    TreeNode(int val) : data(val), left(nullptr), right(nullptr) {}
+int data;
+TreeNode* left;
+TreeNode* right;
+TreeNode(int val) : data(val), left(nullptr), right(nullptr) {}
 };
 
 class TraversalExplainer {
 public:
-    // Preorder: Root -> Left -> Right
-    void preorderWithExplanation(TreeNode* root, int depth = 0) {
-        if (root == nullptr) {
-            cout << string(depth * 2, ' ') << "↳ null node reached" << endl;
-            return;
-        }
+// Preorder: Root -> Left -> Right
+void preorderWithExplanation(TreeNode* root, int depth = 0) {
+if (root == nullptr) {
+cout << string(depth * 2, ' ') << "↳ null node reached" << endl;
+return;
+}
 
         // PROCESS ROOT FIRST
         cout << string(depth * 2, ' ') << "📍 Processing ROOT: " << root->data << endl;
-        
+
         // Go LEFT
         cout << string(depth * 2, ' ') << "⬅️ Going to LEFT child of " << root->data << endl;
         preorderWithExplanation(root->left, depth + 1);
-        
-        // Go RIGHT  
+
+        // Go RIGHT
         cout << string(depth * 2, ' ') << "➡️ Going to RIGHT child of " << root->data << endl;
         preorderWithExplanation(root->right, depth + 1);
-        
+
         cout << string(depth * 2, ' ') << "✅ Finished with node " << root->data << endl;
     }
 
@@ -423,10 +426,10 @@ public:
         // Go LEFT FIRST
         cout << string(depth * 2, ' ') << "⬅️ Going LEFT from " << root->data << endl;
         inorderWithExplanation(root->left, depth + 1);
-        
+
         // PROCESS ROOT IN MIDDLE
         cout << string(depth * 2, ' ') << "📍 Processing ROOT: " << root->data << endl;
-        
+
         // Go RIGHT LAST
         cout << string(depth * 2, ' ') << "➡️ Going RIGHT from " << root->data << endl;
         inorderWithExplanation(root->right, depth + 1);
@@ -442,15 +445,17 @@ public:
         // Go LEFT FIRST
         cout << string(depth * 2, ' ') << "⬅️ Going LEFT from " << root->data << endl;
         postorderWithExplanation(root->left, depth + 1);
-        
+
         // Go RIGHT SECOND
         cout << string(depth * 2, ' ') << "➡️ Going RIGHT from " << root->data << endl;
         postorderWithExplanation(root->right, depth + 1);
-        
+
         // PROCESS ROOT LAST
         cout << string(depth * 2, ' ') << "📍 Processing ROOT: " << root->data << " (AFTER children)" << endl;
     }
+
 };
+
 ```
 
 ### 🎯 Step-by-Step Execution Comparison
@@ -458,14 +463,17 @@ public:
 **Teacher Instructions:**
 "Let's trace all three traversals on the same tree to see the differences!"
 
-For tree: 
+For tree:
 ```
+
     1
-   / \
-  2   3
- / \
-4   5
-```
+
+/ \
+ 2 3
+/ \
+4 5
+
+````
 
 **Execution Order Comparison:**
 
@@ -518,9 +526,10 @@ public:
         result.push_back(root->data);   // Process root last
     }
 };
-```
+````
 
 **Brute Force Analysis:**
+
 - **Time Complexity**: O(n) - visit each node once
 - **Space Complexity**: O(h) - recursion stack depth
 - **Issues**: No control over recursion depth, potential stack overflow
@@ -558,31 +567,31 @@ public:
 private:
     void preorderHelper(TreeNode* root, vector<int>& result, int depth) {
         if (root == nullptr) return;
-        
+
         cout << string(depth * 2, ' ') << "Visit: " << root->data << " (depth " << depth << ")" << endl;
         result.push_back(root->data);
-        
+
         preorderHelper(root->left, result, depth + 1);
         preorderHelper(root->right, result, depth + 1);
     }
 
     void inorderHelper(TreeNode* root, vector<int>& result, int depth) {
         if (root == nullptr) return;
-        
+
         inorderHelper(root->left, result, depth + 1);
-        
+
         cout << string(depth * 2, ' ') << "Visit: " << root->data << " (depth " << depth << ")" << endl;
         result.push_back(root->data);
-        
+
         inorderHelper(root->right, result, depth + 1);
     }
 
     void postorderHelper(TreeNode* root, vector<int>& result, int depth) {
         if (root == nullptr) return;
-        
+
         postorderHelper(root->left, result, depth + 1);
         postorderHelper(root->right, result, depth + 1);
-        
+
         cout << string(depth * 2, ' ') << "Visit: " << root->data << " (depth " << depth << ")" << endl;
         result.push_back(root->data);
     }
@@ -646,7 +655,7 @@ public:
             // Current is null, so we backtrack
             current = stk.top();
             stk.pop();
-            
+
             cout << "Processing: " << current->data << endl;
             result.push_back(current->data);
 
@@ -699,10 +708,10 @@ public:
 
 **Analysis Comparison:**
 
-| Approach    | Time | Space | Pros | Cons |
-|-------------|------|-------|------|------|
-| Recursive   | O(n) | O(h)  | Clean, intuitive | Stack overflow risk |
-| Iterative   | O(n) | O(h)  | No recursion limit | More complex code |
+| Approach  | Time | Space | Pros               | Cons                |
+| --------- | ---- | ----- | ------------------ | ------------------- |
+| Recursive | O(n) | O(h)  | Clean, intuitive   | Stack overflow risk |
+| Iterative | O(n) | O(h)  | No recursion limit | More complex code   |
 
 **Teaching Moment:**
 "Iterative versions give us more control but require understanding how recursion works!"
@@ -717,6 +726,7 @@ public:
 "Level-order traversal visits nodes level by level, left to right. It's fundamentally different from DFS - we use a queue instead of recursion or stack!"
 
 #### Key Concepts:
+
 - **BFS vs DFS**: Breadth-first explores horizontally before going deeper
 - **Queue-based**: FIFO (First In, First Out) structure
 - **Applications**: Finding shortest paths, serialization, level-wise processing
@@ -808,6 +818,7 @@ public:
 **Given**: A binary tree
 **Task**: Implement zigzag traversal (alternate left-to-right and right-to-left)
 **Example**:
+
 ```
 Tree:     3
          / \
@@ -824,11 +835,11 @@ Zigzag: [3], [20, 9], [15, 7]
 // Brute Force: Level-order + reverse alternate levels
 vector<vector<int>> zigzagBruteForce(TreeNode* root) {
     vector<vector<int>> levels = levelOrderByLevels(root);
-    
+
     for (int i = 1; i < levels.size(); i += 2) {
         reverse(levels[i].begin(), levels[i].end());
     }
-    
+
     return levels;
 }
 ```
@@ -849,13 +860,13 @@ vector<vector<int>> zigzagOptimal(TreeNode* root) {
 
     while (!currentLevel.empty()) {
         vector<int> levelValues;
-        
+
         cout << "Level direction: " << (leftToRight ? "Left->Right" : "Right->Left") << endl;
 
         while (!currentLevel.empty()) {
             TreeNode* node = currentLevel.top();
             currentLevel.pop();
-            
+
             cout << "Processing: " << node->data << endl;
             levelValues.push_back(node->data);
 
@@ -899,6 +910,7 @@ vector<vector<int>> zigzagOptimal(TreeNode* root) {
 "One of the most important skills is rebuilding a tree from its traversal sequences. This requires understanding the unique properties of each traversal!"
 
 #### Key Insights:
+
 - **Preorder**: First element is always root
 - **Inorder**: Root divides left and right subtrees
 - **Postorder**: Last element is always root
@@ -913,6 +925,7 @@ vector<vector<int>> zigzagOptimal(TreeNode* root) {
 **Return**: Root of the constructed tree
 
 **Example**:
+
 ```
 Preorder: [3,9,20,15,7]
 Inorder:  [9,3,15,20,7]
@@ -930,7 +943,7 @@ Result Tree:
 ```cpp
 // Brute Force: Linear search for root in inorder
 TreeNode* buildTreeBruteForce(vector<int>& preorder, vector<int>& inorder) {
-    return buildHelper(preorder, 0, preorder.size() - 1, 
+    return buildHelper(preorder, 0, preorder.size() - 1,
                       inorder, 0, inorder.size() - 1);
 }
 
@@ -963,7 +976,7 @@ TreeNode* buildHelper(vector<int>& preorder, int preStart, int preEnd,
     // Recursively build left and right subtrees
     root->left = buildHelper(preorder, preStart + 1, preStart + leftSubtreeSize,
                             inorder, inStart, rootIndexInorder - 1);
-    
+
     root->right = buildHelper(preorder, preStart + leftSubtreeSize + 1, preEnd,
                              inorder, rootIndexInorder + 1, inEnd);
 
@@ -986,7 +999,7 @@ public:
         for (int i = 0; i < inorder.size(); i++) {
             inorderMap[inorder[i]] = i;
         }
-        
+
         preorderIndex = 0;
         return buildOptimalHelper(preorder, 0, inorder.size() - 1);
     }
@@ -1008,7 +1021,7 @@ private:
 
         // Build left subtree first (preorder: root, left, right)
         root->left = buildOptimalHelper(preorder, inStart, rootIndexInorder - 1);
-        
+
         // Build right subtree
         root->right = buildOptimalHelper(preorder, rootIndexInorder + 1, inEnd);
 
@@ -1019,10 +1032,10 @@ private:
 
 **Analysis Comparison:**
 
-| Approach | Time | Space | Why? |
-|----------|------|-------|------|
-| Brute Force | O(n²) | O(n) | Linear search for each node |
-| Optimal | O(n) | O(n) | HashMap for O(1) lookups |
+| Approach    | Time  | Space | Why?                        |
+| ----------- | ----- | ----- | --------------------------- |
+| Brute Force | O(n²) | O(n)  | Linear search for each node |
+| Optimal     | O(n)  | O(n)  | HashMap for O(1) lookups    |
 
 ### 🔍 Problem 4: Tree Diameter (Advanced Recursion)
 
@@ -1033,6 +1046,7 @@ private:
 **Note**: Path doesn't have to go through root
 
 **Example**:
+
 ```
 Tree:     1
          / \
@@ -1057,14 +1071,14 @@ public:
         int rightHeight = getHeight(root->right);
         int diameterThroughRoot = leftHeight + rightHeight;
 
-        cout << "Node " << root->data << ": left height = " << leftHeight 
-             << ", right height = " << rightHeight 
+        cout << "Node " << root->data << ": left height = " << leftHeight
+             << ", right height = " << rightHeight
              << ", diameter through root = " << diameterThroughRoot << endl;
 
         // Option 2: Diameter is in left subtree
         int leftDiameter = diameterBruteForce(root->left);
 
-        // Option 3: Diameter is in right subtree  
+        // Option 3: Diameter is in right subtree
         int rightDiameter = diameterBruteForce(root->right);
 
         return max({diameterThroughRoot, leftDiameter, rightDiameter});
@@ -1107,9 +1121,9 @@ private:
         int currentDiameter = leftHeight + rightHeight;
         maxDiameter = max(maxDiameter, currentDiameter);
 
-        cout << "Node " << root->data << ": left_h=" << leftHeight 
-             << ", right_h=" << rightHeight 
-             << ", diameter=" << currentDiameter 
+        cout << "Node " << root->data << ": left_h=" << leftHeight
+             << ", right_h=" << rightHeight
+             << ", diameter=" << currentDiameter
              << ", max_so_far=" << maxDiameter << endl;
 
         // Return height of current node
@@ -1120,10 +1134,10 @@ private:
 
 **Analysis Comparison:**
 
-| Approach | Time | Space | Why? |
-|----------|------|-------|------|
-| Brute Force | O(n²) | O(h) | Height calculation for each node |
-| Optimal | O(n) | O(h) | Single traversal with combined logic |
+| Approach    | Time  | Space | Why?                                 |
+| ----------- | ----- | ----- | ------------------------------------ |
+| Brute Force | O(n²) | O(h)  | Height calculation for each node     |
+| Optimal     | O(n)  | O(h)  | Single traversal with combined logic |
 
 ---
 
@@ -1145,13 +1159,13 @@ class PathSumBruteForce {
 public:
     bool hasPathSumBruteForce(TreeNode* root, int targetSum) {
         vector<vector<int>> allPaths = getAllPaths(root);
-        
+
         for (auto& path : allPaths) {
             int sum = 0;
             for (int val : path) sum += val;
             if (sum == targetSum) return true;
         }
-        
+
         return false;
     }
 
@@ -1159,7 +1173,7 @@ private:
     vector<vector<int>> getAllPaths(TreeNode* root) {
         vector<vector<int>> result;
         if (root == nullptr) return result;
-        
+
         vector<int> currentPath;
         findAllPaths(root, currentPath, result);
         return result;
@@ -1167,16 +1181,16 @@ private:
 
     void findAllPaths(TreeNode* root, vector<int>& currentPath, vector<vector<int>>& result) {
         if (root == nullptr) return;
-        
+
         currentPath.push_back(root->data);
-        
+
         if (root->left == nullptr && root->right == nullptr) {
             result.push_back(currentPath);
         } else {
             findAllPaths(root->left, currentPath, result);
             findAllPaths(root->right, currentPath, result);
         }
-        
+
         currentPath.pop_back();
     }
 };
@@ -1213,7 +1227,7 @@ private:
         if (root == nullptr) return false;
 
         currentSum += root->data;
-        cout << string(depth * 2, ' ') << "Node " << root->data 
+        cout << string(depth * 2, ' ') << "Node " << root->data
              << ", current sum: " << currentSum << ", target: " << target << endl;
 
         // Check if we reached a leaf with target sum
@@ -1228,14 +1242,14 @@ private:
                hasPathSumHelper(root->right, target, currentSum, depth + 1);
     }
 
-    void findAllPathsHelper(TreeNode* root, int target, int currentSum, 
+    void findAllPathsHelper(TreeNode* root, int target, int currentSum,
                            vector<int>& currentPath, vector<vector<int>>& result, int depth) {
         if (root == nullptr) return;
 
         currentSum += root->data;
         currentPath.push_back(root->data);
 
-        cout << string(depth * 2, ' ') << "Added " << root->data 
+        cout << string(depth * 2, ' ') << "Added " << root->data
              << ", current sum: " << currentSum << endl;
 
         if (root->left == nullptr && root->right == nullptr) {
@@ -1265,9 +1279,9 @@ private:
         int pathThroughNode = root->data + leftMax + rightMax;
         maxSum = max(maxSum, pathThroughNode);
 
-        cout << "Node " << root->data << ": left_max=" << leftMax 
-             << ", right_max=" << rightMax 
-             << ", path_through=" << pathThroughNode 
+        cout << "Node " << root->data << ": left_max=" << leftMax
+             << ", right_max=" << rightMax
+             << ", path_through=" << pathThroughNode
              << ", global_max=" << maxSum << endl;
 
         // Return max path starting from this node (can only use one side)
@@ -1292,7 +1306,7 @@ class LCABruteForce {
 public:
     TreeNode* lowestCommonAncestorBruteForce(TreeNode* root, TreeNode* p, TreeNode* q) {
         vector<TreeNode*> pathToP, pathToQ;
-        
+
         if (!findPath(root, p, pathToP) || !findPath(root, q, pathToQ)) {
             return nullptr;
         }
@@ -1364,7 +1378,7 @@ private:
         TreeNode* leftLCA = lcaHelper(root->left, p, q, depth + 1);
         TreeNode* rightLCA = lcaHelper(root->right, p, q, depth + 1);
 
-        cout << string(depth * 2, ' ') << "Node " << root->data 
+        cout << string(depth * 2, ' ') << "Node " << root->data
              << " - Left result: " << (leftLCA ? to_string(leftLCA->data) : "null")
              << ", Right result: " << (rightLCA ? to_string(rightLCA->data) : "null") << endl;
 
@@ -1384,20 +1398,20 @@ private:
 
 ## 📊 Advanced Complexity Analysis & Comparison Summary
 
-| Problem | Approach | Time Complexity | Space Complexity | Key Insight |
-|---------|----------|----------------|------------------|-------------|
-| **All DFS Traversals** | Recursive | O(n) | O(h) | Natural recursion |
-| | Iterative | O(n) | O(h) | Explicit stack control |
-| **Level-Order** | Queue BFS | O(n) | O(w) | w = max width |
-| **Zigzag** | Two Stacks | O(n) | O(w) | Direction control |
-| **Tree Construction** | Brute Force | O(n²) | O(n) | Linear search each time |
-| | Optimal | O(n) | O(n) | HashMap for O(1) lookup |
-| **Diameter** | Brute Force | O(n²) | O(h) | Height calc per node |
-| | Optimal | O(n) | O(h) | Combined height+diameter |
-| **Path Sum** | Brute Force | O(n×p) | O(n×p) | p = avg path length |
-| | Optimal | O(n) | O(h) | Running sum tracking |
-| **LCA** | Brute Force | O(n) | O(h) | Two separate path finds |
-| | Optimal | O(n) | O(h) | Single traversal |
+| Problem                | Approach    | Time Complexity | Space Complexity | Key Insight              |
+| ---------------------- | ----------- | --------------- | ---------------- | ------------------------ |
+| **All DFS Traversals** | Recursive   | O(n)            | O(h)             | Natural recursion        |
+|                        | Iterative   | O(n)            | O(h)             | Explicit stack control   |
+| **Level-Order**        | Queue BFS   | O(n)            | O(w)             | w = max width            |
+| **Zigzag**             | Two Stacks  | O(n)            | O(w)             | Direction control        |
+| **Tree Construction**  | Brute Force | O(n²)           | O(n)             | Linear search each time  |
+|                        | Optimal     | O(n)            | O(n)             | HashMap for O(1) lookup  |
+| **Diameter**           | Brute Force | O(n²)           | O(h)             | Height calc per node     |
+|                        | Optimal     | O(n)            | O(h)             | Combined height+diameter |
+| **Path Sum**           | Brute Force | O(n×p)          | O(n×p)           | p = avg path length      |
+|                        | Optimal     | O(n)            | O(h)             | Running sum tracking     |
+| **LCA**                | Brute Force | O(n)            | O(h)             | Two separate path finds  |
+|                        | Optimal     | O(n)            | O(h)             | Single traversal         |
 
 ---
 
@@ -1444,10 +1458,10 @@ public:
     vector<int> preorderIterative(TreeNode* root) {
         vector<int> result;
         if (!root) return result;
-        
+
         stack<TreeNode*> stk;
         stk.push(root);
-        
+
         while (!stk.empty()) {
             TreeNode* node = stk.top(); stk.pop();
             result.push_back(node->data);
@@ -1460,10 +1474,10 @@ public:
     vector<int> levelOrder(TreeNode* root) {
         vector<int> result;
         if (!root) return result;
-        
+
         queue<TreeNode*> q;
         q.push(root);
-        
+
         while (!q.empty()) {
             TreeNode* node = q.front(); q.pop();
             result.push_back(node->data);
@@ -1529,13 +1543,13 @@ private:
     TreeNode* buildHelper(vector<int>& preorder, int& preIndex, int inStart, int inEnd,
                          unordered_map<int, int>& inorderMap) {
         if (inStart > inEnd) return nullptr;
-        
+
         TreeNode* root = new TreeNode(preorder[preIndex++]);
         int inIndex = inorderMap[root->data];
-        
+
         root->left = buildHelper(preorder, preIndex, inStart, inIndex - 1, inorderMap);
         root->right = buildHelper(preorder, preIndex, inIndex + 1, inEnd, inorderMap);
-        
+
         return root;
     }
 
@@ -1551,23 +1565,23 @@ private:
 // Test function
 int main() {
     AdvancedTreeOperations ops;
-    
+
     // Create sample tree
     TreeNode* root = new TreeNode(1);
     root->left = new TreeNode(2);
     root->right = new TreeNode(3);
     root->left->left = new TreeNode(4);
     root->left->right = new TreeNode(5);
-    
+
     // Test all operations
     cout << "Preorder (Recursive): ";
     auto preorder = ops.preorderRecursive(root);
     for (int val : preorder) cout << val << " ";
     cout << endl;
-    
+
     cout << "Diameter: " << ops.diameter(root) << endl;
     cout << "Has path sum 7: " << ops.hasPathSum(root, 7) << endl;
-    
+
     return 0;
 }
 ```
@@ -1579,18 +1593,21 @@ int main() {
 ### Student Assessment Rubric
 
 **Basic Understanding (Must Have):**
+
 - [ ] Can explain all four traversal types and their use cases
 - [ ] Can trace traversals manually on paper with stack/queue visualization
 - [ ] Understands difference between recursive and iterative approaches
 - [ ] Can identify when to use BFS vs DFS
 
 **Implementation Skills (Should Have):**
+
 - [ ] Can implement all traversals recursively and iteratively
 - [ ] Can solve tree construction problems
 - [ ] Can implement diameter and path sum algorithms
 - [ ] Can debug tree traversal code
 
 **Advanced Thinking (Nice to Have):**
+
 - [ ] Understands advanced optimization techniques (hashmap for tree construction)
 - [ ] Can solve LCA and other complex tree problems
 - [ ] Can analyze time/space complexity trade-offs
@@ -1616,6 +1633,7 @@ int main() {
 ## Next Week Preview
 
 In Week 3, we'll explore:
+
 - Binary Search Trees (BST): properties, insertion, deletion
 - BST validation and optimization
 - BST-specific algorithms and applications

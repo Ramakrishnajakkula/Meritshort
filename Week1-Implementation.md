@@ -23,6 +23,7 @@ By the end of this week, students should be able to:
 ### 📚 Theory Introduction (Teach First)
 
 #### What is a Tree? (Start with Real-World Examples)
+
 **Teacher's Explanation:**
 "Think about your family tree, or the folder structure on your computer. These are all examples of hierarchical relationships that we can represent using trees!"
 
@@ -218,7 +219,7 @@ void inorderIterative(TreeNode* root) {
         // Current is null, so we backtrack
         current = stk.top();
         stk.pop();
-        
+
         cout << current->data << " ";  // Process current node
 
         // Visit right subtree
@@ -373,7 +374,7 @@ void demonstrateAllTraversals(TreeNode* root) {
     cout << endl;
 
     cout << "\n--- ITERATIVE VERSIONS ---" << endl;
-    
+
     cout << "Preorder Iterative: ";
     preorderIterative(root);
 
@@ -457,20 +458,20 @@ public:
     // Find maximum element
     int findMaximum(TreeNode* root) {
         if (root == nullptr) return INT_MIN;
-        
+
         int leftMax = (root->left) ? findMaximum(root->left) : INT_MIN;
         int rightMax = (root->right) ? findMaximum(root->right) : INT_MIN;
-        
+
         return max({root->data, leftMax, rightMax});
     }
 
     // Find minimum element
     int findMinimum(TreeNode* root) {
         if (root == nullptr) return INT_MAX;
-        
+
         int leftMin = (root->left) ? findMinimum(root->left) : INT_MAX;
         int rightMin = (root->right) ? findMinimum(root->right) : INT_MAX;
-        
+
         return min({root->data, leftMin, rightMin});
     }
 
@@ -478,7 +479,7 @@ public:
     bool areIdentical(TreeNode* tree1, TreeNode* tree2) {
         if (tree1 == nullptr && tree2 == nullptr) return true;
         if (tree1 == nullptr || tree2 == nullptr) return false;
-        
+
         return (tree1->data == tree2->data) &&
                areIdentical(tree1->left, tree2->left) &&
                areIdentical(tree1->right, tree2->right);
@@ -499,7 +500,7 @@ public:
     bool searchValue(TreeNode* root, int target) {
         if (root == nullptr) return false;
         if (root->data == target) return true;
-        
+
         return searchValue(root->left, target) || searchValue(root->right, target);
     }
 };
@@ -515,6 +516,7 @@ public:
 "Recursion uses an invisible stack. Iterative methods use visible stacks and queues. Let's make the invisible visible!"
 
 #### Key Concepts:
+
 - **Stack (LIFO)**: Last In, First Out - like a stack of plates
 - **Queue (FIFO)**: First In, First Out - like a line at the store
 - **Recursion**: Uses the system's call stack automatically
@@ -536,7 +538,7 @@ public:
 
         while (!stk.empty()) {
             cout << "Step " << step++ << ":" << endl;
-            
+
             // Show stack contents
             cout << "  Stack contents (top to bottom): ";
             stack<TreeNode*> temp = stk;
@@ -580,7 +582,7 @@ public:
 
         while (!q.empty()) {
             cout << "Step " << step++ << ":" << endl;
-            
+
             // Show queue contents
             cout << "  Queue contents (front to back): ";
             queue<TreeNode*> temp = q;
@@ -611,13 +613,13 @@ public:
     // Compare recursive vs iterative call patterns
     void compareRecursiveVsIterative(TreeNode* root) {
         cout << "\n=== RECURSIVE VS ITERATIVE COMPARISON ===" << endl;
-        
+
         cout << "\nRecursive Preorder Call Pattern:" << endl;
         preorderRecursiveWithCallStack(root, 0);
-        
+
         cout << "\nIterative Preorder Stack Operations:" << endl;
         preorderStackVisualization(root);
-        
+
         cout << "\nKey Differences:" << endl;
         cout << "- Recursive: Uses system call stack (invisible)" << endl;
         cout << "- Iterative: Uses explicit stack (visible and controllable)" << endl;
@@ -632,9 +634,9 @@ private:
             return;
         }
 
-        cout << string(depth * 2, ' ') << "├── Process: " << root->data 
+        cout << string(depth * 2, ' ') << "├── Process: " << root->data
              << " (call stack depth: " << depth << ")" << endl;
-        
+
         preorderRecursiveWithCallStack(root->left, depth + 1);
         preorderRecursiveWithCallStack(root->right, depth + 1);
     }
@@ -651,6 +653,7 @@ private:
 "Each traversal has specific use cases. Let's learn when to choose each one!"
 
 #### Traversal Applications:
+
 - **Preorder**: Copying trees, prefix expressions, tree serialization
 - **Inorder**: Getting sorted data from BST, expression trees
 - **Postorder**: Deleting trees, calculating directory sizes, postfix expressions
@@ -691,7 +694,7 @@ public:
         if (root == nullptr) return;
 
         cout << "Boundary Traversal: ";
-        
+
         // Print root
         cout << root->data << " ";
 
@@ -786,10 +789,10 @@ int main() {
 
     // Build sample tree
     TreeNode* root = buildSampleTree();
-    
+
     // Test all traversals
     demonstrateAllTraversals(root);
-    
+
     // Test tree operations
     TreeOperations ops;
     cout << "\n=== TREE OPERATIONS TEST ===" << endl;
@@ -799,19 +802,19 @@ int main() {
     cout << "Maximum element: " << ops.findMaximum(root) << endl;
     cout << "Minimum element: " << ops.findMinimum(root) << endl;
     cout << "Search for 3: " << (ops.searchValue(root, 3) ? "Found" : "Not found") << endl;
-    
+
     // Test visualizations
     TraversalVisualizer visualizer;
     visualizer.compareRecursiveVsIterative(root);
-    
+
     // Test advanced patterns
     AdvancedTraversals advanced;
     advanced.printLevelWise(root);
     advanced.boundaryTraversal(root);
     advanced.findAllPaths(root);
-    
+
     cout << "\n=== WEEK 1 COMPLETE! ===" << endl;
-    
+
     return 0;
 }
 ```
@@ -823,6 +826,7 @@ int main() {
 ### Student Assessment Rubric
 
 **Basic Understanding (Must Have):**
+
 - [ ] Can explain what a tree is using real-world analogies
 - [ ] Can identify root, leaves, height, depth in any tree
 - [ ] Understands all four traversal types and their differences
@@ -830,6 +834,7 @@ int main() {
 - [ ] Understands base case and recursive case
 
 **Implementation Skills (Should Have):**
+
 - [ ] Can implement basic tree node structure
 - [ ] Can write all four traversal functions (recursive and iterative)
 - [ ] Can implement basic tree operations (height, count, search)
@@ -837,6 +842,7 @@ int main() {
 - [ ] Understands stack vs queue behavior
 
 **Advanced Thinking (Nice to Have):**
+
 - [ ] Understands when to use which traversal method
 - [ ] Can visualize and explain recursion vs iteration trade-offs
 - [ ] Can modify algorithms for different requirements
@@ -872,6 +878,7 @@ int main() {
 ## Next Week Preview
 
 In Week 2, we'll apply these traversal skills to solve complex problems:
+
 - Tree construction from traversal sequences
 - Path sum and maximum path problems
 - Tree validation and property checking
