@@ -1,4 +1,20 @@
-# Week 2: Tree Traversals Deep Dive - Teacher's Guide
+# Week 2: Tree Problem Solving & Applications - Teacher's Guide
+
+This document provides comprehensive teaching materials for Week 2, focusing entirely on solving tree problems using the foundational concepts and traversals learned in Week 1. Includes problem statements, brute force approaches, optimal solutions, complexity analysis, and teaching strategies for real-world tree applications.
+
+---
+
+## 🎯 Learning Objectives for Week 2
+
+By the end of this week, students should be able to:
+
+1. Apply tree traversals and basic operations to solve complex problems
+2. Recognize and classify different types of tree problems
+3. Implement tree construction algorithms from various inputs
+4. Solve path-related problems using different traversal strategies
+5. Validate tree properties and structures
+6. Optimize tree algorithms for better time/space complexity
+7. Handle edge cases and develop robust tree solutionsTraversals Deep Dive - Teacher's Guide
 
 This document provides comprehensive teaching materials for Week 2, focusing on all major tree traversals in C++ (inorder, postorder, level-order), including theory, code, brute force, recursive, and iterative solutions, stack/queue visualizations, and teaching strategies.
 
@@ -16,247 +32,1057 @@ By the end of this week, students should be able to:
 
 ---
 
-## Day 1-2: Inorder Traversal (DFS)
+## Day 1-2: All DFS Traversals (Recursive Deep Dive)
 
 ### 📚 Theory Introduction
 
 **Teacher's Explanation:**
-"Inorder traversal means visiting the left subtree first, then the root, then the right subtree. For binary search trees, this gives sorted order!"
+"Now that you understand basic tree operations, let's master the three ways to systematically visit every node in a tree. Think of these as different reading patterns for the same book!"
 
-#### Key Points:
-- Order: Left → Root → Right
-- Used for BSTs to get sorted data
+#### The Three DFS Traversal Orders:
+1. **Preorder**: Root → Left → Right (used for copying trees, prefix expressions)
+2. **Inorder**: Left → Root → Right (gives sorted order for BSTs)
+3. **Postorder**: Left → Right → Root (used for deleting trees, postfix expressions)
 
-### 💻 Recursive Inorder Traversal
+**Memory Trick**: "Pre" = before children, "In" = between children, "Post" = after children
 
-```cpp
-void inorderTraversal(TreeNode* root) {
-    if (root == nullptr) return;
-    inorderTraversal(root->left);
-    cout << root->data << " ";
-    inorderTraversal(root->right);
-}
-```
-
-### 💻 Iterative Inorder Traversal (Stack Visualization)
+### 💻 Complete DFS Implementation with Teaching Commentary
 
 ```cpp
-void inorderTraversalIterative(TreeNode* root) {
-    stack<TreeNode*> stk;
-    TreeNode* current = root;
-    while (current || !stk.empty()) {
-        while (current) {
-            stk.push(current);
-            current = current->left;
+#include <iostream>
+#include <stack>
+#include <vector>
+using namespace std;
+
+// Enhanced TreeNode for better debugging
+struct TreeNode {
+    int data;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+class TraversalExplainer {
+public:
+    // Preorder: Root -> Left -> Right
+    void preorderWithExplanation(TreeNode* root, int depth = 0) {
+        if (root == nullptr) {
+            cout << string(depth * 2, ' ') << "↳ null node reached" << endl;
+            return;
         }
-        current = stk.top(); stk.pop();
-        cout << current->data << " ";
-        current = current->right;
+
+        // PROCESS ROOT FIRST
+        cout << string(depth * 2, ' ') << "📍 Processing ROOT: " << root->data << endl;
+        
+        // Go LEFT
+        cout << string(depth * 2, ' ') << "⬅️ Going to LEFT child of " << root->data << endl;
+        preorderWithExplanation(root->left, depth + 1);
+        
+        // Go RIGHT  
+        cout << string(depth * 2, ' ') << "➡️ Going to RIGHT child of " << root->data << endl;
+        preorderWithExplanation(root->right, depth + 1);
+        
+        cout << string(depth * 2, ' ') << "✅ Finished with node " << root->data << endl;
     }
-}
+
+    // Inorder: Left -> Root -> Right
+    void inorderWithExplanation(TreeNode* root, int depth = 0) {
+        if (root == nullptr) {
+            cout << string(depth * 2, ' ') << "↳ null node reached" << endl;
+            return;
+        }
+
+        // Go LEFT FIRST
+        cout << string(depth * 2, ' ') << "⬅️ Going LEFT from " << root->data << endl;
+        inorderWithExplanation(root->left, depth + 1);
+        
+        // PROCESS ROOT IN MIDDLE
+        cout << string(depth * 2, ' ') << "📍 Processing ROOT: " << root->data << endl;
+        
+        // Go RIGHT LAST
+        cout << string(depth * 2, ' ') << "➡️ Going RIGHT from " << root->data << endl;
+        inorderWithExplanation(root->right, depth + 1);
+    }
+
+    // Postorder: Left -> Right -> Root
+    void postorderWithExplanation(TreeNode* root, int depth = 0) {
+        if (root == nullptr) {
+            cout << string(depth * 2, ' ') << "↳ null node reached" << endl;
+            return;
+        }
+
+        // Go LEFT FIRST
+        cout << string(depth * 2, ' ') << "⬅️ Going LEFT from " << root->data << endl;
+        postorderWithExplanation(root->left, depth + 1);
+        
+        // Go RIGHT SECOND
+        cout << string(depth * 2, ' ') << "➡️ Going RIGHT from " << root->data << endl;
+        postorderWithExplanation(root->right, depth + 1);
+        
+        // PROCESS ROOT LAST
+        cout << string(depth * 2, ' ') << "📍 Processing ROOT: " << root->data << " (AFTER children)" << endl;
+    }
+};
 ```
 
-### 📝 Problem: Print Inorder Traversal
+### 🎯 Step-by-Step Execution Comparison
 
-#### Problem Statement
-Given a binary tree, print its inorder traversal.
+**Teacher Instructions:**
+"Let's trace all three traversals on the same tree to see the differences!"
 
-#### Brute Force Approach
-- Use recursion to visit all nodes
+For tree: 
+```
+    1
+   / \
+  2   3
+ / \
+4   5
+```
 
-#### Optimal Approach
-- Use stack for iterative traversal
+**Execution Order Comparison:**
 
-#### Complexity
-| Approach   | Time | Space |
-|------------|------|-------|
-| Recursive  | O(n) | O(h)  |
-| Iterative  | O(n) | O(h)  |
+| Step | Preorder | Inorder | Postorder |
+|------|----------|---------|-----------|
+| 1    | 1        | 4       | 4         |
+| 2    | 2        | 2       | 5         |
+| 3    | 4        | 5       | 2         |
+| 4    | 5        | 1       | 3         |
+| 5    | 3        | 3       | 1         |
+
+**Teaching Activity:**
+"Notice how the ROOT (1) appears in different positions: first, middle, last!"
+
+### 🔍 Problem 1: Implement All DFS Traversals
+
+#### 📋 Problem Statement
+
+**Given**: A binary tree
+**Task**: Implement preorder, inorder, and postorder traversals
+**Return**: Print the traversal sequences
+
+#### 🐌 Brute Force Approach
+
+**Teacher's Explanation:**
+"The most direct approach is using recursion - it naturally handles the call stack for us."
+
+```cpp
+// Brute Force: Simple recursive implementation
+class BruteForceTraversals {
+public:
+    void preorderBruteForce(TreeNode* root, vector<int>& result) {
+        if (root == nullptr) return;
+        result.push_back(root->data);  // Process root
+        preorderBruteForce(root->left, result);   // Go left
+        preorderBruteForce(root->right, result);  // Go right
+    }
+
+    void inorderBruteForce(TreeNode* root, vector<int>& result) {
+        if (root == nullptr) return;
+        inorderBruteForce(root->left, result);    // Go left first
+        result.push_back(root->data);   // Process root in middle
+        inorderBruteForce(root->right, result);   // Go right last
+    }
+
+    void postorderBruteForce(TreeNode* root, vector<int>& result) {
+        if (root == nullptr) return;
+        postorderBruteForce(root->left, result);  // Go left first
+        postorderBruteForce(root->right, result); // Go right second
+        result.push_back(root->data);   // Process root last
+    }
+};
+```
+
+**Brute Force Analysis:**
+- **Time Complexity**: O(n) - visit each node once
+- **Space Complexity**: O(h) - recursion stack depth
+- **Issues**: No control over recursion depth, potential stack overflow
+
+#### ⚡ Optimal Recursive Approach
+
+**Teacher's Explanation:**
+"The recursive approach is actually optimal for most cases, but let's add better debugging and control!"
+
+```cpp
+// Optimal Recursive: Enhanced with debugging and control
+class OptimalRecursiveTraversals {
+public:
+    vector<int> preorderOptimalRecursive(TreeNode* root) {
+        vector<int> result;
+        cout << "=== PREORDER TRAVERSAL (Root->Left->Right) ===" << endl;
+        preorderHelper(root, result, 0);
+        return result;
+    }
+
+    vector<int> inorderOptimalRecursive(TreeNode* root) {
+        vector<int> result;
+        cout << "=== INORDER TRAVERSAL (Left->Root->Right) ===" << endl;
+        inorderHelper(root, result, 0);
+        return result;
+    }
+
+    vector<int> postorderOptimalRecursive(TreeNode* root) {
+        vector<int> result;
+        cout << "=== POSTORDER TRAVERSAL (Left->Right->Root) ===" << endl;
+        postorderHelper(root, result, 0);
+        return result;
+    }
+
+private:
+    void preorderHelper(TreeNode* root, vector<int>& result, int depth) {
+        if (root == nullptr) return;
+        
+        cout << string(depth * 2, ' ') << "Visit: " << root->data << " (depth " << depth << ")" << endl;
+        result.push_back(root->data);
+        
+        preorderHelper(root->left, result, depth + 1);
+        preorderHelper(root->right, result, depth + 1);
+    }
+
+    void inorderHelper(TreeNode* root, vector<int>& result, int depth) {
+        if (root == nullptr) return;
+        
+        inorderHelper(root->left, result, depth + 1);
+        
+        cout << string(depth * 2, ' ') << "Visit: " << root->data << " (depth " << depth << ")" << endl;
+        result.push_back(root->data);
+        
+        inorderHelper(root->right, result, depth + 1);
+    }
+
+    void postorderHelper(TreeNode* root, vector<int>& result, int depth) {
+        if (root == nullptr) return;
+        
+        postorderHelper(root->left, result, depth + 1);
+        postorderHelper(root->right, result, depth + 1);
+        
+        cout << string(depth * 2, ' ') << "Visit: " << root->data << " (depth " << depth << ")" << endl;
+        result.push_back(root->data);
+    }
+};
+```
+
+#### ⚡ Optimal Iterative Approach
+
+**Teacher's Explanation:**
+"Sometimes we need to avoid recursion. Let's use explicit stacks to mimic what recursion does automatically!"
+
+```cpp
+// Optimal Iterative: Using explicit stacks
+class OptimalIterativeTraversals {
+public:
+    vector<int> preorderOptimalIterative(TreeNode* root) {
+        vector<int> result;
+        if (root == nullptr) return result;
+
+        stack<TreeNode*> stk;
+        stk.push(root);
+
+        cout << "=== ITERATIVE PREORDER USING STACK ===" << endl;
+
+        while (!stk.empty()) {
+            TreeNode* current = stk.top();
+            stk.pop();
+
+            cout << "Processing: " << current->data << endl;
+            result.push_back(current->data);
+
+            // Push right first, then left (so left is processed first)
+            if (current->right) {
+                stk.push(current->right);
+                cout << "  Pushed right child: " << current->right->data << endl;
+            }
+            if (current->left) {
+                stk.push(current->left);
+                cout << "  Pushed left child: " << current->left->data << endl;
+            }
+        }
+
+        return result;
+    }
+
+    vector<int> inorderOptimalIterative(TreeNode* root) {
+        vector<int> result;
+        stack<TreeNode*> stk;
+        TreeNode* current = root;
+
+        cout << "=== ITERATIVE INORDER USING STACK ===" << endl;
+
+        while (current != nullptr || !stk.empty()) {
+            // Go to leftmost node
+            while (current != nullptr) {
+                cout << "Going left, pushing: " << current->data << endl;
+                stk.push(current);
+                current = current->left;
+            }
+
+            // Current is null, so we backtrack
+            current = stk.top();
+            stk.pop();
+            
+            cout << "Processing: " << current->data << endl;
+            result.push_back(current->data);
+
+            // Visit right subtree
+            current = current->right;
+        }
+
+        return result;
+    }
+
+    vector<int> postorderOptimalIterative(TreeNode* root) {
+        vector<int> result;
+        if (root == nullptr) return result;
+
+        stack<TreeNode*> stk1, stk2;
+        stk1.push(root);
+
+        cout << "=== ITERATIVE POSTORDER USING TWO STACKS ===" << endl;
+
+        // First stack for traversal, second stack for reversal
+        while (!stk1.empty()) {
+            TreeNode* node = stk1.top();
+            stk1.pop();
+            stk2.push(node);
+
+            cout << "Moved " << node->data << " to second stack" << endl;
+
+            if (node->left) {
+                stk1.push(node->left);
+                cout << "  Pushed left child: " << node->left->data << endl;
+            }
+            if (node->right) {
+                stk1.push(node->right);
+                cout << "  Pushed right child: " << node->right->data << endl;
+            }
+        }
+
+        // Pop from second stack for correct postorder
+        while (!stk2.empty()) {
+            TreeNode* node = stk2.top();
+            stk2.pop();
+            cout << "Processing: " << node->data << endl;
+            result.push_back(node->data);
+        }
+
+        return result;
+    }
+};
+```
+
+**Analysis Comparison:**
+
+| Approach    | Time | Space | Pros | Cons |
+|-------------|------|-------|------|------|
+| Recursive   | O(n) | O(h)  | Clean, intuitive | Stack overflow risk |
+| Iterative   | O(n) | O(h)  | No recursion limit | More complex code |
+
+**Teaching Moment:**
+"Iterative versions give us more control but require understanding how recursion works!"
 
 ---
 
-## Day 3: Postorder Traversal (DFS)
+## Day 3-4: Level-Order Traversal (BFS) & Advanced Traversal Patterns
 
 ### 📚 Theory Introduction
 
 **Teacher's Explanation:**
-"Postorder means visiting children before the parent. Useful for deleting trees, evaluating expressions."
+"Level-order traversal visits nodes level by level, left to right. It's fundamentally different from DFS - we use a queue instead of recursion or stack!"
 
-#### Key Points:
-- Order: Left → Right → Root
+#### Key Concepts:
+- **BFS vs DFS**: Breadth-first explores horizontally before going deeper
+- **Queue-based**: FIFO (First In, First Out) structure
+- **Applications**: Finding shortest paths, serialization, level-wise processing
 
-### 💻 Recursive Postorder Traversal
+### 💻 Level-Order Implementation with Queue Visualization
 
 ```cpp
-void postorderTraversal(TreeNode* root) {
-    if (root == nullptr) return;
-    postorderTraversal(root->left);
-    postorderTraversal(root->right);
-    cout << root->data << " ";
+#include <queue>
+
+class LevelOrderExplainer {
+public:
+    vector<int> levelOrderOptimal(TreeNode* root) {
+        vector<int> result;
+        if (root == nullptr) return result;
+
+        queue<TreeNode*> q;
+        q.push(root);
+
+        cout << "=== LEVEL-ORDER TRAVERSAL USING QUEUE ===" << endl;
+
+        while (!q.empty()) {
+            TreeNode* current = q.front();
+            q.pop();
+
+            cout << "Processing: " << current->data << " (queue size: " << q.size() << ")" << endl;
+            result.push_back(current->data);
+
+            if (current->left) {
+                q.push(current->left);
+                cout << "  Added left child: " << current->left->data << endl;
+            }
+            if (current->right) {
+                q.push(current->right);
+                cout << "  Added right child: " << current->right->data << endl;
+            }
+
+            cout << "  Current queue: ";
+            queue<TreeNode*> temp = q;
+            while (!temp.empty()) {
+                cout << temp.front()->data << " ";
+                temp.pop();
+            }
+            cout << endl;
+        }
+
+        return result;
+    }
+
+    // Level-wise printing (each level on separate line)
+    vector<vector<int>> levelOrderByLevels(TreeNode* root) {
+        vector<vector<int>> result;
+        if (root == nullptr) return result;
+
+        queue<TreeNode*> q;
+        q.push(root);
+
+        cout << "=== LEVEL-WISE PRINTING ===" << endl;
+
+        while (!q.empty()) {
+            int levelSize = q.size();
+            vector<int> currentLevel;
+
+            cout << "Level " << result.size() << ": ";
+
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode* node = q.front();
+                q.pop();
+
+                cout << node->data << " ";
+                currentLevel.push_back(node->data);
+
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
+            }
+
+            cout << endl;
+            result.push_back(currentLevel);
+        }
+
+        return result;
+    }
+};
+```
+
+### 🔍 Problem 2: Advanced Traversal Patterns
+
+#### 📋 Problem Statement
+
+**Given**: A binary tree
+**Task**: Implement zigzag traversal (alternate left-to-right and right-to-left)
+**Example**:
+```
+Tree:     3
+         / \
+        9   20
+           /  \
+          15   7
+
+Zigzag: [3], [20, 9], [15, 7]
+```
+
+#### 🐌 Brute Force Approach
+
+```cpp
+// Brute Force: Level-order + reverse alternate levels
+vector<vector<int>> zigzagBruteForce(TreeNode* root) {
+    vector<vector<int>> levels = levelOrderByLevels(root);
+    
+    for (int i = 1; i < levels.size(); i += 2) {
+        reverse(levels[i].begin(), levels[i].end());
+    }
+    
+    return levels;
 }
 ```
 
-### 💻 Iterative Postorder Traversal (Stack Visualization)
+#### ⚡ Optimal Approach
 
 ```cpp
-void postorderTraversalIterative(TreeNode* root) {
-    if (!root) return;
-    stack<TreeNode*> stk1, stk2;
-    stk1.push(root);
-    while (!stk1.empty()) {
-        TreeNode* node = stk1.top(); stk1.pop();
-        stk2.push(node);
-        if (node->left) stk1.push(node->left);
-        if (node->right) stk1.push(node->right);
+// Optimal: Two stacks for zigzag pattern
+vector<vector<int>> zigzagOptimal(TreeNode* root) {
+    vector<vector<int>> result;
+    if (root == nullptr) return result;
+
+    stack<TreeNode*> currentLevel, nextLevel;
+    currentLevel.push(root);
+    bool leftToRight = true;
+
+    cout << "=== ZIGZAG TRAVERSAL USING TWO STACKS ===" << endl;
+
+    while (!currentLevel.empty()) {
+        vector<int> levelValues;
+        
+        cout << "Level direction: " << (leftToRight ? "Left->Right" : "Right->Left") << endl;
+
+        while (!currentLevel.empty()) {
+            TreeNode* node = currentLevel.top();
+            currentLevel.pop();
+            
+            cout << "Processing: " << node->data << endl;
+            levelValues.push_back(node->data);
+
+            if (leftToRight) {
+                if (node->left) {
+                    nextLevel.push(node->left);
+                    cout << "  Added left child: " << node->left->data << endl;
+                }
+                if (node->right) {
+                    nextLevel.push(node->right);
+                    cout << "  Added right child: " << node->right->data << endl;
+                }
+            } else {
+                if (node->right) {
+                    nextLevel.push(node->right);
+                    cout << "  Added right child: " << node->right->data << endl;
+                }
+                if (node->left) {
+                    nextLevel.push(node->left);
+                    cout << "  Added left child: " << node->left->data << endl;
+                }
+            }
+        }
+
+        result.push_back(levelValues);
+        swap(currentLevel, nextLevel);
+        leftToRight = !leftToRight;
     }
-    while (!stk2.empty()) {
-        cout << stk2.top()->data << " ";
-        stk2.pop();
-    }
+
+    return result;
 }
 ```
-
-### 📝 Problem: Print Postorder Traversal
-
-#### Problem Statement
-Given a binary tree, print its postorder traversal.
-
-#### Brute Force Approach
-- Use recursion
-
-#### Optimal Approach
-- Use two stacks for iterative traversal
-
-#### Complexity
-| Approach   | Time | Space |
-|------------|------|-------|
-| Recursive  | O(n) | O(h)  |
-| Iterative  | O(n) | O(n)  |
 
 ---
 
-## Day 4: Level-Order Traversal (BFS)
+## Day 5-6: Tree Construction & Advanced Problems
 
-### 📚 Theory Introduction
+### 📚 Theory: Tree Construction from Traversals
 
 **Teacher's Explanation:**
-"Level-order means visiting nodes level by level, left to right. Uses a queue."
+"One of the most important skills is rebuilding a tree from its traversal sequences. This requires understanding the unique properties of each traversal!"
 
-#### Key Points:
-- Order: Level by level
-- Used for shortest path, serialization
+#### Key Insights:
+- **Preorder**: First element is always root
+- **Inorder**: Root divides left and right subtrees
+- **Postorder**: Last element is always root
+- **Need TWO traversals** to uniquely determine tree structure
 
-### 💻 Level-Order Traversal (Queue Visualization)
+### 🔍 Problem 3: Construct Tree from Preorder and Inorder
+
+#### 📋 Problem Statement
+
+**Given**: Preorder and inorder traversal arrays
+**Build**: The original binary tree
+**Return**: Root of the constructed tree
+
+**Example**:
+```
+Preorder: [3,9,20,15,7]
+Inorder:  [9,3,15,20,7]
+
+Result Tree:
+    3
+   / \
+  9   20
+     /  \
+    15   7
+```
+
+#### 🐌 Brute Force Approach
 
 ```cpp
-void levelOrderTraversal(TreeNode* root) {
-    if (!root) return;
-    queue<TreeNode*> q;
-    q.push(root);
-    while (!q.empty()) {
-        TreeNode* node = q.front(); q.pop();
-        cout << node->data << " ";
-        if (node->left) q.push(node->left);
-        if (node->right) q.push(node->right);
+// Brute Force: Linear search for root in inorder
+TreeNode* buildTreeBruteForce(vector<int>& preorder, vector<int>& inorder) {
+    return buildHelper(preorder, 0, preorder.size() - 1, 
+                      inorder, 0, inorder.size() - 1);
+}
+
+TreeNode* buildHelper(vector<int>& preorder, int preStart, int preEnd,
+                     vector<int>& inorder, int inStart, int inEnd) {
+    if (preStart > preEnd || inStart > inEnd) return nullptr;
+
+    // Root is first element in preorder
+    int rootVal = preorder[preStart];
+    TreeNode* root = new TreeNode(rootVal);
+
+    cout << "Creating root: " << rootVal << endl;
+
+    // Find root in inorder (linear search - brute force)
+    int rootIndexInorder = -1;
+    for (int i = inStart; i <= inEnd; i++) {
+        if (inorder[i] == rootVal) {
+            rootIndexInorder = i;
+            break;
+        }
     }
+
+    if (rootIndexInorder == -1) return nullptr; // Invalid input
+
+    // Calculate subtree sizes
+    int leftSubtreeSize = rootIndexInorder - inStart;
+
+    cout << "Root " << rootVal << " has " << leftSubtreeSize << " left nodes" << endl;
+
+    // Recursively build left and right subtrees
+    root->left = buildHelper(preorder, preStart + 1, preStart + leftSubtreeSize,
+                            inorder, inStart, rootIndexInorder - 1);
+    
+    root->right = buildHelper(preorder, preStart + leftSubtreeSize + 1, preEnd,
+                             inorder, rootIndexInorder + 1, inEnd);
+
+    return root;
 }
 ```
 
-### 📝 Problem: Print Level-Order Traversal
-
-#### Problem Statement
-Given a binary tree, print its level-order traversal.
-
-#### Brute Force Approach
-- Use queue to visit nodes level by level
-
-#### Complexity
-| Approach   | Time | Space |
-|------------|------|-------|
-| Iterative  | O(n) | O(w)  |
-
----
-
-## Day 5: Traversal Applications & Practice Problems
-
-### 🔍 Problem 1: Print All Leaf Nodes (Inorder)
-
-#### Problem Statement
-Print all leaf nodes of a binary tree in inorder.
-
-#### Brute Force Approach
-- Traverse inorder, print if node is leaf
+#### ⚡ Optimal Approach
 
 ```cpp
-void printLeafNodes(TreeNode* root) {
-    if (!root) return;
-    printLeafNodes(root->left);
-    if (!root->left && !root->right) cout << root->data << " ";
-    printLeafNodes(root->right);
-}
-```
+// Optimal: HashMap for O(1) root lookup
+class TreeBuilder {
+private:
+    unordered_map<int, int> inorderMap;
+    int preorderIndex;
 
-### 🔍 Problem 2: Print Nodes at Kth Level (Level-Order)
-
-#### Problem Statement
-Print all nodes at level k.
-
-#### Brute Force Approach
-- Use level-order, track level
-
-```cpp
-void printNodesAtLevel(TreeNode* root, int k) {
-    if (!root) return;
-    queue<pair<TreeNode*, int>> q;
-    q.push({root, 0});
-    while (!q.empty()) {
-        auto [node, level] = q.front(); q.pop();
-        if (level == k) cout << node->data << " ";
-        if (node->left) q.push({node->left, level + 1});
-        if (node->right) q.push({node->right, level + 1});
+public:
+    TreeNode* buildTreeOptimal(vector<int>& preorder, vector<int>& inorder) {
+        // Build hashmap for O(1) inorder lookups
+        for (int i = 0; i < inorder.size(); i++) {
+            inorderMap[inorder[i]] = i;
+        }
+        
+        preorderIndex = 0;
+        return buildOptimalHelper(preorder, 0, inorder.size() - 1);
     }
-}
+
+private:
+    TreeNode* buildOptimalHelper(vector<int>& preorder, int inStart, int inEnd) {
+        if (inStart > inEnd) return nullptr;
+
+        // Root is current element in preorder
+        int rootVal = preorder[preorderIndex++];
+        TreeNode* root = new TreeNode(rootVal);
+
+        cout << "Creating root: " << rootVal << " (preorder index: " << preorderIndex - 1 << ")" << endl;
+
+        // Find root position in inorder using hashmap - O(1)
+        int rootIndexInorder = inorderMap[rootVal];
+
+        cout << "Root " << rootVal << " found at inorder index: " << rootIndexInorder << endl;
+
+        // Build left subtree first (preorder: root, left, right)
+        root->left = buildOptimalHelper(preorder, inStart, rootIndexInorder - 1);
+        
+        // Build right subtree
+        root->right = buildOptimalHelper(preorder, rootIndexInorder + 1, inEnd);
+
+        return root;
+    }
+};
+```
+
+**Analysis Comparison:**
+
+| Approach | Time | Space | Why? |
+|----------|------|-------|------|
+| Brute Force | O(n²) | O(n) | Linear search for each node |
+| Optimal | O(n) | O(n) | HashMap for O(1) lookups |
+
+### 🔍 Problem 4: Tree Diameter (Advanced Recursion)
+
+#### 📋 Problem Statement
+
+**Given**: A binary tree
+**Find**: The longest path between any two nodes (diameter)
+**Note**: Path doesn't have to go through root
+
+**Example**:
+```
+Tree:     1
+         / \
+        2   3
+       / \
+      4   5
+
+Diameter = 4 (path: 4->2->5->1->3 or 4->2->1->3)
+```
+
+#### 🐌 Brute Force Approach
+
+```cpp
+// Brute Force: Calculate height for each node
+class DiameterBruteForce {
+public:
+    int diameterBruteForce(TreeNode* root) {
+        if (root == nullptr) return 0;
+
+        // Option 1: Diameter passes through current root
+        int leftHeight = getHeight(root->left);
+        int rightHeight = getHeight(root->right);
+        int diameterThroughRoot = leftHeight + rightHeight;
+
+        cout << "Node " << root->data << ": left height = " << leftHeight 
+             << ", right height = " << rightHeight 
+             << ", diameter through root = " << diameterThroughRoot << endl;
+
+        // Option 2: Diameter is in left subtree
+        int leftDiameter = diameterBruteForce(root->left);
+
+        // Option 3: Diameter is in right subtree  
+        int rightDiameter = diameterBruteForce(root->right);
+
+        return max({diameterThroughRoot, leftDiameter, rightDiameter});
+    }
+
+private:
+    int getHeight(TreeNode* root) {
+        if (root == nullptr) return 0;
+        return 1 + max(getHeight(root->left), getHeight(root->right));
+    }
+};
+```
+
+#### ⚡ Optimal Approach
+
+```cpp
+// Optimal: Single pass using helper function
+class DiameterOptimal {
+private:
+    int maxDiameter;
+
+public:
+    int diameterOptimal(TreeNode* root) {
+        maxDiameter = 0;
+        calculateHeightAndDiameter(root);
+        return maxDiameter;
+    }
+
+private:
+    int calculateHeightAndDiameter(TreeNode* root) {
+        if (root == nullptr) return 0;
+
+        cout << "Calculating for node: " << root->data << endl;
+
+        // Get heights of left and right subtrees
+        int leftHeight = calculateHeightAndDiameter(root->left);
+        int rightHeight = calculateHeightAndDiameter(root->right);
+
+        // Update diameter (longest path through current node)
+        int currentDiameter = leftHeight + rightHeight;
+        maxDiameter = max(maxDiameter, currentDiameter);
+
+        cout << "Node " << root->data << ": left_h=" << leftHeight 
+             << ", right_h=" << rightHeight 
+             << ", diameter=" << currentDiameter 
+             << ", max_so_far=" << maxDiameter << endl;
+
+        // Return height of current node
+        return 1 + max(leftHeight, rightHeight);
+    }
+};
+```
+
+**Analysis Comparison:**
+
+| Approach | Time | Space | Why? |
+|----------|------|-------|------|
+| Brute Force | O(n²) | O(h) | Height calculation for each node |
+| Optimal | O(n) | O(h) | Single traversal with combined logic |
+
+---
+
+## Day 7: Advanced Tree Problems & Path Algorithms
+
+### 🔍 Problem 5: Path Sum Problems
+
+#### 📋 Problem Statement
+
+**Given**: A binary tree and a target sum
+**Find**: Whether there exists a root-to-leaf path with the given sum
+**Extension**: Find all such paths, find path with maximum sum
+
+#### 🐌 Brute Force Approach
+
+```cpp
+// Brute Force: Generate all root-to-leaf paths, then check sums
+class PathSumBruteForce {
+public:
+    bool hasPathSumBruteForce(TreeNode* root, int targetSum) {
+        vector<vector<int>> allPaths = getAllPaths(root);
+        
+        for (auto& path : allPaths) {
+            int sum = 0;
+            for (int val : path) sum += val;
+            if (sum == targetSum) return true;
+        }
+        
+        return false;
+    }
+
+private:
+    vector<vector<int>> getAllPaths(TreeNode* root) {
+        vector<vector<int>> result;
+        if (root == nullptr) return result;
+        
+        vector<int> currentPath;
+        findAllPaths(root, currentPath, result);
+        return result;
+    }
+
+    void findAllPaths(TreeNode* root, vector<int>& currentPath, vector<vector<int>>& result) {
+        if (root == nullptr) return;
+        
+        currentPath.push_back(root->data);
+        
+        if (root->left == nullptr && root->right == nullptr) {
+            result.push_back(currentPath);
+        } else {
+            findAllPaths(root->left, currentPath, result);
+            findAllPaths(root->right, currentPath, result);
+        }
+        
+        currentPath.pop_back();
+    }
+};
+```
+
+#### ⚡ Optimal Approach
+
+```cpp
+// Optimal: Track running sum during traversal
+class PathSumOptimal {
+public:
+    bool hasPathSumOptimal(TreeNode* root, int targetSum) {
+        cout << "=== OPTIMAL PATH SUM SEARCH ===" << endl;
+        return hasPathSumHelper(root, targetSum, 0, 0);
+    }
+
+    vector<vector<int>> findAllPathSums(TreeNode* root, int targetSum) {
+        vector<vector<int>> result;
+        vector<int> currentPath;
+        cout << "=== FINDING ALL PATHS WITH SUM " << targetSum << " ===" << endl;
+        findAllPathsHelper(root, targetSum, 0, currentPath, result, 0);
+        return result;
+    }
+
+    int maxPathSum(TreeNode* root) {
+        int maxSum = INT_MIN;
+        cout << "=== FINDING MAXIMUM PATH SUM ===" << endl;
+        maxPathSumHelper(root, maxSum);
+        return maxSum;
+    }
+
+private:
+    bool hasPathSumHelper(TreeNode* root, int target, int currentSum, int depth) {
+        if (root == nullptr) return false;
+
+        currentSum += root->data;
+        cout << string(depth * 2, ' ') << "Node " << root->data 
+             << ", current sum: " << currentSum << ", target: " << target << endl;
+
+        // Check if we reached a leaf with target sum
+        if (root->left == nullptr && root->right == nullptr) {
+            bool found = (currentSum == target);
+            cout << string(depth * 2, ' ') << "Leaf reached! Sum matches: " << (found ? "YES" : "NO") << endl;
+            return found;
+        }
+
+        // Explore both subtrees
+        return hasPathSumHelper(root->left, target, currentSum, depth + 1) ||
+               hasPathSumHelper(root->right, target, currentSum, depth + 1);
+    }
+
+    void findAllPathsHelper(TreeNode* root, int target, int currentSum, 
+                           vector<int>& currentPath, vector<vector<int>>& result, int depth) {
+        if (root == nullptr) return;
+
+        currentSum += root->data;
+        currentPath.push_back(root->data);
+
+        cout << string(depth * 2, ' ') << "Added " << root->data 
+             << ", current sum: " << currentSum << endl;
+
+        if (root->left == nullptr && root->right == nullptr) {
+            if (currentSum == target) {
+                cout << string(depth * 2, ' ') << "Found valid path!" << endl;
+                result.push_back(currentPath);
+            }
+        } else {
+            findAllPathsHelper(root->left, target, currentSum, currentPath, result, depth + 1);
+            findAllPathsHelper(root->right, target, currentSum, currentPath, result, depth + 1);
+        }
+
+        currentPath.pop_back(); // Backtrack
+        cout << string(depth * 2, ' ') << "Backtracked from " << root->data << endl;
+    }
+
+    int maxPathSumHelper(TreeNode* root, int& maxSum) {
+        if (root == nullptr) return 0;
+
+        cout << "Processing node: " << root->data << endl;
+
+        // Get max path sum from left and right (consider only positive contributions)
+        int leftMax = max(0, maxPathSumHelper(root->left, maxSum));
+        int rightMax = max(0, maxPathSumHelper(root->right, maxSum));
+
+        // Max path through current node
+        int pathThroughNode = root->data + leftMax + rightMax;
+        maxSum = max(maxSum, pathThroughNode);
+
+        cout << "Node " << root->data << ": left_max=" << leftMax 
+             << ", right_max=" << rightMax 
+             << ", path_through=" << pathThroughNode 
+             << ", global_max=" << maxSum << endl;
+
+        // Return max path starting from this node (can only use one side)
+        return root->data + max(leftMax, rightMax);
+    }
+};
+```
+
+### 🔍 Problem 6: Lowest Common Ancestor (LCA)
+
+#### 📋 Problem Statement
+
+**Given**: A binary tree and two nodes p and q
+**Find**: The lowest (deepest) common ancestor of p and q
+**Definition**: LCA is the deepest node that has both p and q as descendants
+
+#### 🐌 Brute Force Approach
+
+```cpp
+// Brute Force: Find paths to both nodes, then compare
+class LCABruteForce {
+public:
+    TreeNode* lowestCommonAncestorBruteForce(TreeNode* root, TreeNode* p, TreeNode* q) {
+        vector<TreeNode*> pathToP, pathToQ;
+        
+        if (!findPath(root, p, pathToP) || !findPath(root, q, pathToQ)) {
+            return nullptr;
+        }
+
+        cout << "Path to " << p->data << ": ";
+        for (TreeNode* node : pathToP) cout << node->data << " ";
+        cout << endl;
+
+        cout << "Path to " << q->data << ": ";
+        for (TreeNode* node : pathToQ) cout << node->data << " ";
+        cout << endl;
+
+        // Find last common node in both paths
+        TreeNode* lca = nullptr;
+        int i = 0;
+        while (i < pathToP.size() && i < pathToQ.size() && pathToP[i] == pathToQ[i]) {
+            lca = pathToP[i];
+            i++;
+        }
+
+        return lca;
+    }
+
+private:
+    bool findPath(TreeNode* root, TreeNode* target, vector<TreeNode*>& path) {
+        if (root == nullptr) return false;
+
+        path.push_back(root);
+
+        if (root == target) return true;
+
+        if (findPath(root->left, target, path) || findPath(root->right, target, path)) {
+            return true;
+        }
+
+        path.pop_back(); // Backtrack
+        return false;
+    }
+};
+```
+
+#### ⚡ Optimal Approach
+
+```cpp
+// Optimal: Single traversal with recursive logic
+class LCAOptimal {
+public:
+    TreeNode* lowestCommonAncestorOptimal(TreeNode* root, TreeNode* p, TreeNode* q) {
+        cout << "=== FINDING LCA OF " << p->data << " AND " << q->data << " ===" << endl;
+        return lcaHelper(root, p, q, 0);
+    }
+
+private:
+    TreeNode* lcaHelper(TreeNode* root, TreeNode* p, TreeNode* q, int depth) {
+        if (root == nullptr) {
+            cout << string(depth * 2, ' ') << "Reached null" << endl;
+            return nullptr;
+        }
+
+        cout << string(depth * 2, ' ') << "Checking node: " << root->data << endl;
+
+        // If current node is one of the targets
+        if (root == p || root == q) {
+            cout << string(depth * 2, ' ') << "Found target node: " << root->data << endl;
+            return root;
+        }
+
+        // Search in left and right subtrees
+        TreeNode* leftLCA = lcaHelper(root->left, p, q, depth + 1);
+        TreeNode* rightLCA = lcaHelper(root->right, p, q, depth + 1);
+
+        cout << string(depth * 2, ' ') << "Node " << root->data 
+             << " - Left result: " << (leftLCA ? to_string(leftLCA->data) : "null")
+             << ", Right result: " << (rightLCA ? to_string(rightLCA->data) : "null") << endl;
+
+        // If both subtrees return non-null, current node is LCA
+        if (leftLCA && rightLCA) {
+            cout << string(depth * 2, ' ') << "LCA found at: " << root->data << endl;
+            return root;
+        }
+
+        // Return the non-null result
+        return leftLCA ? leftLCA : rightLCA;
+    }
+};
 ```
 
 ---
 
-## Day 6-7: Assessment, Visualization, and Student Exercises
+## 📊 Advanced Complexity Analysis & Comparison Summary
 
-### 📝 Manual Stack/Queue Tracing
-- Draw stack/queue contents at each step for traversals
-- Have students act out stack/queue operations
-
-### 📝 Assignment: Implement All Traversals
-- Write recursive and iterative versions for all traversals
-- Trace stack/queue for sample trees
-
-### 📝 Complexity Analysis Table
-| Traversal   | Recursive | Iterative | Space (Best) |
-|-------------|-----------|-----------|--------------|
-| Inorder     | O(n)      | O(n)      | O(h)         |
-| Postorder   | O(n)      | O(n)      | O(h)/O(n)    |
-| Level-order | O(n)      | O(n)      | O(w)         |
-
-### 🗣️ Classroom Discussion Questions
-1. Why does inorder give sorted order for BST?
-2. How does stack/queue help in traversal?
-3. Can you write preorder iteratively?
-4. What is the difference between DFS and BFS?
-
-### 🎯 Common Student Mistakes
-- Forgetting to check for null nodes
-- Confusing traversal orders
-- Not understanding stack/queue operations
+| Problem | Approach | Time Complexity | Space Complexity | Key Insight |
+|---------|----------|----------------|------------------|-------------|
+| **All DFS Traversals** | Recursive | O(n) | O(h) | Natural recursion |
+| | Iterative | O(n) | O(h) | Explicit stack control |
+| **Level-Order** | Queue BFS | O(n) | O(w) | w = max width |
+| **Zigzag** | Two Stacks | O(n) | O(w) | Direction control |
+| **Tree Construction** | Brute Force | O(n²) | O(n) | Linear search each time |
+| | Optimal | O(n) | O(n) | HashMap for O(1) lookup |
+| **Diameter** | Brute Force | O(n²) | O(h) | Height calc per node |
+| | Optimal | O(n) | O(h) | Combined height+diameter |
+| **Path Sum** | Brute Force | O(n×p) | O(n×p) | p = avg path length |
+| | Optimal | O(n) | O(h) | Running sum tracking |
+| **LCA** | Brute Force | O(n) | O(h) | Two separate path finds |
+| | Optimal | O(n) | O(h) | Single traversal |
 
 ---
 
-## Complete Week 2 Implementation (C++)
+## 🎓 Complete Week 2 Implementation
 
 ```cpp
 #include <iostream>
 #include <vector>
 #include <stack>
 #include <queue>
+#include <unordered_map>
+#include <algorithm>
+#include <climits>
 using namespace std;
 
 struct TreeNode {
@@ -266,105 +1092,205 @@ struct TreeNode {
     TreeNode(int val) : data(val), left(nullptr), right(nullptr) {}
 };
 
-class TraversalOperations {
+class AdvancedTreeOperations {
 public:
-    void inorderRecursive(TreeNode* root) {
-        if (!root) return;
-        inorderRecursive(root->left);
-        cout << root->data << " ";
-        inorderRecursive(root->right);
+    // All DFS Traversals
+    vector<int> preorderRecursive(TreeNode* root) {
+        vector<int> result;
+        preorderHelper(root, result);
+        return result;
     }
-    void inorderIterative(TreeNode* root) {
+
+    vector<int> inorderRecursive(TreeNode* root) {
+        vector<int> result;
+        inorderHelper(root, result);
+        return result;
+    }
+
+    vector<int> postorderRecursive(TreeNode* root) {
+        vector<int> result;
+        postorderHelper(root, result);
+        return result;
+    }
+
+    vector<int> preorderIterative(TreeNode* root) {
+        vector<int> result;
+        if (!root) return result;
+        
         stack<TreeNode*> stk;
-        TreeNode* current = root;
-        while (current || !stk.empty()) {
-            while (current) {
-                stk.push(current);
-                current = current->left;
-            }
-            current = stk.top(); stk.pop();
-            cout << current->data << " ";
-            current = current->right;
+        stk.push(root);
+        
+        while (!stk.empty()) {
+            TreeNode* node = stk.top(); stk.pop();
+            result.push_back(node->data);
+            if (node->right) stk.push(node->right);
+            if (node->left) stk.push(node->left);
         }
+        return result;
     }
-    void postorderRecursive(TreeNode* root) {
-        if (!root) return;
-        postorderRecursive(root->left);
-        postorderRecursive(root->right);
-        cout << root->data << " ";
-    }
-    void postorderIterative(TreeNode* root) {
-        if (!root) return;
-        stack<TreeNode*> stk1, stk2;
-        stk1.push(root);
-        while (!stk1.empty()) {
-            TreeNode* node = stk1.top(); stk1.pop();
-            stk2.push(node);
-            if (node->left) stk1.push(node->left);
-            if (node->right) stk1.push(node->right);
-        }
-        while (!stk2.empty()) {
-            cout << stk2.top()->data << " ";
-            stk2.pop();
-        }
-    }
-    void levelOrder(TreeNode* root) {
-        if (!root) return;
+
+    vector<int> levelOrder(TreeNode* root) {
+        vector<int> result;
+        if (!root) return result;
+        
         queue<TreeNode*> q;
         q.push(root);
+        
         while (!q.empty()) {
             TreeNode* node = q.front(); q.pop();
-            cout << node->data << " ";
+            result.push_back(node->data);
             if (node->left) q.push(node->left);
             if (node->right) q.push(node->right);
         }
+        return result;
+    }
+
+    // Tree Construction
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        unordered_map<int, int> inorderMap;
+        for (int i = 0; i < inorder.size(); i++) {
+            inorderMap[inorder[i]] = i;
+        }
+        int preIndex = 0;
+        return buildHelper(preorder, preIndex, 0, inorder.size() - 1, inorderMap);
+    }
+
+    // Advanced Problems
+    int diameter(TreeNode* root) {
+        int maxDiam = 0;
+        calculateHeight(root, maxDiam);
+        return maxDiam;
+    }
+
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if (!root) return false;
+        if (!root->left && !root->right) return root->data == targetSum;
+        return hasPathSum(root->left, targetSum - root->data) ||
+               hasPathSum(root->right, targetSum - root->data);
+    }
+
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (!root || root == p || root == q) return root;
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+        return (left && right) ? root : (left ? left : right);
+    }
+
+private:
+    void preorderHelper(TreeNode* root, vector<int>& result) {
+        if (!root) return;
+        result.push_back(root->data);
+        preorderHelper(root->left, result);
+        preorderHelper(root->right, result);
+    }
+
+    void inorderHelper(TreeNode* root, vector<int>& result) {
+        if (!root) return;
+        inorderHelper(root->left, result);
+        result.push_back(root->data);
+        inorderHelper(root->right, result);
+    }
+
+    void postorderHelper(TreeNode* root, vector<int>& result) {
+        if (!root) return;
+        postorderHelper(root->left, result);
+        postorderHelper(root->right, result);
+        result.push_back(root->data);
+    }
+
+    TreeNode* buildHelper(vector<int>& preorder, int& preIndex, int inStart, int inEnd,
+                         unordered_map<int, int>& inorderMap) {
+        if (inStart > inEnd) return nullptr;
+        
+        TreeNode* root = new TreeNode(preorder[preIndex++]);
+        int inIndex = inorderMap[root->data];
+        
+        root->left = buildHelper(preorder, preIndex, inStart, inIndex - 1, inorderMap);
+        root->right = buildHelper(preorder, preIndex, inIndex + 1, inEnd, inorderMap);
+        
+        return root;
+    }
+
+    int calculateHeight(TreeNode* root, int& maxDiameter) {
+        if (!root) return 0;
+        int leftHeight = calculateHeight(root->left, maxDiameter);
+        int rightHeight = calculateHeight(root->right, maxDiameter);
+        maxDiameter = max(maxDiameter, leftHeight + rightHeight);
+        return 1 + max(leftHeight, rightHeight);
     }
 };
 
+// Test function
 int main() {
-    TraversalOperations ops;
+    AdvancedTreeOperations ops;
+    
+    // Create sample tree
     TreeNode* root = new TreeNode(1);
     root->left = new TreeNode(2);
     root->right = new TreeNode(3);
     root->left->left = new TreeNode(4);
     root->left->right = new TreeNode(5);
-    root->right->left = new TreeNode(6);
-    root->right->right = new TreeNode(7);
-
-    cout << "Inorder Recursive: ";
-    ops.inorderRecursive(root); cout << endl;
-    cout << "Inorder Iterative: ";
-    ops.inorderIterative(root); cout << endl;
-    cout << "Postorder Recursive: ";
-    ops.postorderRecursive(root); cout << endl;
-    cout << "Postorder Iterative: ";
-    ops.postorderIterative(root); cout << endl;
-    cout << "Level Order: ";
-    ops.levelOrder(root); cout << endl;
+    
+    // Test all operations
+    cout << "Preorder (Recursive): ";
+    auto preorder = ops.preorderRecursive(root);
+    for (int val : preorder) cout << val << " ";
+    cout << endl;
+    
+    cout << "Diameter: " << ops.diameter(root) << endl;
+    cout << "Has path sum 7: " << ops.hasPathSum(root, 7) << endl;
+    
     return 0;
 }
 ```
 
 ---
 
-## Week 2 Assessment Rubric
+## 🎓 Week 2 Assessment & Teaching Notes
 
-**Basic Understanding:**
-- [ ] Can explain all traversal types
-- [ ] Can trace traversals manually
-- [ ] Understands stack/queue role
+### Student Assessment Rubric
 
-**Implementation Skills:**
-- [ ] Can write recursive and iterative traversals
-- [ ] Can debug traversal code
+**Basic Understanding (Must Have):**
+- [ ] Can explain all four traversal types and their use cases
+- [ ] Can trace traversals manually on paper with stack/queue visualization
+- [ ] Understands difference between recursive and iterative approaches
+- [ ] Can identify when to use BFS vs DFS
 
-**Advanced Thinking:**
-- [ ] Can apply traversals to solve problems
-- [ ] Can analyze complexity
+**Implementation Skills (Should Have):**
+- [ ] Can implement all traversals recursively and iteratively
+- [ ] Can solve tree construction problems
+- [ ] Can implement diameter and path sum algorithms
+- [ ] Can debug tree traversal code
+
+**Advanced Thinking (Nice to Have):**
+- [ ] Understands advanced optimization techniques (hashmap for tree construction)
+- [ ] Can solve LCA and other complex tree problems
+- [ ] Can analyze time/space complexity trade-offs
+- [ ] Can modify algorithms for different requirements
+
+### 🗣️ Classroom Discussion Questions
+
+1. "Why does inorder traversal of BST give sorted order?"
+2. "When would you prefer iterative over recursive traversal?"
+3. "How does tree construction help in understanding traversals?"
+4. "What real-world problems use tree diameter concepts?"
+
+### 🎯 Common Student Mistakes to Watch For
+
+1. **Mixing up traversal orders** - practice with different trees
+2. **Stack/Queue confusion** - emphasize LIFO vs FIFO
+3. **Tree construction logic** - root identification and subtree division
+4. **Path problems backtracking** - forgetting to remove elements
+5. **LCA edge cases** - when one node is ancestor of another
 
 ---
 
 ## Next Week Preview
-- Binary Search Trees (BST): insertion, search, deletion
-- BST properties and applications
-- Practice with BST problems
+
+In Week 3, we'll explore:
+- Binary Search Trees (BST): properties, insertion, deletion
+- BST validation and optimization
+- BST-specific algorithms and applications
+- Converting between different tree representations
+
+**Congratulations on mastering advanced tree traversals and algorithms!**

@@ -4,7 +4,7 @@ This plan is designed to help students master both the theoretical and coding as
 
 ---
 
-## Week 1: Introduction to Trees
+## Week 1: Tree Fundamentals & Traversals
 
 - **Theory:**
   - What is a tree? Terminology (nodes, edges, root, leaf, height, depth, level)
@@ -12,7 +12,15 @@ This plan is designed to help students master both the theoretical and coding as
   - Applications of trees (file systems, expression trees, decision trees)
   - Tree vs other data structures (arrays, linked lists)
   - Memory representation of trees
+  - Tree traversals: preorder, inorder, postorder, level-order
+  - How recursion works in tree traversals (call stack visualization)
+  - Stack frames and recursive calls visualization
+  - Time and space complexity analysis
+  - Differences between recursive and iterative approaches
 - **Coding:**
+
+  **Day 1-2: Basic Tree Structure & Operations**
+  
   - Implement basic tree node structure in C++:
     ```cpp
     struct TreeNode {
@@ -23,30 +31,12 @@ This plan is designed to help students master both the theoretical and coding as
     };
     ```
   - Create and connect nodes manually
-  - Simple tree traversal (preorder) - recursive approach
-  - Calculate height and count nodes recursively
-- **Practice Problems:**
-  - Build a tree from given structure
-  - Find maximum element in tree
+  - Basic tree operations: height, count nodes, count leaves
+  - Find maximum/minimum element in tree
   - Check if two trees are identical
-- **Resources:**
-  - GeeksforGeeks: Tree Data Structure
-  - Visualgo.net: Tree basics
+  - Build tree from array representation
 
----
-
-## Week 2: Binary Trees & Traversals
-
-- **Theory:**
-  - Binary tree properties and characteristics
-  - Tree traversals: preorder, inorder, postorder, level-order
-  - How recursion works in tree traversals (call stack visualization)
-  - Stack frames and recursive calls visualization
-  - Time and space complexity analysis
-  - Differences between recursive and iterative approaches
-- **Coding:**
-
-  **Day 1-2: Recursive Traversals**
+  **Day 3-4: DFS Traversals (Recursive)**
 
   - Implement all three DFS traversals recursively:
     ```cpp
@@ -59,14 +49,9 @@ This plan is designed to help students master both the theoretical and coding as
     ```
   - Visualize call stack for each traversal with examples
   - Draw stack frames step by step
-
-  **Day 3-4: Stack Visualization & Understanding**
-
-  - Manually trace recursive calls with stack diagrams
   - Understand when each node gets processed vs visited
-  - Practice drawing execution flow for different trees
 
-  **Day 5-6: Iterative Traversals**
+  **Day 5-6: Iterative Traversals & Stack Visualization**
 
   - Implement iterative preorder using explicit stack:
     ```cpp
@@ -85,24 +70,96 @@ This plan is designed to help students master both the theoretical and coding as
     ```
   - Implement iterative inorder and postorder
   - Compare recursive vs iterative approaches
+  - Manually trace recursive calls with stack diagrams
 
-  **Day 7: Level Order Traversal**
+  **Day 7: Level Order Traversal (BFS)**
 
   - Implement BFS using queue
   - Level-wise printing
-  - Zigzag traversal
+  - Understanding queue operations for BFS
 
 - **Practice Problems:**
+  - Build a tree from given structure
+  - Calculate tree properties (height, node count, leaf count)
   - Print all four traversals for given tree
-  - Given preorder and inorder, construct tree
-  - Find height, count nodes, count leaves
-  - Check if tree is symmetric
-  - Find diameter of tree
-  - Vertical order traversal
+  - Implement both recursive and iterative versions
+  - Search for elements using different traversals
 - **Resources:**
-  - LeetCode: Binary Tree Traversal problems
-  - GeeksforGeeks: Iterative Tree Traversals
-  - Visualgo.net: Tree traversal animations
+  - GeeksforGeeks: Tree Data Structure & Traversals
+  - Visualgo.net: Tree basics and traversal animations
+  - LeetCode: Basic Binary Tree problems
+
+---
+
+## Week 2: Tree Problem Solving & Applications
+
+- **Theory:**
+  - Problem-solving strategies for trees
+  - Pattern recognition in tree problems
+  - When to use which traversal method
+  - Tree problem classifications (construction, path, ancestor, etc.)
+  - Optimization techniques for tree algorithms
+- **Coding:**
+
+  **Day 1-2: Tree Construction Problems**
+
+  - Build tree from different traversal combinations:
+    - Preorder + Inorder → Unique tree
+    - Postorder + Inorder → Unique tree
+    - Level-order + additional constraints
+  - Build balanced BST from sorted array
+  - Serialize and deserialize binary trees
+  - Convert between tree representations
+
+  **Day 3-4: Path & Sum Problems**
+
+  - Root-to-leaf path problems:
+    - Path sum equals target
+    - All paths with given sum
+    - Path with maximum sum
+  - Any path problems:
+    - Maximum path sum between any two nodes
+    - Count paths with given sum
+  - Binary tree to linked list conversions
+
+  **Day 5-6: Tree Properties & Validation**
+
+  - Check tree properties:
+    - Symmetric/mirror trees
+    - Balanced trees (height difference ≤ 1)
+    - Complete vs full trees
+  - Validate binary search trees
+  - Find diameter of tree (longest path)
+  - Lowest Common Ancestor (LCA) problems
+
+  **Day 7: Advanced Traversal Applications**
+
+  - Zigzag level order traversal
+  - Vertical order traversal
+  - Boundary traversal (left boundary + leaves + right boundary)
+  - Morris traversal (O(1) space)
+  - Custom traversal requirements
+
+- **Practice Problems:**
+  - Build tree from preorder and inorder arrays
+  - Check if tree is symmetric
+  - Find diameter of binary tree
+  - Binary tree maximum path sum
+  - Path sum problems (multiple variations)
+  - Flatten binary tree to linked list
+  - Lowest common ancestor
+  - Validate binary search tree
+  - Serialize/deserialize binary tree
+  - Convert binary tree to doubly linked list
+  - Zigzag level order traversal
+  - Vertical order traversal
+  - Binary tree right side view
+  - Count complete tree nodes
+  - Recover binary search tree
+- **Resources:**
+  - LeetCode: Binary Tree problem set (Easy to Hard)
+  - GeeksforGeeks: Tree problem patterns
+  - InterviewBit: Tree interview questions
 
 ---
 
@@ -409,8 +466,8 @@ This plan is designed to help students master both the theoretical and coding as
 
 **Assessment Checklist:**
 
-- Week 1: Can implement basic tree operations
-- Week 2: Master all traversal methods (recursive + iterative)
+- Week 1: Can implement basic tree operations and all traversal methods
+- Week 2: Can solve complex tree problems using traversals and tree properties
 - Week 3: Proficient in BST operations and validation
 - Week 4: Understand balancing concepts and rotations
 - Week 5: Can implement heap from scratch
