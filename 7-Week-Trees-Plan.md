@@ -5,6 +5,7 @@ This plan is designed to help students master both the theoretical and coding as
 ---
 
 ## Week 1: Introduction to Trees
+
 - **Theory:**
   - What is a tree? Terminology (nodes, edges, root, leaf, height, depth, level)
   - Types of trees (binary, n-ary, complete, full, perfect)
@@ -35,6 +36,7 @@ This plan is designed to help students master both the theoretical and coding as
 ---
 
 ## Week 2: Binary Trees & Traversals
+
 - **Theory:**
   - Binary tree properties and characteristics
   - Tree traversals: preorder, inorder, postorder, level-order
@@ -43,8 +45,9 @@ This plan is designed to help students master both the theoretical and coding as
   - Time and space complexity analysis
   - Differences between recursive and iterative approaches
 - **Coding:**
-  
+
   **Day 1-2: Recursive Traversals**
+
   - Implement all three DFS traversals recursively:
     ```cpp
     void preorder(TreeNode* root) {
@@ -56,13 +59,15 @@ This plan is designed to help students master both the theoretical and coding as
     ```
   - Visualize call stack for each traversal with examples
   - Draw stack frames step by step
-  
+
   **Day 3-4: Stack Visualization & Understanding**
+
   - Manually trace recursive calls with stack diagrams
   - Understand when each node gets processed vs visited
   - Practice drawing execution flow for different trees
-  
+
   **Day 5-6: Iterative Traversals**
+
   - Implement iterative preorder using explicit stack:
     ```cpp
     void iterativePreorder(TreeNode* root) {
@@ -80,8 +85,9 @@ This plan is designed to help students master both the theoretical and coding as
     ```
   - Implement iterative inorder and postorder
   - Compare recursive vs iterative approaches
-  
+
   **Day 7: Level Order Traversal**
+
   - Implement BFS using queue
   - Level-wise printing
   - Zigzag traversal
@@ -101,6 +107,7 @@ This plan is designed to help students master both the theoretical and coding as
 ---
 
 ## Week 3: Binary Search Trees (BST)
+
 - **Theory:**
   - BST properties and invariants (left < root < right)
   - BST vs Binary Tree differences
@@ -108,8 +115,9 @@ This plan is designed to help students master both the theoretical and coding as
   - Inorder traversal of BST gives sorted sequence
   - Best, average, and worst-case scenarios
 - **Coding:**
-  
+
   **Day 1-2: BST Search & Insert**
+
   - Implement recursive search:
     ```cpp
     TreeNode* search(TreeNode* root, int key) {
@@ -121,20 +129,23 @@ This plan is designed to help students master both the theoretical and coding as
   - Implement iterative search
   - Implement recursive and iterative insert
   - Visualize tree changes after each insertion
-  
+
   **Day 3-4: BST Delete Operation**
+
   - Handle three cases: no child, one child, two children
   - Find inorder predecessor/successor
   - Implement complete delete function
   - Visualize deletion scenarios
-  
+
   **Day 5-6: BST Validation & Properties**
+
   - Check if a tree is valid BST (multiple approaches)
   - Find kth smallest/largest element
   - Find LCA (Lowest Common Ancestor)
   - Convert sorted array to BST
-  
+
   **Day 7: Advanced BST Operations**
+
   - Range queries (count nodes in range)
   - Floor and ceiling operations
   - BST iterator implementation
@@ -154,6 +165,7 @@ This plan is designed to help students master both the theoretical and coding as
 ---
 
 ## Week 4: Balanced Trees (AVL & Red-Black)
+
 - **Theory:**
   - Why balancing is needed (worst-case O(n) operations)
   - Self-balancing trees overview
@@ -161,8 +173,9 @@ This plan is designed to help students master both the theoretical and coding as
   - Red-Black Trees: properties and color rules
   - Comparison between different balanced trees
 - **Coding:**
-  
+
   **Day 1-2: AVL Tree Basics**
+
   - Calculate height and balance factor
   - Implement basic AVL node structure:
     ```cpp
@@ -174,21 +187,24 @@ This plan is designed to help students master both the theoretical and coding as
         AVLNode(int val) : data(val), left(nullptr), right(nullptr), height(1) {}
     };
     ```
-  
+
   **Day 3-4: AVL Rotations**
+
   - Implement all four rotations with step-by-step visualization:
     - Left rotation (RR case)
     - Right rotation (LL case)
     - Left-Right rotation (LR case)
     - Right-Left rotation (RL case)
   - Draw before/after states for each rotation
-  
+
   **Day 5-6: AVL Insert & Delete**
+
   - Complete AVL insertion with balancing
   - AVL deletion with rebalancing
   - Trace through examples manually
-  
+
   **Day 7: Red-Black Trees Introduction**
+
   - Understand color properties
   - Basic insertion (conceptual)
 
@@ -205,6 +221,7 @@ This plan is designed to help students master both the theoretical and coding as
 ---
 
 ## Week 5: Heaps & Priority Queues
+
 - **Theory:**
   - Heap properties (min-heap, max-heap)
   - Complete binary tree structure
@@ -212,8 +229,9 @@ This plan is designed to help students master both the theoretical and coding as
   - Applications: priority queues, heap sort, graph algorithms
   - Time complexities of heap operations
 - **Coding:**
-  
+
   **Day 1-2: Heap Implementation**
+
   - Array-based heap implementation:
     ```cpp
     class MaxHeap {
@@ -224,8 +242,9 @@ This plan is designed to help students master both the theoretical and coding as
     };
     ```
   - Visualize array as complete binary tree
-  
+
   **Day 3-4: Heap Operations**
+
   - Implement insert with heapify-up:
     ```cpp
     void insert(int key) {
@@ -235,13 +254,15 @@ This plan is designed to help students master both the theoretical and coding as
     ```
   - Implement extract-max with heapify-down
   - Visualize bubbling up and down operations
-  
+
   **Day 5-6: Build Heap & Heap Sort**
+
   - Build heap from unsorted array (bottom-up)
   - Implement heap sort
   - Compare top-down vs bottom-up heap construction
-  
+
   **Day 7: Priority Queue Applications**
+
   - STL priority_queue usage
   - Custom comparators
   - Merge k sorted arrays using heap
@@ -260,6 +281,7 @@ This plan is designed to help students master both the theoretical and coding as
 ---
 
 ## Week 6: Advanced Tree Topics (Tries & Segment Trees)
+
 - **Theory:**
   - Trie (Prefix Tree): structure, applications (autocomplete, spell checker)
   - Space-time tradeoffs in tries
@@ -267,8 +289,9 @@ This plan is designed to help students master both the theoretical and coding as
   - Fenwick Tree (Binary Indexed Tree) basics
   - Use cases for different tree types
 - **Coding:**
-  
+
   **Day 1-3: Trie Implementation**
+
   - Basic trie node structure:
     ```cpp
     struct TrieNode {
@@ -284,14 +307,16 @@ This plan is designed to help students master both the theoretical and coding as
   - Implement insert, search, startsWith
   - Visualize trie construction step by step
   - Word break problem using trie
-  
+
   **Day 4-5: Advanced Trie Operations**
+
   - Delete operation in trie
   - Find all words with given prefix
   - Longest common prefix
   - Auto-complete functionality
-  
+
   **Day 6-7: Segment Tree Basics**
+
   - Build segment tree for range sum queries
   - Understand tree construction and query process
   - Point updates and range queries
@@ -311,6 +336,7 @@ This plan is designed to help students master both the theoretical and coding as
 ---
 
 ## Week 7: Problem Solving & Comprehensive Projects
+
 - **Theory:**
   - Review and summary of all tree types and their use cases
   - Common tree-related interview patterns
@@ -318,31 +344,36 @@ This plan is designed to help students master both the theoretical and coding as
   - When to use which tree data structure
   - Real-world applications and system design considerations
 - **Coding:**
-  
+
   **Day 1-2: Mixed Tree Problems**
+
   - Solve 10+ problems covering all tree types:
     - Path sum problems (binary trees)
     - BST validation and operations
     - Heap-based problems
     - Trie applications
-  
+
   **Day 3-4: Advanced Problem Patterns**
+
   - Tree DP problems (diameter, max path sum)
   - LCA (Lowest Common Ancestor) variations
   - Tree serialization/deserialization
   - Morris traversal (O(1) space)
-  
+
   **Day 5-7: Comprehensive Projects**
+
   - **Project 1: File System Simulator**
+
     - Use trie for directory structure
     - Implement ls, mkdir, touch, rm commands
     - Path navigation and file operations
-  
+
   - **Project 2: Expression Evaluator**
+
     - Build expression tree from infix/postfix
     - Evaluate mathematical expressions
     - Handle operator precedence
-  
+
   - **Project 3: Auto-complete System**
     - Implement search suggestions using trie
     - Rank suggestions by popularity
@@ -364,17 +395,20 @@ This plan is designed to help students master both the theoretical and coding as
 ## Additional Resources & Study Tips
 
 **Daily Practice Schedule:**
+
 - 1 hour theory + 2 hours coding daily
 - Weekend: 4-5 hours for projects and review
 - Use pen and paper for tree drawings and visualizations
 
 **Recommended Tools:**
+
 - Visualgo.net for interactive tree animations
 - LeetCode for structured problem practice
 - Draw.io or paper for manual tree drawings
 - IDE with debugging capabilities
 
 **Assessment Checklist:**
+
 - Week 1: Can implement basic tree operations
 - Week 2: Master all traversal methods (recursive + iterative)
 - Week 3: Proficient in BST operations and validation
@@ -384,6 +418,7 @@ This plan is designed to help students master both the theoretical and coding as
 - Week 7: Solve complex tree problems independently
 
 **Tips for Success:**
+
 - Always draw trees before coding
 - Trace through algorithms step by step
 - Practice both recursive and iterative approaches
