@@ -498,35 +498,43 @@ By the end of Week 1, you will:
 - **Path Problems**: Finding routes through trees
 - **Transformation Problems**: Converting tree structure/values
 - **Query Problems**: Searching and retrieving information
+- **View Problems**: Different perspectives of tree structure
 
 **2. Algorithm Design Patterns:**
 
 **Top-Down Approach (Divide and Conquer):**
 
 - Start from root and work towards leaves
-- **Examples**: Tree validation, path finding
+- **Examples**: Tree validation, path finding, tree views
 - **Pattern**: `if (root) { process(root); recurse(left); recurse(right); }`
 
 **Bottom-Up Approach (Dynamic Programming):**
 
 - Process children first, then parent
-- **Examples**: Tree height, diameter calculation
+- **Examples**: Tree height, diameter calculation, subtree problems
 - **Pattern**: `int left = recurse(left); int right = recurse(right); return combine(left, right);`
 
 **Backtracking Pattern:**
 
 - Explore path, make decision, backtrack if needed
-- **Examples**: All path problems, tree construction
+- **Examples**: All path problems, tree construction, constraint satisfaction
 - **Pattern**: `add_to_path(); recurse(); remove_from_path();`
+
+**Level-by-Level Processing:**
+
+- Process all nodes at current level before moving to next
+- **Examples**: Tree views, level-wise modifications, width calculations
+- **Pattern**: Use queue for BFS, process level by level
 
 #### **Tree Problem Classifications - Deep Analysis**
 
 **1. Construction Problems:**
 
-- **Input Types**: Traversal sequences, arrays, strings
+- **Input Types**: Traversal sequences, arrays, strings, constraints
 - **Key Insight**: Use traversal properties to rebuild structure
 - **Example**: Preorder + Inorder → Unique Binary Tree
 - **Why it works**: Preorder gives root, Inorder splits left/right subtrees
+- **Advanced**: Construction with constraints (complete, full, balanced)
 
 **2. Path Problems:**
 
@@ -534,31 +542,43 @@ By the end of Week 1, you will:
 - **Any-to-Any Paths**: Can start and end at any nodes
 - **Path Sum Problems**: Find paths with specific sum values
 - **Longest Path Problems**: Diameter, maximum depth
+- **Path Constraints**: Paths with specific properties or patterns
 
 **3. Validation Problems:**
 
 - **Structure Validation**: Check if tree follows specific rules
 - **Property Validation**: Verify mathematical properties
-- **Example**: BST validation requires left < root < right for all nodes
+- **Isomorphism**: Check if two trees have same structure
+- **Symmetry**: Mirror image validation
 
 **4. Transformation Problems:**
 
-- **Structure Changes**: Flatten to list, mirror tree
+- **Structure Changes**: Flatten to list, mirror tree, invert tree
 - **Value Changes**: Update node values based on position/neighbors
 - **Format Changes**: Serialize to string, convert to array
+- **View Transformations**: Different perspectives (left view, right view)
+
+**5. Tree View Problems:**
+
+- **Left/Right Views**: Visible nodes from side perspectives
+- **Top/Bottom Views**: Vertical visibility with horizontal distance
+- **Diagonal Views**: Nodes along diagonal lines
+- **Boundary Traversal**: Outline of the tree (left boundary + leaves + right boundary)
 
 #### **When to Use Which Traversal - Decision Matrix**
 
-| Problem Type              | Best Traversal | Reason                         |
-| ------------------------- | -------------- | ------------------------------ |
-| **Copy Tree**             | Preorder       | Need root before children      |
-| **Delete Tree**           | Postorder      | Children before parent         |
-| **BST to Sorted Array**   | Inorder        | Natural sorted order           |
-| **Level-wise Processing** | Level-order    | Process by levels              |
-| **Expression Evaluation** | Postorder      | Operands before operator       |
-| **Tree Serialization**    | Preorder       | Root-first reconstruction      |
-| **Find Tree Height**      | Any traversal  | Must visit all nodes           |
-| **Path Sum Problems**     | Any DFS        | Need complete path exploration |
+| Problem Type              | Best Traversal | Reason                          |
+| ------------------------- | -------------- | ------------------------------- |
+| **Copy Tree**             | Preorder       | Need root before children       |
+| **Delete Tree**           | Postorder      | Children before parent          |
+| **Get Sorted Elements**   | Inorder        | Left-root-right gives order     |
+| **Level-wise Processing** | Level-order    | Process by levels               |
+| **Expression Evaluation** | Postorder      | Operands before operator        |
+| **Tree Serialization**    | Preorder       | Root-first reconstruction       |
+| **Find Tree Height**      | Any traversal  | Must visit all nodes            |
+| **Path Sum Problems**     | Any DFS        | Need complete path exploration  |
+| **Tree Views**            | Level-order    | Layer-by-layer visibility       |
+| **Ancestor Problems**     | Any DFS        | Need parent-child relationships |
 
 #### **Optimization Techniques - Advanced Concepts**
 
@@ -566,7 +586,7 @@ By the end of Week 1, you will:
 
 - **Problem**: Repeated subproblems in tree DP
 - **Solution**: Cache results based on subtree characteristics
-- **Example**: Fibonacci tree, optimal BST construction
+- **Example**: Tree diameter, maximum path sum with caching
 
 **2. Morris Traversal (Advanced):**
 
@@ -586,6 +606,24 @@ By the end of Week 1, you will:
 - **Technique**: Stop traversal when answer found
 - **Examples**: Search operations, validation checks
 - **Benefit**: Better average-case performance
+
+**5. Two-Pointer Techniques in Trees:**
+
+- **Application**: Finding pairs, comparing subtrees
+- **Examples**: Two-sum in tree, symmetric tree validation
+- **Benefit**: Efficient comparison operations
+
+**6. Coordinate-Based Approaches:**
+
+- **Technique**: Assign coordinates to nodes for spatial problems
+- **Examples**: Vertical order traversal, top/bottom views
+- **Benefit**: Transform tree problems into coordinate geometry
+
+**7. Parent Pointer Optimization:**
+
+- **Technique**: Maintain parent references for upward traversal
+- **Applications**: LCA problems, path finding
+- **Trade-off**: Extra space for faster queries
 
 #### **Space-Time Complexity Trade-offs**
 
@@ -623,7 +661,7 @@ By the end of Week 2, you will:
     - Preorder + Inorder → Unique tree
     - Postorder + Inorder → Unique tree
     - Level-order + additional constraints
-  - Build balanced BST from sorted array
+  - Build complete binary tree from array
   - Serialize and deserialize binary trees
   - Convert between tree representations
 
@@ -644,7 +682,7 @@ By the end of Week 2, you will:
     - Symmetric/mirror trees
     - Balanced trees (height difference ≤ 1)
     - Complete vs full trees
-  - Validate binary search trees
+  - Tree isomorphism (same structure)
   - Find diameter of tree (longest path)
   - Lowest Common Ancestor (LCA) problems
 
@@ -654,7 +692,7 @@ By the end of Week 2, you will:
   - Vertical order traversal
   - Boundary traversal (left boundary + leaves + right boundary)
   - Morris traversal (O(1) space)
-  - Custom traversal requirements
+  - Tree views (left view, right view, top view, bottom view)
 
 - **Practice Problems:**
   - Build tree from preorder and inorder arrays
@@ -664,14 +702,19 @@ By the end of Week 2, you will:
   - Path sum problems (multiple variations)
   - Flatten binary tree to linked list
   - Lowest common ancestor
-  - Validate binary search tree
+  - Check if two trees are isomorphic
   - Serialize/deserialize binary tree
   - Convert binary tree to doubly linked list
   - Zigzag level order traversal
   - Vertical order traversal
   - Binary tree right side view
   - Count complete tree nodes
-  - Recover binary search tree
+  - Print all root-to-leaf paths
+  - Sum of nodes at maximum depth
+  - Check if tree is sum tree
+  - Convert tree to its mirror
+  - Find duplicate subtrees
+  - Construct tree from string with brackets
 - **Resources:**
   - LeetCode: Binary Tree problem set (Easy to Hard)
   - GeeksforGeeks: Tree problem patterns

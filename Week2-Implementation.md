@@ -1,6 +1,6 @@
-# Week 2: Tree Problem Solving & Applications - Teacher's Guide
+# Week 2: Advanced Tree Problem Solving & Applications - Teacher's Guide
 
-This document provides comprehensive teaching materials for Week 2, focusing entirely on solving tree problems using the foundational concepts and traversals learned in Week 1. Includes problem statements, brute force approaches, optimal solutions, complexity analysis, and teaching strategies for real-world tree applications.
+This document provides comprehensive teaching materials for Week 2, focusing on advanced binary tree problem-solving techniques that build upon Week 1 fundamentals. This week emphasizes complex algorithms, pattern recognition, optimization strategies, and real-world applications without introducing BST concepts (those come in Week 3).
 
 ---
 
@@ -8,325 +8,1187 @@ This document provides comprehensive teaching materials for Week 2, focusing ent
 
 By the end of this week, students should be able to:
 
-1. Apply tree traversals and basic operations to solve complex problems
-2. Recognize and classify different types of tree problems
-3. Implement tree construction algorithms from various inputs
-4. Solve path-related problems using different traversal strategies
-5. Validate tree properties and structures
-6. Optimize tree algorithms for better time/space complexity
-7. Handle edge cases and develop robust tree solutions
+1. Master advanced tree construction from various input formats
+2. Implement complex path-finding algorithms with backtracking
+3. Solve tree validation problems using sophisticated property checking
+4. Apply tree view algorithms using coordinate-based approaches
+5. Optimize tree algorithms for better time/space complexity
+6. Handle challenging edge cases in advanced tree problems
+7. Recognize and apply advanced traversal patterns (Morris, coordinate-based)
+8. Solve real-world tree problems using pattern recognition
 
 ---
 
-## Day 1-2: Tree Construction & Validation Problems
+## Day 1-2: Advanced Tree Construction Problems
 
-### 📚 Theory: Problem Classification
+### 📚 Theory: Advanced Construction Patterns
 
 **Teacher's Introduction:**
-"Now that you master tree traversals and basic operations, let's use them to solve real problems! Tree problems typically fall into these categories:
-
-1. Construction problems (building trees from different inputs)
-2. Validation problems (checking if tree satisfies certain properties)
-3. Transformation problems (modifying tree structure or values)"
+"Week 1 taught you to build and traverse trees. Now we'll tackle advanced construction problems that require deep understanding of tree properties and traversal relationships. These problems appear frequently in technical interviews and real-world systems."
 
 ### � Problem 1: Construct Tree from Array (Level-Order)
 
+### 🔧 Problem 1: Build Tree from Preorder and Inorder Arrays
+
 **Problem Statement:**
-Given an array representing a complete binary tree in level-order, construct the tree.
+Given preorder and inorder traversal arrays, construct the unique binary tree.
 
 **Teaching Strategy:**
-"This is exactly what happens when you store a binary tree in an array! Let's see how index relationships work."
+"This is a classic divide-and-conquer problem. The key insight: preorder tells us the root, inorder tells us how to split left and right subtrees."
 
 ```cpp
-class TreeConstructor {
+class AdvancedTreeConstructor {
+private:
+    unordered_map<int, int> inorderMap;  // Value to index mapping
+    int preorderIndex;
+
 public:
-    // Construct tree from level-order array
-    TreeNode* constructFromArray(vector<int>& arr) {
-        if (arr.empty()) return nullptr;
-        return constructHelper(arr, 0);
+    TreeNode* buildTreeFromTraversals(vector<int>& preorder, vector<int>& inorder) {
+        // Build hashmap for O(1) inorder index lookup
+        for (int i = 0; i < inorder.size(); i++) {
+            inorderMap[inorder[i]] = i;
+        }
+
+        preorderIndex = 0;
+        return buildHelper(preorder, 0, inorder.size() - 1);
     }
 
 private:
-    TreeNode* constructHelper(vector<int>& arr, int index) {
-        if (index >= arr.size()) return nullptr;
+    TreeNode* buildHelper(vector<int>& preorder, int inStart, int inEnd) {
+        // Base case: no elements to process
+        if (inStart > inEnd) return nullptr;
 
-        TreeNode* root = new TreeNode(arr[index]);
-        root->left = constructHelper(arr, 2 * index + 1);
-        root->right = constructHelper(arr, 2 * index + 2);
+        // Root is current element in preorder
+        int rootVal = preorder[preorderIndex++];
+        TreeNode* root = new TreeNode(rootVal);
+
+        // Find root position in inorder to split left/right
+        int rootIndex = inorderMap[rootVal];
+
+        // Build left subtree first (preorder: root → left → right)
+        root->left = buildHelper(preorder, inStart, rootIndex - 1);
+
+        // Build right subtree
+        root->right = buildHelper(preorder, rootIndex + 1, inEnd);
 
         return root;
     }
 };
 
 // Teaching demonstration function
-void demonstrateArrayToTree() {
-    vector<int> arr = {1, 2, 3, 4, 5, 6, 7};
+void demonstrateTraversalToTree() {
+    vector<int> preorder = {3, 9, 20, 15, 7};
+    vector<int> inorder = {9, 3, 15, 20, 7};
 
-    cout << "=== CONSTRUCTING TREE FROM ARRAY ===" << endl;
-    cout << "Array: ";
-    for (int val : arr) cout << val << " ";
-    cout << endl;
+    cout << "=== CONSTRUCTING TREE FROM TRAVERSALS ===" << endl;
+    cout << "Preorder: [3, 9, 20, 15, 7]" << endl;
+    cout << "Inorder:  [9, 3, 15, 20, 7]" << endl;
 
-    cout << "\nIndex relationships:" << endl;
-    cout << "Root at index 0: " << arr[0] << endl;
-    cout << "Left child of index i at: 2*i + 1" << endl;
-    cout << "Right child of index i at: 2*i + 2" << endl;
+    cout << "\nStep-by-step construction:" << endl;
+    cout << "1. Root from preorder[0] = 3" << endl;
+    cout << "2. Find 3 in inorder at index 1" << endl;
+    cout << "3. Left subtree: inorder[0:0] = [9]" << endl;
+    cout << "4. Right subtree: inorder[2:4] = [15, 20, 7]" << endl;
 
-    TreeConstructor constructor;
-    TreeNode* root = constructor.constructFromArray(arr);
+    AdvancedTreeConstructor constructor;
+    TreeNode* root = constructor.buildTreeFromTraversals(preorder, inorder);
 
-    cout << "\nResulting tree (preorder): ";
-    preorderTraversal(root);
+    cout << "\nResulting tree structure:" << endl;
+    cout << "      3" << endl;
+    cout << "     / \\" << endl;
+    cout << "    9   20" << endl;
+    cout << "       /  \\" << endl;
+    cout << "      15   7" << endl;
+
+    cout << "\nVerification (inorder): ";
+    printInorder(root);
     cout << endl;
 }
 ```
 
-### 🔧 Problem 2: Construct Tree from Preorder + Inorder
+**Time Complexity:** O(n) - each node processed once with O(1) hashmap lookup
+**Space Complexity:** O(n) - hashmap storage + O(h) recursion stack
+
+**Common Student Mistakes:**
+
+1. Forgetting to increment preorderIndex
+2. Incorrect boundary calculations for subtrees
+3. Not handling edge cases (empty arrays, single node)
+
+### 🔧 Problem 2: Tree Serialization and Deserialization
 
 **Problem Statement:**
-Given preorder and inorder traversal sequences, construct the unique binary tree.
+Design an algorithm to serialize and deserialize a binary tree to/from a string.
 
 **Teaching Strategy:**
-"This is like solving a puzzle! Preorder tells us the root, inorder tells us left and right subtrees."
+"Serialization is like taking a photo of the tree structure. We need to capture enough information to perfectly reconstruct it later."
 
-```cpp
-class TreeFromTraversals {
+````cpp
+class TreeSerializer {
 public:
-    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        // Create map for O(1) lookup of inorder indices
-        unordered_map<int, int> inorderMap;
-        for (int i = 0; i < inorder.size(); i++) {
-            inorderMap[inorder[i]] = i;
+    // Serialize tree to string using preorder traversal
+    string serialize(TreeNode* root) {
+        string result = "";
+        serializeHelper(root, result);
+        return result;
+    }
+
+    // Deserialize string back to tree
+    TreeNode* deserialize(string data) {
+        queue<string> nodes;
+        stringstream ss(data);
+        string node;
+
+        // Split by comma
+        while (getline(ss, node, ',')) {
+            nodes.push(node);
         }
 
-        int preorderIndex = 0;
-        return buildTreeHelper(preorder, inorderMap, preorderIndex, 0, inorder.size() - 1);
+        return deserializeHelper(nodes);
     }
 
 private:
-    TreeNode* buildTreeHelper(vector<int>& preorder,
-                             unordered_map<int, int>& inorderMap,
-                             int& preorderIndex,
-                             int inorderStart,
-                             int inorderEnd) {
-        if (inorderStart > inorderEnd) return nullptr;
+    void serializeHelper(TreeNode* root, string& result) {
+        if (!root) {
+            result += "null,";
+            return;
+        }
 
-        // Root is the current element in preorder
-        int rootValue = preorder[preorderIndex++];
-        TreeNode* root = new TreeNode(rootValue);
+        result += to_string(root->val) + ",";
+        serializeHelper(root->left, result);
+        serializeHelper(root->right, result);
+    }
 
-        // Find root position in inorder
-        int rootIndex = inorderMap[rootValue];
+    TreeNode* deserializeHelper(queue<string>& nodes) {
+        if (nodes.empty()) return nullptr;
 
-        // Build left subtree first (preorder: root-left-right)
-        root->left = buildTreeHelper(preorder, inorderMap, preorderIndex,
-                                   inorderStart, rootIndex - 1);
+        string val = nodes.front();
+        nodes.pop();
 
-        // Build right subtree
-        root->right = buildTreeHelper(preorder, inorderMap, preorderIndex,
-                                    rootIndex + 1, inorderEnd);
+        if (val == "null") return nullptr;
+
+        TreeNode* root = new TreeNode(stoi(val));
+        root->left = deserializeHelper(nodes);
+        root->right = deserializeHelper(nodes);
 
         return root;
     }
 };
 
-// Teaching demonstration with step-by-step explanation
-void demonstrateTreeConstruction() {
-    cout << "=== CONSTRUCTING TREE FROM TRAVERSALS ===" << endl;
+void demonstrateSerialization() {
+    cout << "\n=== TREE SERIALIZATION/DESERIALIZATION ===" << endl;
 
-    vector<int> preorder = {3, 9, 20, 15, 7};
-    vector<int> inorder = {9, 3, 15, 20, 7};
+    // Create test tree: [1, 2, 3, null, null, 4, 5]
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->right->left = new TreeNode(4);
+    root->right->right = new TreeNode(5);
 
-    cout << "Preorder: ";
-    for (int val : preorder) cout << val << " ";
+    TreeSerializer serializer;
+
+    cout << "Original tree (preorder): ";
+    printPreorder(root);
     cout << endl;
 
-    cout << "Inorder:  ";
-    for (int val : inorder) cout << val << " ";
+    string serialized = serializer.serialize(root);
+    cout << "Serialized: " << serialized << endl;
+
+    TreeNode* deserialized = serializer.deserialize(serialized);
+    cout << "Deserialized tree (preorder): ";
+    printPreorder(deserialized);
     cout << endl;
+---
 
-    cout << "\nStep-by-step construction:" << endl;
-    cout << "1. First element in preorder (3) is root" << endl;
-    cout << "2. Find 3 in inorder: [9] | 3 | [15, 20, 7]" << endl;
-    cout << "3. Left subtree has elements [9], right has [15, 20, 7]" << endl;
-    cout << "4. Recursively apply to subtrees..." << endl;
+## Day 3-4: Advanced Path & Sum Problems
 
-    TreeFromTraversals constructor;
-    TreeNode* root = constructor.buildTree(preorder, inorder);
+### 📚 Theory: Path Problem Patterns
 
-    cout << "\nVerification - Level order traversal: ";
-    levelOrderTraversal(root);
-    cout << endl;
-}
-```
+**Teacher's Introduction:**
+"Path problems are among the most challenging tree algorithms. They require mastering backtracking, state management, and optimization techniques. These patterns appear frequently in competitive programming and technical interviews."
 
-### 🔧 Problem 3: Validate Binary Search Tree
+### 🔧 Problem 1: All Root-to-Leaf Paths with Backtracking
 
 **Problem Statement:**
-Determine if a binary tree is a valid Binary Search Tree (BST).
+Find all root-to-leaf paths in a binary tree and return paths with a specific target sum.
 
 **Teaching Strategy:**
-"A BST has a special property: for every node, all left descendants < node < all right descendants."
+"This introduces the classic backtracking pattern: add to path → explore → remove from path. It's fundamental for many tree algorithms."
 
 ```cpp
-class BSTValidator {
+class PathFinder {
 public:
-    // Method 1: Using inorder traversal property
-    bool isValidBST_Inorder(TreeNode* root) {
-        vector<int> inorderResult;
-        inorderTraversal(root, inorderResult);
+    // Find all root-to-leaf paths
+    vector<vector<int>> findAllPaths(TreeNode* root) {
+        vector<vector<int>> result;
+        vector<int> currentPath;
 
-        // BST's inorder traversal should be strictly increasing
-        for (int i = 1; i < inorderResult.size(); i++) {
-            if (inorderResult[i] <= inorderResult[i-1]) {
-                return false;
-            }
-        }
-        return true;
+        findPathsHelper(root, currentPath, result);
+        return result;
     }
 
-    // Method 2: Using bounds (more efficient)
-    bool isValidBST_Bounds(TreeNode* root) {
-        return validateBST(root, LLONG_MIN, LLONG_MAX);
+    // Find paths with specific sum
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        vector<vector<int>> result;
+        vector<int> currentPath;
+
+        pathSumHelper(root, targetSum, currentPath, result);
+        return result;
+    }
+
+    // Count paths with given sum (any start/end points)
+    int pathSumCount(TreeNode* root, int targetSum) {
+        if (!root) return 0;
+
+        // Count paths starting from current node + recursive calls
+        return countPathsFromNode(root, targetSum) +
+               pathSumCount(root->left, targetSum) +
+               pathSumCount(root->right, targetSum);
     }
 
 private:
-    void inorderTraversal(TreeNode* root, vector<int>& result) {
-        if (root == nullptr) return;
-        inorderTraversal(root->left, result);
-        result.push_back(root->data);
-        inorderTraversal(root->right, result);
-    }
+    void findPathsHelper(TreeNode* root, vector<int>& currentPath,
+                        vector<vector<int>>& result) {
+        if (!root) return;
 
-    bool validateBST(TreeNode* root, long long minVal, long long maxVal) {
-        if (root == nullptr) return true;
+        // Add current node to path (backtracking step 1)
+        currentPath.push_back(root->val);
 
-        if (root->data <= minVal || root->data >= maxVal) {
-            return false;
+        // If leaf node, save the complete path
+        if (!root->left && !root->right) {
+            result.push_back(currentPath);
+        } else {
+            // Continue exploring (backtracking step 2)
+            findPathsHelper(root->left, currentPath, result);
+            findPathsHelper(root->right, currentPath, result);
         }
 
-        return validateBST(root->left, minVal, root->data) &&
-               validateBST(root->right, root->data, maxVal);
+        // Remove current node (backtracking step 3)
+        currentPath.pop_back();
+    }
+
+    void pathSumHelper(TreeNode* root, int remainingSum,
+                      vector<int>& currentPath, vector<vector<int>>& result) {
+        if (!root) return;
+
+        currentPath.push_back(root->val);
+        remainingSum -= root->val;
+
+        // Check if we reached target at leaf
+        if (!root->left && !root->right && remainingSum == 0) {
+            result.push_back(currentPath);
+        } else {
+            pathSumHelper(root->left, remainingSum, currentPath, result);
+            pathSumHelper(root->right, remainingSum, currentPath, result);
+        }
+
+        currentPath.pop_back();  // Backtrack
+    }
+
+    int countPathsFromNode(TreeNode* root, long long targetSum) {
+        if (!root) return 0;
+
+        int count = 0;
+        if (root->val == targetSum) count = 1;
+
+        count += countPathsFromNode(root->left, targetSum - root->val);
+        count += countPathsFromNode(root->right, targetSum - root->val);
+
+        return count;
     }
 };
 
-// Teaching demonstration comparing both methods
-void demonstrateBSTValidation() {
-    cout << "=== BST VALIDATION METHODS ===" << endl;
+void demonstratePathProblems() {
+    cout << "\n=== ADVANCED PATH PROBLEMS ===" << endl;
 
-    // Create valid BST
-    TreeNode* validBST = new TreeNode(5);
-    validBST->left = new TreeNode(3);
-    validBST->right = new TreeNode(8);
-    validBST->left->left = new TreeNode(2);
-    validBST->left->right = new TreeNode(4);
-    validBST->right->left = new TreeNode(7);
-    validBST->right->right = new TreeNode(9);
+    // Create test tree
+    TreeNode* root = new TreeNode(5);
+    root->left = new TreeNode(4);
+    root->right = new TreeNode(8);
+    root->left->left = new TreeNode(11);
+    root->left->left->left = new TreeNode(7);
+    root->left->left->right = new TreeNode(2);
+    root->right->left = new TreeNode(13);
+    root->right->right = new TreeNode(4);
+    root->right->right->right = new TreeNode(1);
 
-    // Create invalid BST
-    TreeNode* invalidBST = new TreeNode(5);
-    invalidBST->left = new TreeNode(3);
-    invalidBST->right = new TreeNode(8);
-    invalidBST->left->left = new TreeNode(2);
-    invalidBST->left->right = new TreeNode(6); // INVALID: 6 > 5 but in left subtree
+    cout << "Tree structure:" << endl;
+    cout << "         5" << endl;
+    cout << "        / \\" << endl;
+    cout << "       4   8" << endl;
+    cout << "      /   / \\" << endl;
+    cout << "     11  13  4" << endl;
+    cout << "    /  \\      \\" << endl;
+    cout << "   7    2      1" << endl;
 
-    BSTValidator validator;
+    PathFinder finder;
 
-    cout << "\nValid BST test:" << endl;
-    cout << "Inorder method: " << (validator.isValidBST_Inorder(validBST) ? "Valid" : "Invalid") << endl;
-    cout << "Bounds method: " << (validator.isValidBST_Bounds(validBST) ? "Valid" : "Invalid") << endl;
+    // Test all paths
+    cout << "\nAll root-to-leaf paths:" << endl;
+    auto allPaths = finder.findAllPaths(root);
+    for (int i = 0; i < allPaths.size(); i++) {
+        cout << "Path " << i+1 << ": ";
+        for (int val : allPaths[i]) {
+            cout << val << " ";
+        }
+        cout << endl;
+    }
 
-    cout << "\nInvalid BST test:" << endl;
-    cout << "Inorder method: " << (validator.isValidBST_Inorder(invalidBST) ? "Valid" : "Invalid") << endl;
-    cout << "Bounds method: " << (validator.isValidBST_Bounds(invalidBST) ? "Valid" : "Invalid") << endl;
+    // Test path sum
+    int target = 22;
+    cout << "\nPaths with sum " << target << ":" << endl;
+    auto sumPaths = finder.pathSum(root, target);
+    for (auto& path : sumPaths) {
+        for (int val : path) {
+            cout << val << " ";
+        }
+        cout << " (sum = " << target << ")" << endl;
+    }
 
-    cout << "\nWhy is the second tree invalid?" << endl;
-    cout << "Node 6 is in the left subtree of 5, but 6 > 5!" << endl;
+    cout << "\nBacktracking explanation:" << endl;
+    cout << "1. Add node to current path" << endl;
+    cout << "2. Explore left and right subtrees" << endl;
+    cout << "3. Remove node from path (backtrack)" << endl;
+    cout << "This ensures path state is correctly maintained!" << endl;
+}
+````
+
+### 🔧 Problem 2: Maximum Path Sum (Any-to-Any)
+
+**Problem Statement:**
+Find the maximum sum of any path in the binary tree (path can start and end at any nodes).
+
+**Teaching Strategy:**
+"This is a classic dynamic programming problem on trees. The key insight: for each node, we calculate the maximum path passing through it."
+
+```cpp
+class MaxPathSum {
+private:
+    int maxSum = INT_MIN;
+
+public:
+    int maxPathSumAnyToAny(TreeNode* root) {
+        maxSum = INT_MIN;
+        maxPathHelper(root);
+        return maxSum;
+    }
+
+private:
+    int maxPathHelper(TreeNode* root) {
+        if (!root) return 0;
+
+        // Get maximum path sum from left and right subtrees
+        // Use max(0, sum) to ignore negative paths
+        int leftMax = max(0, maxPathHelper(root->left));
+        int rightMax = max(0, maxPathHelper(root->right));
+
+        // Maximum path sum passing through current node
+        int currentMax = root->val + leftMax + rightMax;
+
+        // Update global maximum
+        maxSum = max(maxSum, currentMax);
+
+        // Return maximum path sum starting from current node
+        // (can only go through one side for parent's calculation)
+        return root->val + max(leftMax, rightMax);
+    }
+};
+
+void demonstrateMaxPathSum() {
+    cout << "\n=== MAXIMUM PATH SUM PROBLEM ===" << endl;
+
+    // Test tree: [-10, 9, 20, null, null, 15, 7]
+    TreeNode* root = new TreeNode(-10);
+    root->left = new TreeNode(9);
+    root->right = new TreeNode(20);
+    root->right->left = new TreeNode(15);
+    root->right->right = new TreeNode(7);
+
+    cout << "Tree structure:" << endl;
+    cout << "    -10" << endl;
+    cout << "    /  \\" << endl;
+    cout << "   9    20" << endl;
+    cout << "       /  \\" << endl;
+    cout << "      15   7" << endl;
+
+    MaxPathSum solver;
+    int result = solver.maxPathSumAnyToAny(root);
+
+    cout << "\nMaximum path sum: " << result << endl;
+    cout << "Optimal path: 15 → 20 → 7 (sum = 42)" << endl;
+
+    cout << "\nAlgorithm explanation:" << endl;
+    cout << "1. For each node, calculate max path through it" << endl;
+    cout << "2. Path through node = node + max(0, left) + max(0, right)" << endl;
+    cout << "3. Return max(node + left, node + right) to parent" << endl;
+    cout << "4. Track global maximum across all nodes" << endl;
 }
 ```
 
 ---
 
-## Day 3-4: Path-Based Problems & Tree Algorithms
+## Day 5-6: Tree Properties & Advanced Validation
 
-### 📚 Theory: Path Problems Classification
+### 📚 Theory: Complex Tree Property Analysis
 
-**Teacher's Explanation:**
-"Path problems are everywhere in trees! We need to think about:
+**Teacher's Introduction:**
+"Now we'll tackle sophisticated tree validation problems that require deep structural analysis. These algorithms test your understanding of tree properties and recursive thinking."
 
-1. Root-to-leaf paths
-2. Any node-to-node paths
-3. Path sums and maximum paths
-4. Finding specific paths"
-
-### 🔧 Problem 4: Binary Tree Paths (All Root-to-Leaf)
+### 🔧 Problem 1: Tree Isomorphism and Symmetry
 
 **Problem Statement:**
-Find all root-to-leaf paths in a binary tree.
+Check if two trees are isomorphic (same structure, values can differ) and if a tree is symmetric.
 
 **Teaching Strategy:**
-"This is perfect for demonstrating backtracking! We build the path as we go down, and remove elements as we come back up."
+"Isomorphism is about structure, symmetry is about mirror properties. Both require careful recursive analysis."
 
 ```cpp
-class PathFinder {
+class TreeStructureAnalyzer {
 public:
-    vector<vector<int>> findAllPaths(TreeNode* root) {
-        vector<vector<int>> allPaths;
-        vector<int> currentPath;
-        findPathsHelper(root, currentPath, allPaths);
-        return allPaths;
+    // Check if two trees are isomorphic (same structure)
+    bool areIsomorphic(TreeNode* root1, TreeNode* root2) {
+        // Base cases
+        if (!root1 && !root2) return true;
+        if (!root1 || !root2) return false;
+
+        // Values can be different in isomorphic trees
+        // Check if structures match in either orientation
+        return (areIsomorphic(root1->left, root2->left) &&
+                areIsomorphic(root1->right, root2->right)) ||
+               (areIsomorphic(root1->left, root2->right) &&
+                areIsomorphic(root1->right, root2->left));
     }
 
-    // String version for easier reading
-    vector<string> findAllPathsAsStrings(TreeNode* root) {
-        vector<string> allPaths;
-        string currentPath;
-        findPathsStringHelper(root, currentPath, allPaths);
-        return allPaths;
+    // Check if tree is symmetric (mirror of itself)
+    bool isSymmetric(TreeNode* root) {
+        if (!root) return true;
+        return isSymmetricHelper(root->left, root->right);
+    }
+
+    // Check if tree is height-balanced (AVL property)
+    bool isBalanced(TreeNode* root) {
+        return checkBalance(root) != -1;
+    }
+
+    // Find diameter of tree (longest path between any two nodes)
+    int diameter(TreeNode* root) {
+        int result = 0;
+        diameterHelper(root, result);
+        return result;
+    }
+
+    // Check if tree is a sum tree (non-leaf = sum of subtrees)
+    bool isSumTree(TreeNode* root) {
+        return sumTreeHelper(root) != -1;
+    }
+
+    // Check if two trees are identical (structure + values)
+    bool areIdentical(TreeNode* root1, TreeNode* root2) {
+        if (!root1 && !root2) return true;
+        if (!root1 || !root2) return false;
+
+        return (root1->val == root2->val) &&
+               areIdentical(root1->left, root2->left) &&
+               areIdentical(root1->right, root2->right);
     }
 
 private:
-    void findPathsHelper(TreeNode* root, vector<int>& currentPath, vector<vector<int>>& allPaths) {
-        if (root == nullptr) return;
+    bool isSymmetricHelper(TreeNode* left, TreeNode* right) {
+        if (!left && !right) return true;
+        if (!left || !right) return false;
 
-        // Add current node to path
-        currentPath.push_back(root->data);
-
-        // If leaf node, save the path
-        if (root->left == nullptr && root->right == nullptr) {
-            allPaths.push_back(currentPath);
-        } else {
-            // Continue searching in subtrees
-            findPathsHelper(root->left, currentPath, allPaths);
-            findPathsHelper(root->right, currentPath, allPaths);
-        }
-
-        // BACKTRACK: remove current node from path
-        currentPath.pop_back();
+        return (left->val == right->val) &&
+               isSymmetricHelper(left->left, right->right) &&
+               isSymmetricHelper(left->right, right->left);
     }
 
-    void findPathsStringHelper(TreeNode* root, string currentPath, vector<string>& allPaths) {
-        if (root == nullptr) return;
+    int checkBalance(TreeNode* root) {
+        if (!root) return 0;
 
-        // Add current node to path
-        if (!currentPath.empty()) currentPath += "->";
-        currentPath += to_string(root->data);
+        int leftHeight = checkBalance(root->left);
+        if (leftHeight == -1) return -1;  // Left subtree unbalanced
 
-        // If leaf node, save the path
-        if (root->left == nullptr && root->right == nullptr) {
-            allPaths.push_back(currentPath);
-        } else {
-            // Continue searching in subtrees
-            findPathsStringHelper(root->left, currentPath, allPaths);
-            findPathsStringHelper(root->right, currentPath, allPaths);
-        }
-        // No need to backtrack with string - pass by value handles it
+        int rightHeight = checkBalance(root->right);
+        if (rightHeight == -1) return -1;  // Right subtree unbalanced
+
+        if (abs(leftHeight - rightHeight) > 1) return -1;  // Current node unbalanced
+
+        return max(leftHeight, rightHeight) + 1;
+    }
+
+    int diameterHelper(TreeNode* root, int& result) {
+        if (!root) return 0;
+
+        int left = diameterHelper(root->left, result);
+        int right = diameterHelper(root->right, result);
+
+        // Update diameter passing through current node
+        result = max(result, left + right);
+
+        // Return height from current node
+        return max(left, right) + 1;
+    }
+
+    int sumTreeHelper(TreeNode* root) {
+        if (!root) return 0;
+        if (!root->left && !root->right) return root->val;  // Leaf node
+
+        int leftSum = sumTreeHelper(root->left);
+        int rightSum = sumTreeHelper(root->right);
+
+        if (leftSum == -1 || rightSum == -1) return -1;  // Invalid subtree
+        if (root->val != leftSum + rightSum) return -1;  // Sum property violated
+
+        return 2 * root->val;  // Current node + its subtree sum
     }
 };
 
+void demonstrateTreeValidation() {
+    cout << "\n=== ADVANCED TREE VALIDATION ===" << endl;
+
+    TreeStructureAnalyzer analyzer;
+
+    // Test symmetric tree
+    cout << "Testing Symmetric Tree:" << endl;
+    TreeNode* symmetric = new TreeNode(1);
+    symmetric->left = new TreeNode(2);
+    symmetric->right = new TreeNode(2);
+    symmetric->left->left = new TreeNode(3);
+    symmetric->left->right = new TreeNode(4);
+    symmetric->right->left = new TreeNode(4);
+    symmetric->right->right = new TreeNode(3);
+
+    cout << "Tree structure:" << endl;
+    cout << "       1" << endl;
+    cout << "      / \\" << endl;
+    cout << "     2   2" << endl;
+    cout << "    / \\ / \\" << endl;
+    cout << "   3  4 4  3" << endl;
+    cout << "Is symmetric: " << (analyzer.isSymmetric(symmetric) ? "Yes" : "No") << endl;
+
+    // Test balanced tree
+    cout << "\nTesting Balanced Tree:" << endl;
+    TreeNode* balanced = new TreeNode(1);
+    balanced->left = new TreeNode(2);
+    balanced->right = new TreeNode(3);
+    balanced->left->left = new TreeNode(4);
+
+    cout << "Is balanced: " << (analyzer.isBalanced(balanced) ? "Yes" : "No") << endl;
+
+    // Test diameter
+    cout << "\nTesting Tree Diameter:" << endl;
+    cout << "Diameter: " << analyzer.diameter(balanced) << " (longest path between any two nodes)" << endl;
+
+    // Test sum tree
+    cout << "\nTesting Sum Tree:" << endl;
+    TreeNode* sumTree = new TreeNode(26);
+    sumTree->left = new TreeNode(10);
+    sumTree->right = new TreeNode(3);
+    sumTree->left->left = new TreeNode(4);
+    sumTree->left->right = new TreeNode(6);
+    sumTree->right->right = new TreeNode(3);
+
+    cout << "Tree structure:" << endl;
+    cout << "      26" << endl;
+    cout << "     /  \\" << endl;
+    cout << "   10    3" << endl;
+    cout << "  / \\     \\" << endl;
+    cout << " 4   6     3" << endl;
+    cout << "Is sum tree: " << (analyzer.isSumTree(sumTree) ? "Yes" : "No") << endl;
+    cout << "(Each internal node = sum of its subtrees)" << endl;
+}
+```
+
+### 🔧 Problem 2: Advanced Tree Analysis and LCA
+
+**Problem Statement:**
+Implement lowest common ancestor (LCA) and duplicate subtree detection algorithms.
+
+**Teaching Strategy:**
+"LCA is fundamental for many tree algorithms. Duplicate detection shows how to 'fingerprint' subtree structures."
+
+```cpp
+class AdvancedTreeAnalyzer {
+public:
+    // Find lowest common ancestor of two nodes
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (!root || root == p || root == q) return root;
+
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+
+        if (left && right) return root;  // LCA found
+        return left ? left : right;      // Return non-null side
+    }
+
+    // Find all duplicate subtrees
+    vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
+        unordered_map<string, int> count;
+        vector<TreeNode*> result;
+
+        serialize(root, count, result);
+        return result;
+    }
+
+    // Check if tree is complete binary tree
+    bool isCompleteTree(TreeNode* root) {
+        if (!root) return true;
+
+        queue<TreeNode*> q;
+        q.push(root);
+        bool nullSeen = false;
+
+        while (!q.empty()) {
+            TreeNode* node = q.front();
+            q.pop();
+
+            if (!node) {
+                nullSeen = true;
+            } else {
+                if (nullSeen) return false;  // Node after null in level-order
+                q.push(node->left);
+                q.push(node->right);
+            }
+        }
+
+        return true;
+    }
+
+    // Count nodes in complete binary tree (optimized)
+    int countNodesInCompleteTree(TreeNode* root) {
+        if (!root) return 0;
+
+        int leftHeight = getHeight(root, true);   // Go left
+        int rightHeight = getHeight(root, false); // Go right
+
+        if (leftHeight == rightHeight) {
+            // Perfect binary tree
+            return (1 << leftHeight) - 1;  // 2^h - 1
+        }
+
+        // Not perfect, count recursively
+        return 1 + countNodesInCompleteTree(root->left) +
+                   countNodesInCompleteTree(root->right);
+    }
+
+private:
+    string serialize(TreeNode* root, unordered_map<string, int>& count,
+                    vector<TreeNode*>& result) {
+        if (!root) return "#";
+
+        string s = to_string(root->val) + "," +
+                  serialize(root->left, count, result) + "," +
+                  serialize(root->right, count, result);
+
+        if (++count[s] == 2) {  // Found duplicate
+            result.push_back(root);
+        }
+
+        return s;
+    }
+
+    int getHeight(TreeNode* root, bool goLeft) {
+        int height = 0;
+        while (root) {
+            height++;
+            root = goLeft ? root->left : root->right;
+        }
+        return height;
+    }
+};
+
+void demonstrateAdvancedAnalysis() {
+    cout << "\n=== ADVANCED TREE ANALYSIS ===" << endl;
+
+    AdvancedTreeAnalyzer analyzer;
+
+    // Test LCA
+    cout << "Testing Lowest Common Ancestor:" << endl;
+    TreeNode* root = new TreeNode(3);
+    root->left = new TreeNode(5);
+    root->right = new TreeNode(1);
+    root->left->left = new TreeNode(6);
+    root->left->right = new TreeNode(2);
+    root->right->left = new TreeNode(0);
+    root->right->right = new TreeNode(8);
+    root->left->right->left = new TreeNode(7);
+    root->left->right->right = new TreeNode(4);
+
+    cout << "Tree structure:" << endl;
+    cout << "        3" << endl;
+    cout << "       / \\" << endl;
+    cout << "      5   1" << endl;
+    cout << "     / \\ / \\" << endl;
+    cout << "    6  2 0  8" << endl;
+    cout << "      / \\" << endl;
+    cout << "     7   4" << endl;
+
+    TreeNode* lca = analyzer.lowestCommonAncestor(root, root->left, root->left->right->right);
+    cout << "LCA of nodes 5 and 4: " << (lca ? to_string(lca->val) : "null") << endl;
+
+    // Test complete tree
+    cout << "\nTesting Complete Tree:" << endl;
+    cout << "Is complete tree: " << (analyzer.isCompleteTree(root) ? "Yes" : "No") << endl;
+
+    cout << "\nAlgorithm complexities:" << endl;
+    cout << "LCA: O(n) time, O(h) space" << endl;
+    cout << "Complete tree check: O(n) time, O(w) space (w = max width)" << endl;
+    cout << "Duplicate detection: O(n²) worst case for string operations" << endl;
+}
+```
+
+---
+
+## Day 7: Advanced Traversal Applications & Tree Views
+
+### 📚 Theory: Coordinate-Based Tree Algorithms
+
+**Teacher's Introduction:**
+"Today we explore advanced traversal patterns that solve complex spatial problems on trees. These algorithms use coordinate systems and specialized data structures to achieve elegant solutions."
+
+### 🔧 Problem 1: Tree Views (Left, Right, Top, Bottom)
+
+**Problem Statement:**
+Implement algorithms to find different views of a binary tree from various perspectives.
+
+**Teaching Strategy:**
+"Tree views teach us to think spatially about trees. We use coordinates and level-by-level processing to solve visibility problems."
+
+```cpp
+class TreeViews {
+public:
+    // Right side view (rightmost node at each level)
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> result;
+        rightViewHelper(root, 0, result);
+        return result;
+    }
+
+    // Left side view (leftmost node at each level)
+    vector<int> leftSideView(TreeNode* root) {
+        vector<int> result;
+        leftViewHelper(root, 0, result);
+        return result;
+    }
+
+    // Top view (nodes visible from top, based on horizontal distance)
+    vector<int> topView(TreeNode* root) {
+        if (!root) return {};
+
+        map<int, int> topMap;  // horizontal_distance -> node_value
+        queue<pair<TreeNode*, int>> q;  // node, horizontal_distance
+
+        q.push({root, 0});
+
+        while (!q.empty()) {
+            auto [node, hd] = q.front();
+            q.pop();
+
+            // Only add if this horizontal distance not seen before
+            if (topMap.find(hd) == topMap.end()) {
+                topMap[hd] = node->val;
+            }
+
+            if (node->left) q.push({node->left, hd - 1});
+            if (node->right) q.push({node->right, hd + 1});
+        }
+
+        vector<int> result;
+        for (auto& p : topMap) {
+            result.push_back(p.second);
+        }
+        return result;
+    }
+
+    // Bottom view (nodes visible from bottom)
+    vector<int> bottomView(TreeNode* root) {
+        if (!root) return {};
+
+        map<int, int> bottomMap;
+        queue<pair<TreeNode*, int>> q;
+
+        q.push({root, 0});
+
+        while (!q.empty()) {
+            auto [node, hd] = q.front();
+            q.pop();
+
+            // Always update (last node at this horizontal distance)
+            bottomMap[hd] = node->val;
+
+            if (node->left) q.push({node->left, hd - 1});
+            if (node->right) q.push({node->right, hd + 1});
+        }
+
+        vector<int> result;
+        for (auto& p : bottomMap) {
+            result.push_back(p.second);
+        }
+        return result;
+    }
+
+    // Boundary traversal (anticlockwise boundary)
+    vector<int> boundaryTraversal(TreeNode* root) {
+        if (!root) return {};
+
+        vector<int> result;
+        result.push_back(root->val);
+
+        if (!root->left && !root->right) return result;
+
+        // Left boundary (excluding leaf nodes)
+        addLeftBoundary(root->left, result);
+
+        // Leaf nodes
+        addLeaves(root, result);
+
+        // Right boundary (excluding leaf nodes, in reverse)
+        addRightBoundary(root->right, result);
+
+        return result;
+    }
+
+private:
+    void rightViewHelper(TreeNode* root, int level, vector<int>& result) {
+        if (!root) return;
+
+        if (level == result.size()) {
+            result.push_back(root->val);
+        }
+
+        rightViewHelper(root->right, level + 1, result);
+        rightViewHelper(root->left, level + 1, result);
+    }
+
+    void leftViewHelper(TreeNode* root, int level, vector<int>& result) {
+        if (!root) return;
+
+        if (level == result.size()) {
+            result.push_back(root->val);
+        }
+
+        leftViewHelper(root->left, level + 1, result);
+        leftViewHelper(root->right, level + 1, result);
+    }
+
+    void addLeftBoundary(TreeNode* root, vector<int>& result) {
+        if (!root || (!root->left && !root->right)) return;
+
+        result.push_back(root->val);
+
+        if (root->left) addLeftBoundary(root->left, result);
+        else addLeftBoundary(root->right, result);
+    }
+
+    void addLeaves(TreeNode* root, vector<int>& result) {
+        if (!root) return;
+
+        if (!root->left && !root->right && root->val != result[0]) {
+            result.push_back(root->val);
+            return;
+        }
+
+        addLeaves(root->left, result);
+        addLeaves(root->right, result);
+    }
+
+    void addRightBoundary(TreeNode* root, vector<int>& result) {
+        if (!root || (!root->left && !root->right)) return;
+
+        if (root->right) addRightBoundary(root->right, result);
+        else addRightBoundary(root->left, result);
+
+        result.push_back(root->val);
+    }
+};
+
+void demonstrateTreeViews() {
+    cout << "\n=== TREE VIEWS ALGORITHMS ===" << endl;
+
+    // Create test tree
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+    root->right->left = new TreeNode(6);
+    root->right->right = new TreeNode(7);
+
+    TreeViews views;
+
+    cout << "Tree structure:" << endl;
+    cout << "       1" << endl;
+    cout << "      / \\" << endl;
+    cout << "     2   3" << endl;
+    cout << "    / \\ / \\" << endl;
+    cout << "   4  5 6  7" << endl;
+
+    auto rightView = views.rightSideView(root);
+    cout << "\nRight side view: ";
+    for (int val : rightView) cout << val << " ";
+    cout << "(What you see from right side)" << endl;
+
+    auto leftView = views.leftSideView(root);
+    cout << "Left side view: ";
+    for (int val : leftView) cout << val << " ";
+    cout << "(What you see from left side)" << endl;
+
+    auto topView = views.topView(root);
+    cout << "Top view: ";
+    for (int val : topView) cout << val << " ";
+    cout << "(What you see from above)" << endl;
+
+    auto bottomView = views.bottomView(root);
+    cout << "Bottom view: ";
+    for (int val : bottomView) cout << val << " ";
+    cout << "(What you see from below)" << endl;
+
+    auto boundary = views.boundaryTraversal(root);
+    cout << "Boundary traversal: ";
+    for (int val : boundary) cout << val << " ";
+    cout << "(Anticlockwise boundary)" << endl;
+
+    cout << "\nKey insights:" << endl;
+    cout << "- Right/Left views: First node at each level" << endl;
+    cout << "- Top/Bottom views: Use horizontal distance coordinates" << endl;
+    cout << "- Boundary: Left boundary + leaves + right boundary (reverse)" << endl;
+}
+```
+
+### 🔧 Problem 2: Advanced Traversal Patterns
+
+**Problem Statement:**
+Implement zigzag level order, vertical order traversal, and Morris traversal (O(1) space).
+
+**Teaching Strategy:**
+"These advanced patterns show how creative thinking can solve complex traversal requirements and optimize space usage."
+
+```cpp
+class AdvancedTraversals {
+public:
+    // Zigzag level order traversal
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        if (!root) return {};
+
+        vector<vector<int>> result;
+        queue<TreeNode*> q;
+        q.push(root);
+        bool leftToRight = true;
+
+        while (!q.empty()) {
+            int size = q.size();
+            vector<int> level;
+
+            for (int i = 0; i < size; i++) {
+                TreeNode* node = q.front();
+                q.pop();
+
+                level.push_back(node->val);
+
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
+            }
+
+            if (!leftToRight) {
+                reverse(level.begin(), level.end());
+            }
+
+            result.push_back(level);
+            leftToRight = !leftToRight;
+        }
+
+        return result;
+    }
+
+    // Vertical order traversal
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        if (!root) return {};
+
+        map<int, map<int, multiset<int>>> nodes;  // col -> row -> values
+        queue<tuple<TreeNode*, int, int>> q;      // node, row, col
+
+        q.push({root, 0, 0});
+
+        while (!q.empty()) {
+            auto [node, row, col] = q.front();
+            q.pop();
+
+            nodes[col][row].insert(node->val);
+
+            if (node->left) q.push({node->left, row + 1, col - 1});
+            if (node->right) q.push({node->right, row + 1, col + 1});
+        }
+
+        vector<vector<int>> result;
+        for (auto& colPair : nodes) {
+            vector<int> column;
+            for (auto& rowPair : colPair.second) {
+                for (int val : rowPair.second) {
+                    column.push_back(val);
+                }
+            }
+            result.push_back(column);
+        }
+
+        return result;
+    }
+
+    // Morris inorder traversal (O(1) space)
+    vector<int> morrisInorder(TreeNode* root) {
+        vector<int> result;
+        TreeNode* current = root;
+
+        while (current) {
+            if (!current->left) {
+                result.push_back(current->val);
+                current = current->right;
+            } else {
+                // Find inorder predecessor
+                TreeNode* predecessor = current->left;
+                while (predecessor->right && predecessor->right != current) {
+                    predecessor = predecessor->right;
+                }
+
+                if (!predecessor->right) {
+                    // Create thread
+                    predecessor->right = current;
+                    current = current->left;
+                } else {
+                    // Remove thread and process current
+                    predecessor->right = nullptr;
+                    result.push_back(current->val);
+                    current = current->right;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    // Diagonal traversal
+    vector<vector<int>> diagonalTraversal(TreeNode* root) {
+        if (!root) return {};
+
+        map<int, vector<int>> diagonalMap;  // diagonal_index -> nodes
+        queue<pair<TreeNode*, int>> q;      // node, diagonal_index
+
+        q.push({root, 0});
+
+        while (!q.empty()) {
+            auto [node, diag] = q.front();
+            q.pop();
+
+            diagonalMap[diag].push_back(node->val);
+
+            if (node->left) q.push({node->left, diag + 1});
+            if (node->right) q.push({node->right, diag});
+        }
+
+        vector<vector<int>> result;
+        for (auto& pair : diagonalMap) {
+            result.push_back(pair.second);
+        }
+        return result;
+    }
+};
+
+void demonstrateAdvancedTraversals() {
+    cout << "\n=== ADVANCED TRAVERSAL PATTERNS ===" << endl;
+
+    // Create test tree
+    TreeNode* root = new TreeNode(3);
+    root->left = new TreeNode(9);
+    root->right = new TreeNode(20);
+    root->right->left = new TreeNode(15);
+    root->right->right = new TreeNode(7);
+
+    AdvancedTraversals traverser;
+
+    cout << "Tree structure:" << endl;
+    cout << "    3" << endl;
+    cout << "   / \\" << endl;
+    cout << "  9   20" << endl;
+    cout << "     /  \\" << endl;
+    cout << "    15   7" << endl;
+
+    // Zigzag traversal
+    auto zigzag = traverser.zigzagLevelOrder(root);
+    cout << "\nZigzag level order:" << endl;
+    for (int i = 0; i < zigzag.size(); i++) {
+        cout << "Level " << i << " (" << (i % 2 == 0 ? "L→R" : "R→L") << "): ";
+        for (int val : zigzag[i]) cout << val << " ";
+        cout << endl;
+    }
+
+    // Vertical traversal
+    auto vertical = traverser.verticalTraversal(root);
+    cout << "\nVertical order:" << endl;
+    for (int i = 0; i < vertical.size(); i++) {
+        cout << "Column " << i << ": ";
+        for (int val : vertical[i]) cout << val << " ";
+        cout << endl;
+    }
+
+    // Morris traversal
+    auto morris = traverser.morrisInorder(root);
+    cout << "\nMorris inorder (O(1) space): ";
+    for (int val : morris) cout << val << " ";
+    cout << endl;
+
+    cout << "\nAdvanced concepts:" << endl;
+    cout << "- Zigzag: Alternate direction at each level" << endl;
+    cout << "- Vertical: Group by column coordinates" << endl;
+    cout << "- Morris: Use tree structure as stack (threading)" << endl;
+    cout << "- Diagonal: Nodes at same slope" << endl;
+}
+```
+
+**Morris Traversal Explanation:**
+
+1. **Threading**: Temporarily modify tree to create shortcuts
+2. **No Stack**: Use tree structure itself for navigation
+3. **Restoration**: Restore original tree structure
+4. **O(1) Space**: No additional data structures needed
+
+**Advanced Teaching Points:**
+
+1.  **Coordinate Systems**: How (row, col) coordinates solve spatial problems
+2.  **Threading Technique**: Morris traversal's elegant space optimization
+3.  **Multi-key Sorting**: Vertical traversal with multiple sort criteria
+4.  **State Machines**: Zigzag's alternating direction pattern
+    } else {
+    // Continue searching in subtrees
+    findPathsHelper(root->left, currentPath, allPaths);
+    findPathsHelper(root->right, currentPath, allPaths);
+    }
+
+            // BACKTRACK: remove current node from path
+            currentPath.pop_back();
+        }
+
+        void findPathsStringHelper(TreeNode* root, string currentPath, vector<string>& allPaths) {
+            if (root == nullptr) return;
+
+            // Add current node to path
+            if (!currentPath.empty()) currentPath += "->";
+            currentPath += to_string(root->data);
+
+            // If leaf node, save the path
+            if (root->left == nullptr && root->right == nullptr) {
+                allPaths.push_back(currentPath);
+            } else {
+                // Continue searching in subtrees
+                findPathsStringHelper(root->left, currentPath, allPaths);
+                findPathsStringHelper(root->right, currentPath, allPaths);
+            }
+            // No need to backtrack with string - pass by value handles it
+        }
+
+    };
+
 // Teaching demonstration with step-by-step trace
 void demonstratePathFinding() {
-    cout << "=== FINDING ALL ROOT-TO-LEAF PATHS ===" << endl;
+cout << "=== FINDING ALL ROOT-TO-LEAF PATHS ===" << endl;
 
     // Create sample tree
     TreeNode* root = new TreeNode(1);
@@ -362,7 +1224,9 @@ void demonstratePathFinding() {
     for (const string& path : stringPaths) {
         cout << path << endl;
     }
+
 }
+
 ```
 
 **Congratulations! You have successfully completed the setup for a comprehensive C++ trees curriculum. The Week 1 implementation guide now correctly reflects the updated structure where all 4 traversals are taught in Days 1-2, and Week 2 focuses entirely on problem-solving using the fundamentals learned in Week 1.**
@@ -464,6 +1328,7 @@ return;
 "Let's trace all three traversals on the same tree to see the differences!"
 
 For tree:
+
 ```
 
     1
@@ -473,12 +1338,12 @@ For tree:
 / \
 4 5
 
-````
+```
 
 **Execution Order Comparison:**
 
 | Step | Preorder | Inorder | Postorder |
-|------|----------|---------|-----------|
+| ---- | -------- | ------- | --------- |
 | 1    | 1        | 4       | 4         |
 | 2    | 2        | 2       | 5         |
 | 3    | 4        | 5       | 2         |
@@ -526,7 +1391,7 @@ public:
         result.push_back(root->data);   // Process root last
     }
 };
-````
+```
 
 **Brute Force Analysis:**
 
@@ -1590,53 +2455,175 @@ int main() {
 
 ## 🎓 Week 2 Assessment & Teaching Notes
 
-### Student Assessment Rubric
+---
 
-**Basic Understanding (Must Have):**
+## Main Function & Testing Framework
 
-- [ ] Can explain all four traversal types and their use cases
-- [ ] Can trace traversals manually on paper with stack/queue visualization
-- [ ] Understands difference between recursive and iterative approaches
-- [ ] Can identify when to use BFS vs DFS
+```cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <stack>
+#include <unordered_map>
+#include <map>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <climits>
+using namespace std;
 
-**Implementation Skills (Should Have):**
+// TreeNode definition
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
 
-- [ ] Can implement all traversals recursively and iteratively
-- [ ] Can solve tree construction problems
-- [ ] Can implement diameter and path sum algorithms
-- [ ] Can debug tree traversal code
+// Helper functions for demonstrations
+void printInorder(TreeNode* root) {
+    if (!root) return;
+    printInorder(root->left);
+    cout << root->val << " ";
+    printInorder(root->right);
+}
 
-**Advanced Thinking (Nice to Have):**
+void printPreorder(TreeNode* root) {
+    if (!root) return;
+    cout << root->val << " ";
+    printPreorder(root->left);
+    printPreorder(root->right);
+}
 
-- [ ] Understands advanced optimization techniques (hashmap for tree construction)
-- [ ] Can solve LCA and other complex tree problems
-- [ ] Can analyze time/space complexity trade-offs
-- [ ] Can modify algorithms for different requirements
+int main() {
+    cout << "🌳 Week 2: Advanced Tree Problem Solving" << endl;
+    cout << "===========================================" << endl;
 
-### 🗣️ Classroom Discussion Questions
+    // Day 1-2: Advanced Construction Problems
+    cout << "\n📅 DAY 1-2: ADVANCED TREE CONSTRUCTION" << endl;
+    demonstrateTraversalToTree();
+    demonstrateSerialization();
 
-1. "Why does inorder traversal of BST give sorted order?"
-2. "When would you prefer iterative over recursive traversal?"
-3. "How does tree construction help in understanding traversals?"
-4. "What real-world problems use tree diameter concepts?"
+    // Day 3-4: Path & Sum Problems
+    cout << "\n📅 DAY 3-4: ADVANCED PATH PROBLEMS" << endl;
+    demonstratePathProblems();
+    demonstrateMaxPathSum();
 
-### 🎯 Common Student Mistakes to Watch For
+    // Day 5-6: Tree Properties & Validation
+    cout << "\n📅 DAY 5-6: TREE VALIDATION & ANALYSIS" << endl;
+    demonstrateTreeValidation();
+    demonstrateAdvancedAnalysis();
 
-1. **Mixing up traversal orders** - practice with different trees
-2. **Stack/Queue confusion** - emphasize LIFO vs FIFO
-3. **Tree construction logic** - root identification and subtree division
-4. **Path problems backtracking** - forgetting to remove elements
-5. **LCA edge cases** - when one node is ancestor of another
+    // Day 7: Advanced Traversals & Views
+    cout << "\n📅 DAY 7: ADVANCED TRAVERSALS & VIEWS" << endl;
+    demonstrateTreeViews();
+    demonstrateAdvancedTraversals();
+
+    cout << "\n🎉 Week 2 Advanced Tree Algorithms Complete!" << endl;
+    cout << "Next: Week 3 - Binary Search Trees (BST)" << endl;
+
+    return 0;
+}
+```
 
 ---
 
-## Next Week Preview
+## 📚 Week 2 Summary & Key Takeaways
 
-In Week 3, we'll explore:
+### **Advanced Concepts Mastered:**
 
-- Binary Search Trees (BST): properties, insertion, deletion
-- BST validation and optimization
-- BST-specific algorithms and applications
-- Converting between different tree representations
+1. **Tree Construction Algorithms**
 
-**Congratulations on mastering advanced tree traversals and algorithms!**
+   - Building from preorder + inorder traversals
+   - Tree serialization/deserialization
+   - Understanding unique reconstruction properties
+
+2. **Complex Path Problems**
+
+   - Backtracking algorithms for path finding
+   - Maximum path sum (any-to-any nodes)
+   - Path counting with various constraints
+
+3. **Advanced Tree Validation**
+
+   - Tree isomorphism and structural comparison
+   - Symmetry checking and balance validation
+   - Sum tree properties and LCA algorithms
+
+4. **Spatial Tree Algorithms**
+   - Tree views from different perspectives
+   - Coordinate-based traversal problems
+   - Morris traversal for O(1) space optimization
+
+### **Important Algorithm Patterns:**
+
+- **Backtracking Pattern**: Add → Recurse → Remove (for path problems)
+- **Global vs Local Tracking**: Managing state across recursive calls
+- **Coordinate Systems**: Using (row, col) for spatial tree problems
+- **Threading Techniques**: Morris traversal's space optimization
+- **Level-by-Level Processing**: Queue-based algorithms for tree views
+
+### **Time/Space Complexity Mastery:**
+
+- **Tree Construction**: O(n) with hashmap optimization
+- **Path Problems**: O(n) time, O(h) space for most algorithms
+- **Tree Views**: O(n) time, coordinate-based space requirements
+- **Morris Traversal**: O(n) time, O(1) space breakthrough
+
+### **Real-World Applications:**
+
+- **Compiler Design**: Tree construction from parsing
+- **Game Development**: Pathfinding and spatial algorithms
+- **Database Systems**: Tree validation and structural analysis
+- **UI Frameworks**: Tree view implementations
+
+### **Student Assessment Rubric**
+
+**Advanced Understanding (Must Have):**
+
+- [ ] Can implement tree construction from traversal arrays
+- [ ] Masters backtracking algorithms for path problems
+- [ ] Understands coordinate-based tree algorithms
+- [ ] Can solve complex tree validation problems
+
+**Implementation Excellence (Should Have):**
+
+- [ ] Can optimize algorithms using appropriate data structures
+- [ ] Handles edge cases systematically (empty trees, single nodes)
+- [ ] Writes clean, efficient recursive and iterative solutions
+- [ ] Can debug complex tree algorithms effectively
+
+**Expert-Level Thinking (Nice to Have):**
+
+- [ ] Understands Morris traversal and advanced space optimizations
+- [ ] Can design custom tree algorithms for specific requirements
+- [ ] Analyzes algorithm trade-offs and chooses optimal approaches
+- [ ] Can explain algorithms to others with clear examples
+
+### 🎯 Common Advanced Mistakes to Avoid
+
+1. **Tree Construction**: Forgetting to increment indices or handle boundaries
+2. **Path Problems**: Not properly maintaining backtracking state
+3. **Coordinate Systems**: Mixing up row/column mappings in spatial algorithms
+4. **Morris Traversal**: Incorrectly managing threading and restoration
+5. **Complex Validation**: Not handling all edge cases in recursive property checks
+
+### 🗣️ Advanced Discussion Questions
+
+1. "How does tree construction demonstrate the power of divide-and-conquer?"
+2. "When would you choose Morris traversal over traditional methods?"
+3. "How do coordinate-based algorithms relate to computer graphics?"
+4. "What are the trade-offs between different tree validation approaches?"
+
+---
+
+## Next Week Preview: Binary Search Trees
+
+Week 3 will introduce Binary Search Trees, building on these advanced tree manipulation skills:
+
+- **BST Properties**: Understanding ordered tree structures
+- **BST Operations**: Search, insert, delete with O(log n) complexity
+- **BST Validation**: Checking and maintaining BST properties
+- **BST Applications**: Real-world uses in databases and systems
+
+**🌟 Congratulations on mastering advanced tree algorithms! You're now ready for specialized tree structures.**
