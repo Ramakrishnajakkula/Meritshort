@@ -1,31 +1,64 @@
-# Week 5: Heaps & Priority Queues - Teacher's Guide
+# Week 5: Heaps & Priority Queues - Implementation Guide
 
-This document provides comprehensive teaching materials for Week 5, focusing on heap data structures and their primary application in priority queues. This week transitions from tree-based searching structures to tree-based ordering structures, introducing a fundamentally different approach to organizing data.
+## 📋 **Table of Contents**
+
+### **Top-Level Navigation**
+1. [Week Overview](#-week-overview)
+2. [Module 1: Heap Fundamentals](#-module-1-heap-fundamentals--array-implementation)
+3. [Module 2: Heapify Operations](#-module-2-heapify-operations--dynamic-heap-maintenance)
+4. [Module 3: Build Heap & Heap Sort](#-module-3-build-heap-algorithm--heap-sort)
+5. [Module 4: Priority Queues & Applications](#-module-4-priority-queues--real-world-applications)
+6. [Module 5: Assessment & Summary](#-module-5-assessment--summary)
+
+### **Module-Level Navigation**
+
+#### **Module 1: Heap Fundamentals**
+- [Heap Theory & Structure](#heap-theory--structure)
+- [Array Implementation](#array-implementation--mathematics)
+- [Heap Visualization](#heap-visualization--structure-understanding)
+- [Module 1 Summary](#module-1-summary)
+
+#### **Module 2: Heapify Operations**
+- [Heapify Up Operation](#heapify-up-operation)
+- [Heapify Down Operation](#heapify-down-operation)
+- [Complexity Analysis](#complexity-analysis--performance-metrics)
+- [Module 2 Summary](#module-2-summary)
+
+#### **Module 3: Build Heap & Heap Sort**
+- [Build Heap Algorithm](#build-heap-algorithm)
+- [Heap Sort Implementation](#heap-sort-implementation)
+- [Performance Comparison](#performance-comparison)
+- [Module 3 Summary](#module-3-summary)
+
+#### **Module 4: Priority Queues & Applications**
+- [Custom Priority Queue](#custom-priority-queue-implementation)
+- [Real-World Applications](#advanced-priority-queue-applications)
+- [STL Integration](#stl-integration)
+- [Module 4 Summary](#module-4-summary)
+
+#### **Module 5: Assessment & Summary**
+- [Self-Assessment Checklist](#self-assessment-checklist)
+- [Key Takeaways](#week-5-summary--key-takeaways)
+- [Next Steps](#next-week-preview-advanced-tree-topics)
 
 ---
 
-## 🎯 Learning Objectives for Week 5
+## 🎯 **Week Overview**
 
-By the end of this week, students should be able to:
+This week focuses on heap data structures and their primary application in priority queues. You'll transition from tree-based searching structures to tree-based ordering structures, introducing a fundamentally different approach to organizing data.
 
-1. **Conceptual Understanding**: Grasp heap properties and complete binary tree structure
-2. **Implementation Skills**: Build heaps from scratch using arrays with mathematical index relationships
-3. **Algorithm Analysis**: Understand why heapify operations are O(log n) and build-heap is O(n)
-4. **Optimization**: Implement linear-time heap construction using bottom-up approach
-5. **Application Recognition**: Identify when heaps solve problems optimally (priority queues, sorting, selection)
-6. **STL Proficiency**: Use priority_queue effectively with custom comparators
-7. **Problem Solving**: Apply heaps to various algorithmic challenges like top-K problems and graph algorithms
+**Learning Outcomes:**
+- Master heap properties and complete binary tree structure
+- Implement heaps from scratch using arrays with mathematical relationships
+- Understand and apply heapify operations efficiently
+- Build real-world applications using priority queues
+- Achieve O(n) heap construction and O(n log n) heap sort
 
 ---
 
-## Day 1-2: Heap Fundamentals & Array Implementation
+## 🔧 **Module 1: Heap Fundamentals & Array Implementation**
 
-### 📚 Theory: From Trees to Heaps
-
-**Teacher's Introduction:**
-"After mastering search trees, we now explore ordering trees. Heaps don't maintain sorted order like BSTs, but they guarantee that the most important element (max or min) is always at the top. This makes them perfect for priority-based systems."
-
-### 🔧 The Heap Property
+### Heap Theory & Structure
 
 **Heap Definition:**
 A heap is a **complete binary tree** that satisfies the **heap property**:
@@ -34,7 +67,9 @@ A heap is a **complete binary tree** that satisfies the **heap property**:
 
 **Key Insight**: Unlike BSTs, heaps only care about parent-child relationships, not global ordering!
 
-### **Implementation 1: Basic Heap Structure & Array Mathematics**
+### Array Implementation & Mathematics
+
+**Implementation 1: Basic Heap Structure & Array Mathematics**
 
 ```cpp
 #include <iostream>
@@ -340,14 +375,29 @@ void demonstrateHeapVisualization() {
 3. **Memory Efficiency**: No pointers needed
 4. **Heap vs BST**: Different ordering guarantees
 
+### Module 1 Summary
+
+**Key Concepts Mastered:**
+- Heap property and complete binary tree structure
+- Array representation with mathematical index relationships
+- Heap visualization and structure understanding
+- Memory advantages of array-based implementation
+
+**Skills Developed:**
+- Implementing heap data structure from scratch
+- Mathematical heap navigation formulas
+- Tree visualization and analysis techniques
+- Performance comparison with pointer-based trees
+
+[↑ Back to Top](#-table-of-contents)
+
 ---
 
-## Day 3-4: Heapify Operations & Dynamic Heap Maintenance
+## 🧠 **Module 2: Heapify Operations & Dynamic Heap Maintenance**
 
-### 📚 Theory: The Heapify Operations
+### Heapify Up Operation
 
-**Teacher's Introduction:**
-"Heapify operations are the heart of heap maintenance. These elegant algorithms restore heap property when it's violated, enabling efficient insertion and extraction operations."
+**Insert operation with heapify-up**
 
 ### **Implementation 1: Heapify-Up (Bubble-Up) Operation**
 
@@ -622,9 +672,24 @@ void demonstrateComplexityAnalysis() {
 3. **Comparison Strategy**: Parent vs children determines movement
 4. **Performance**: Efficient priority queue operations
 
+### Module 2 Summary
+
+**Heapify Operations Mastered:**
+- Heapify-up (bubble-up) for insertion operations
+- Heapify-down (bubble-down) for extraction operations
+- Complexity analysis and performance metrics
+- Comparison with other data structures
+
+**Algorithm Skills:**
+- Implementing efficient heap maintenance
+- Understanding logarithmic complexity in trees
+- Optimizing heap operations for performance
+
+[↑ Back to Top](#-table-of-contents)
+
 ---
 
-## Day 5-6: Build Heap Algorithm & Heap Sort
+## 🏗️ **Module 3: Build Heap Algorithm & Heap Sort**
 
 ### 📚 Theory: The Linear-Time Build Heap
 
@@ -946,9 +1011,24 @@ void demonstrateHeapSort() {
 3. **Heap Sort**: In-place O(n log n) sorting
 4. **Performance Guarantees**: No worst-case degradation
 
+### Module 3 Summary
+
+**Build Heap & Sorting Mastered:**
+- Linear-time build heap algorithm (O(n))
+- Mathematical proof of geometric series optimization
+- Heap sort implementation with O(n log n) complexity
+- Performance comparison with other sorting algorithms
+
+**Advanced Skills:**
+- Bottom-up vs top-down heap construction
+- In-place sorting techniques
+- Algorithm optimization strategies
+
+[↑ Back to Top](#-table-of-contents)
+
 ---
 
-## Day 7: Priority Queues & Real-World Applications
+## 🚀 **Module 4: Priority Queues & Real-World Applications**
 
 ### 📚 Theory: Priority Queues in Practice
 
@@ -1409,7 +1489,51 @@ int main() {
 
 ---
 
-## 📚 Week 5 Summary & Key Takeaways
+### Module 4 Summary
+
+**Priority Queue Applications Mastered:**
+- Custom priority queue implementation
+- Task scheduling systems
+- Graph algorithms (Dijkstra's shortest path)
+- Merge K sorted arrays problem
+- STL integration and custom comparators
+
+**Real-World Skills:**
+- System design with priority queues
+- Performance optimization for production systems
+- Integration with existing libraries and frameworks
+
+[↑ Back to Top](#-table-of-contents)
+
+---
+
+## 📊 **Module 5: Assessment & Summary**
+
+### Self-Assessment Checklist
+
+**Heap Fundamentals (Must Have):**
+- [ ] Understands heap property and complete tree structure
+- [ ] Can implement heapify-up and heapify-down operations
+- [ ] Grasps array representation with mathematical relationships
+- [ ] Performs complexity analysis for heap operations
+
+**Advanced Heap Skills (Should Have):**
+- [ ] Implements build heap algorithm with O(n) complexity
+- [ ] Masters heap sort with in-place sorting
+- [ ] Uses STL priority_queue with custom comparators
+- [ ] Applies heaps to solve algorithmic problems
+
+**Expert Knowledge (Nice to Have):**
+- [ ] Understands mathematical proof of linear build-heap
+- [ ] Connects heaps to real-world system applications
+- [ ] Optimizes heap operations for specific use cases
+- [ ] Designs priority queue solutions for complex problems
+
+[↑ Back to Top](#-table-of-contents)
+
+---
+
+## 📚 **Week 5 Summary & Key Takeaways**
 
 ### **Heap Concepts Mastered:**
 
@@ -1491,3 +1615,34 @@ Week 6 will explore specialized tree structures:
 - **Performance Optimization**: Space-time trade-offs in tree design
 
 **🌟 Congratulations on mastering Heaps & Priority Queues! You now understand efficient priority-based data processing.**
+
+[↑ Back to Top](#-table-of-contents)
+
+---
+
+## 🔍 **Quick Reference Guide**
+
+### **Heap Operations Complexity**
+| Operation | Time Complexity | Space Complexity |
+|-----------|----------------|------------------|
+| Insert | O(log n) | O(1) |
+| Extract Max/Min | O(log n) | O(1) |
+| Peek | O(1) | O(1) |
+| Build Heap | O(n) | O(1) |
+| Heap Sort | O(n log n) | O(1) |
+
+### **When to Use Heaps**
+- ✅ Need frequent access to min/max element
+- ✅ Priority-based processing required
+- ✅ Implementing priority queues
+- ✅ Sorting with guaranteed O(n log n) performance
+- ✅ Memory-constrained environments
+
+### **Common Heap Applications**
+- Operating system process scheduling
+- Graph algorithms (Dijkstra, Prim)
+- Event-driven simulations
+- Stream processing systems
+- Top-K element problems
+
+[↑ Back to Top](#-table-of-contents)

@@ -1,22 +1,65 @@
-# Week 6: Advanced Tree Topics (Tries & Segment Trees) - Teacher's Guide
+# Week 6: Advanced Tree Topics (Tries & Segment Trees) - Implementation Guide
 
-This document provides comprehensive teaching materials for Week 6, focusing on specialized tree structures for string processing and range queries. This week explores how different tree designs solve specific problem domains optimally.
+## 📋 **Table of Contents**
+
+### **Top-Level Navigation**
+1. [Week Overview](#-week-overview)
+2. [Module 1: Trie Data Structures](#-module-1-trie-data-structures)
+3. [Module 2: String Processing with Tries](#-module-2-string-processing-with-tries)
+4. [Module 3: Segment Trees](#-module-3-segment-trees)
+5. [Module 4: Range Query Systems](#-module-4-range-query-systems)
+6. [Module 5: Assessment & Applications](#-module-5-assessment--applications)
+
+### **Module-Level Navigation**
+
+#### **Module 1: Trie Data Structures**
+- [Trie Fundamentals](#trie-fundamentals)
+- [Trie Implementation](#trie-implementation)
+- [Memory Optimization](#memory-optimization)
+- [Module 1 Summary](#module-1-summary)
+
+#### **Module 2: String Processing with Tries**
+- [Prefix Operations](#prefix-operations)
+- [String Search Algorithms](#string-search-algorithms)
+- [Auto-completion Systems](#auto-completion-systems)
+- [Module 2 Summary](#module-2-summary)
+
+#### **Module 3: Segment Trees**
+- [Segment Tree Concepts](#segment-tree-concepts)
+- [Range Query Implementation](#range-query-implementation)
+- [Update Operations](#update-operations)
+- [Module 3 Summary](#module-3-summary)
+
+#### **Module 4: Range Query Systems**
+- [Advanced Range Operations](#advanced-range-operations)
+- [Lazy Propagation](#lazy-propagation)
+- [Performance Optimization](#performance-optimization)
+- [Module 4 Summary](#module-4-summary)
+
+#### **Module 5: Assessment & Applications**
+- [Self-Assessment Checklist](#self-assessment-checklist)
+- [Real-World Applications](#real-world-applications)
+- [Performance Comparison](#performance-comparison)
+- [Next Week Preview](#next-week-preview)
 
 ---
 
-## 🎯 Learning Objectives for Week 6
+## 🎯 **Week Overview**
 
-By the end of this week, students should be able to:
+This week focuses on specialized tree structures for string processing and range queries. You'll explore how different tree designs solve specific problem domains optimally, going beyond general-purpose trees.
 
-1. **Trie Mastery**: Implement efficient string processing data structures with prefix operations
-2. **Segment Tree Understanding**: Build range query systems from scratch with logarithmic complexity
-3. **Application Recognition**: Identify when advanced trees solve problems optimally vs general-purpose structures
-4. **Trade-off Analysis**: Compare different approaches for string and range problems with space-time considerations
-5. **Implementation Skills**: Code complex tree structures with proper memory management and optimization
-6. **Algorithm Integration**: Apply tries and segment trees to solve real-world string and range query problems
-7. **Performance Optimization**: Understand and implement space-time optimizations for specialized tree structures
+**Learning Outcomes:**
+- Master trie data structures for efficient string processing
+- Implement segment trees for range query systems
+- Recognize when advanced trees solve problems optimally
+- Analyze space-time trade-offs for specialized structures
+- Code complex tree structures with proper optimization
+- Apply tries and segment trees to real-world problems
+- Understand performance implications of specialized designs
 
 ---
+
+## 🔤 **Module 1: Trie Data Structures**
 
 ## Day 1-3: Trie (Prefix Tree) Implementation & String Operations
 

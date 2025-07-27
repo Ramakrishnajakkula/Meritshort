@@ -1,23 +1,64 @@
-# Week 2: Advanced Tree Problem Solving & Applications - Teacher's Guide
+# Week 2: Advanced Tree Problem Solving & Applications - Implementation Guide
 
-This document provides comprehensive teaching materials for Week 2, focusing on advanced binary tree problem-solving techniques that build upon Week 1 fundamentals. This week emphasizes complex algorithms, pattern recognition, optimization strategies, and real-world applications without introducing BST concepts (those come in Week 3).
+## 📋 **Table of Contents**
+
+### **Top-Level Navigation**
+1. [Week Overview](#-week-overview)
+2. [Module 1: Advanced Tree Construction](#-module-1-advanced-tree-construction)
+3. [Module 2: Path Finding & Backtracking](#-module-2-path-finding--backtracking)
+4. [Module 3: Tree Validation & Properties](#-module-3-tree-validation--properties)
+5. [Module 4: Tree Views & Coordinate Systems](#-module-4-tree-views--coordinate-systems)
+6. [Module 5: Assessment & Applications](#-module-5-assessment--applications)
+
+### **Module-Level Navigation**
+
+#### **Module 1: Advanced Tree Construction**
+- [Tree Construction from Traversals](#tree-construction-from-traversals)
+- [Multiple Input Formats](#multiple-input-formats)
+- [Edge Case Handling](#edge-case-handling)
+- [Module 1 Summary](#module-1-summary)
+
+#### **Module 2: Path Finding & Backtracking**
+- [Root to Leaf Paths](#root-to-leaf-paths)
+- [Path Sum Problems](#path-sum-problems)
+- [Backtracking Techniques](#backtracking-techniques)
+- [Module 2 Summary](#module-2-summary)
+
+#### **Module 3: Tree Validation & Properties**
+- [Tree Structure Validation](#tree-structure-validation)
+- [Property Checking Algorithms](#property-checking-algorithms)
+- [Complex Validation Logic](#complex-validation-logic)
+- [Module 3 Summary](#module-3-summary)
+
+#### **Module 4: Tree Views & Coordinate Systems**
+- [Bottom View Implementation](#bottom-view-implementation)
+- [Top View Implementation](#top-view-implementation)
+- [Coordinate-Based Algorithms](#coordinate-based-algorithms)
+- [Module 4 Summary](#module-4-summary)
+
+#### **Module 5: Assessment & Applications**
+- [Self-Assessment Checklist](#self-assessment-checklist)
+- [Real-World Applications](#real-world-applications)
+- [Next Week Preview](#next-week-preview)
 
 ---
 
-## 🎯 Learning Objectives for Week 2
+## 🎯 **Week Overview**
 
-By the end of this week, students should be able to:
+This week focuses on advanced binary tree problem-solving techniques that build upon Week 1 fundamentals. You'll master complex algorithms, pattern recognition, optimization strategies, and real-world applications.
 
-1. Master advanced tree construction from various input formats
-2. Implement complex path-finding algorithms with backtracking
-3. Solve tree validation problems using sophisticated property checking
-4. Apply tree view algorithms using coordinate-based approaches
-5. Optimize tree algorithms for better time/space complexity
-6. Handle challenging edge cases in advanced tree problems
-7. Recognize and apply advanced traversal patterns (Morris, coordinate-based)
-8. Solve real-world tree problems using pattern recognition
+**Learning Outcomes:**
+- Master advanced tree construction from various input formats
+- Implement complex path-finding algorithms with backtracking
+- Solve tree validation problems using sophisticated property checking
+- Apply tree view algorithms using coordinate-based approaches
+- Optimize tree algorithms for better time/space complexity
+- Handle challenging edge cases in advanced tree problems
+- Recognize and apply advanced traversal patterns
 
 ---
+
+## 🏗️ **Module 1: Advanced Tree Construction**
 
 ## Day 1-2: Advanced Tree Construction Problems
 
@@ -2627,3 +2668,25 @@ Week 3 will introduce Binary Search Trees, building on these advanced tree manip
 - **BST Applications**: Real-world uses in databases and systems
 
 **🌟 Congratulations on mastering advanced tree algorithms! You're now ready for specialized tree structures.**
+
+[↑ Back to Top](#-table-of-contents)
+
+---
+
+## 📚 **Quick Reference Guide**
+
+### **Advanced Tree Algorithms Summary**
+| Algorithm Type | Time Complexity | Space Complexity | Use Case |
+|---------------|----------------|------------------|----------|
+| Tree Construction | O(n) | O(n) | Building from traversals |
+| Path Finding | O(n) | O(h) | Root-to-leaf algorithms |
+| Tree Validation | O(n) | O(h) | Property checking |
+| Tree Views | O(n) | O(w) | Coordinate-based queries |
+
+### **Problem-Solving Patterns**
+- **Divide & Conquer**: Tree construction, complex calculations
+- **Backtracking**: Path finding, validation with rollback
+- **Coordinate Systems**: View problems, spatial algorithms
+- **Property Checking**: Validation, constraint satisfaction
+
+[↑ Back to Top](#-table-of-contents)

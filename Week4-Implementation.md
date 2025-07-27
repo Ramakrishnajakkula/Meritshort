@@ -1,22 +1,65 @@
-# Week 4: Balanced Trees (AVL & Red-Black) - Teacher's Guide
+# Week 4: Balanced Trees (AVL & Red-Black) - Implementation Guide
 
-This document provides comprehensive teaching materials for Week 4, focusing on self-balancing binary search trees. This week builds upon BST fundamentals from Week 3 and introduces the crucial concepts of automatic tree balancing to maintain optimal performance.
+## 📋 **Table of Contents**
+
+### **Top-Level Navigation**
+1. [Week Overview](#-week-overview)
+2. [Module 1: Tree Balancing Fundamentals](#-module-1-tree-balancing-fundamentals)
+3. [Module 2: AVL Trees](#-module-2-avl-trees)
+4. [Module 3: Rotation Mechanics](#-module-3-rotation-mechanics)
+5. [Module 4: Red-Black Trees](#-module-4-red-black-trees)
+6. [Module 5: Assessment & Comparisons](#-module-5-assessment--comparisons)
+
+### **Module-Level Navigation**
+
+#### **Module 1: Tree Balancing Fundamentals**
+- [Why Balancing Matters](#why-balancing-matters)
+- [Balancing Strategies](#balancing-strategies)
+- [Performance Implications](#performance-implications)
+- [Module 1 Summary](#module-1-summary)
+
+#### **Module 2: AVL Trees**
+- [AVL Properties](#avl-properties)
+- [Height-Based Balancing](#height-based-balancing)
+- [AVL Implementation](#avl-implementation)
+- [Module 2 Summary](#module-2-summary)
+
+#### **Module 3: Rotation Mechanics**
+- [Single Rotations](#single-rotations)
+- [Double Rotations](#double-rotations)
+- [Rotation Algorithms](#rotation-algorithms)
+- [Module 3 Summary](#module-3-summary)
+
+#### **Module 4: Red-Black Trees**
+- [Red-Black Properties](#red-black-properties)
+- [Color-Based Balancing](#color-based-balancing)
+- [Red-Black Operations](#red-black-operations)
+- [Module 4 Summary](#module-4-summary)
+
+#### **Module 5: Assessment & Comparisons**
+- [Performance Comparison](#performance-comparison)
+- [Use Case Analysis](#use-case-analysis)
+- [Self-Assessment Checklist](#self-assessment-checklist)
+- [Next Week Preview](#next-week-preview)
 
 ---
 
-## 🎯 Learning Objectives for Week 4
+## 🎯 **Week Overview**
 
-By the end of this week, students should be able to:
+This week focuses on self-balancing binary search trees, building upon BST fundamentals from Week 3. You'll master automatic tree balancing techniques that maintain optimal performance regardless of input patterns.
 
-1. **Problem Recognition**: Understand when and why BST balancing is necessary
-2. **AVL Tree Mastery**: Implement height-balanced trees with automatic balancing
-3. **Rotation Mechanics**: Perform all four rotation types correctly and efficiently
-4. **Red-Black Understanding**: Grasp color-based balancing principles and properties
-5. **Performance Analysis**: Compare different balancing strategies and their trade-offs
-6. **Design Decisions**: Choose appropriate balanced tree for specific use cases
-7. **Real-World Applications**: Connect balanced trees to practical systems and libraries
+**Learning Outcomes:**
+- Understand when and why BST balancing is necessary
+- Implement AVL trees with height-based balancing
+- Master all four rotation types for tree balancing
+- Understand red-black tree properties and color-based balancing
+- Compare different balancing strategies and their trade-offs
+- Choose appropriate balanced tree structures for specific use cases
+- Connect balanced trees to practical systems and libraries
 
 ---
+
+## ⚖️ **Module 1: Tree Balancing Fundamentals**
 
 ## Day 1-2: AVL Trees Fundamentals & Height Management
 

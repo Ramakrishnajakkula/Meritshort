@@ -1,22 +1,63 @@
-# Week 3: Binary Search Trees (BST) - Teacher's Guide
+# Week 3: Binary Search Trees (BST) - Implementation Guide
 
-This document provides comprehensive teaching materials for Week 3, focusing on Binary Search Tree fundamentals, operations, and applications. This week builds upon the advanced tree manipulation skills from Week 2 and introduces the crucial concept of ordered tree structures.
+## 📋 **Table of Contents**
+
+### **Top-Level Navigation**
+1. [Week Overview](#-week-overview)
+2. [Module 1: BST Fundamentals](#-module-1-bst-fundamentals)
+3. [Module 2: BST Operations](#-module-2-bst-operations)
+4. [Module 3: BST Validation & Properties](#-module-3-bst-validation--properties)
+5. [Module 4: Advanced BST Operations](#-module-4-advanced-bst-operations)
+6. [Module 5: Assessment & Applications](#-module-5-assessment--applications)
+
+### **Module-Level Navigation**
+
+#### **Module 1: BST Fundamentals**
+- [BST Properties](#bst-properties)
+- [Why BSTs Matter](#why-bsts-matter)
+- [BST vs Binary Tree](#bst-vs-binary-tree)
+- [Module 1 Summary](#module-1-summary)
+
+#### **Module 2: BST Operations**
+- [BST Search](#bst-search)
+- [BST Insertion](#bst-insertion)
+- [BST Deletion](#bst-deletion)
+- [Module 2 Summary](#module-2-summary)
+
+#### **Module 3: BST Validation & Properties**
+- [BST Validation Algorithms](#bst-validation-algorithms)
+- [Property Checking](#property-checking)
+- [Edge Case Handling](#edge-case-handling)
+- [Module 3 Summary](#module-3-summary)
+
+#### **Module 4: Advanced BST Operations**
+- [Range Queries](#range-queries)
+- [Kth Element Finding](#kth-element-finding)
+- [BST Conversions](#bst-conversions)
+- [Module 4 Summary](#module-4-summary)
+
+#### **Module 5: Assessment & Applications**
+- [Self-Assessment Checklist](#self-assessment-checklist)
+- [Real-World Applications](#real-world-applications)
+- [Next Week Preview](#next-week-preview)
 
 ---
 
-## 🎯 Learning Objectives for Week 3
+## 🎯 **Week Overview**
 
-By the end of this week, students should be able to:
+This week focuses on Binary Search Tree fundamentals, operations, and applications. BSTs introduce the crucial concept of ordered tree structures that provide efficient search, insertion, and deletion operations.
 
-1. **Conceptual Understanding**: Explain BST properties and their mathematical implications
-2. **Implementation Skills**: Code all BST operations (search, insert, delete) efficiently
-3. **Problem Solving**: Apply BST properties to solve search and ordering problems
-4. **Complexity Analysis**: Understand why BSTs provide O(log n) operations and when they degrade
-5. **Validation Skills**: Check if a tree satisfies BST properties using multiple approaches
-6. **Advanced Operations**: Implement range queries, kth element finding, and BST conversions
-7. **Real-world Connection**: Connect BST concepts to practical systems like databases and indexing
+**Learning Outcomes:**
+- Understand BST properties and their mathematical implications
+- Implement all BST operations (search, insert, delete) efficiently
+- Apply BST properties to solve search and ordering problems
+- Validate BST structures using multiple approaches
+- Implement advanced operations like range queries and kth element finding
+- Connect BST concepts to practical systems like databases and indexing
 
 ---
+
+## 🔍 **Module 1: BST Fundamentals**
 
 ## Day 1-2: BST Fundamentals & Basic Operations
 
